@@ -1,0 +1,22 @@
+exclude: '^$'
+fail_fast: false
+repos:
+-   id: terraform-fmt
+    name: Terraform fmt
+    description: Rewrites all Terraform configuration files to a canonical format.
+    entry: hooks/terraform-fmt.sh
+    language: script
+    files: \.tf$
+    exclude: \.+.terraform\/.*$
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
+    hooks:
+    - id: detect-aws-credentials
+    - id: detect-private-key
+    - id: trailing-whitespace
+-   repo: https://github.com/Yelp/detect-secrets
+    rev: v0.13.0
+    hooks:
+    -   id: detect-secrets
+        args: ['--baseline', '.secrets.baseline'] # run: `pip install detect-secrets` to establish baseline
+        exclude: .*/tests/.*

@@ -50,7 +50,7 @@ Always run `plan` before running `apply` and make sure you are working in the ri
 
 You can reference infrastructure defined in this repository and exposed as outputs in other modules
 
-```hcl-terraform
+```terraform
 locals {
   bucket_suffix   = var.environment == "production" ? "" : "-${var.environment}"
   tf_state_bucket = "gfw-terraform${local.bucket_suffix}"

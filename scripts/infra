@@ -34,6 +34,11 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
       terraform init \
         -backend-config=backends/${ENV}.tf
       ;;
+
+    fmt)
+      terraform fmt -recursive .
+      ;;
+
     plan)
       # Clear stale modules, then re-initialize
       rm -rf .terraform

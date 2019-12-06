@@ -3,10 +3,18 @@ output "environment" {
   description = "Environment of current state."
 }
 
-//output "pipelines_bucket" {
-//  value = aws_s3_bucket.pipelines.id
-//}
+output "pipelines_bucket" {
+  value = aws_s3_bucket.pipelines.id
+}
 
-output "bootstrap" {
-  value = module.bootstrap
+output "data-lake_bucket" {
+  value = aws_s3_bucket.data-lake.id
+}
+
+output "tiles_bucket" {
+  value = aws_s3_bucket.data-lake.id
+}
+
+output "tags" {
+  value = local.tags
 }

@@ -73,7 +73,7 @@ resource "aws_lambda_function" "default" {
   environment {
     variables = {
       ENVIRONMENT = data.terraform_remote_state.core.outputs.environment
-      S3_BUCKET   = data.terraform_remote_state.core.outputs.bootstrap.state_bucket
+      S3_BUCKET   = data.terraform_remote_state.core.outputs.data-lake_bucket
     }
   }
 }

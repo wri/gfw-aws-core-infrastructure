@@ -12,6 +12,8 @@ if [ -z "${ENV}" ]; then
 else
   AWS_PROFILE=gfw-${ENV}
 fi
+
+export AWS_PROFILE
 echo "Using enviroment ${ENV} and AWS_PROFILE ${AWS_PROFILE}"
 
 function usage() {
@@ -61,8 +63,9 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
         -auto-approve
       ;;
     *)
-      echo "ERROR: I don't have support for that Terraform subcommand!"
-      exit 1
+#      echo "ERROR: I don't have support for that Terraform subcommand!"
+#      exit 1
+      terraform ${1}
       ;;
     esac
 

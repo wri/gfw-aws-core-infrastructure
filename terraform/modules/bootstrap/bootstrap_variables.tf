@@ -1,5 +1,5 @@
 ##
-# Define variables for Azure DevOps Seed Module
+# Define variables for Terraform Bootstrap Module
 ##
 
 variable "name_of_s3_bucket" {}

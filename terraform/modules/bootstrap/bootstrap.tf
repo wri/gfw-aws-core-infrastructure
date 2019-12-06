@@ -1,5 +1,5 @@
 ##
-# Module to build the Azure DevOps "seed" configuration
+# Module to build the Terraform "bootstrap" configuration
 ##
 
 # Build an S3 bucket to store TF state

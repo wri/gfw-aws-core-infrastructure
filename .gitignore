@@ -13,9 +13,6 @@
 # .tfplan files
 *.tfplan
 
-# .tfvars files
-*.tfvars
-
 # Crash log files
 crash.log
 

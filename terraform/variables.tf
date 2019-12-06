@@ -5,7 +5,6 @@ variable "project" {
 }
 
 variable "environment" {
-  default     = "dev"
   type        = string
   description = "An environment namespace for the infrastructure."
 }

@@ -46,26 +46,25 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
       rm -rf .terraform
 
       terraform init \
-        -backend-config=backends/${ENV}.tf
+        -backend-config=backend-${ENV}.tfvars
 
       terraform plan \
-        -var-file="gfw-aws-core-infrastructure.tfvars" \
-        -var "environment=${ENV}" \
-        -out="gfw-aws-core-infrastructure.tfplan"
+        -var-file="core-${ENV}.tfvars" \
+        -out="core.tfplan"
       ;;
     apply)
       terraform apply \
-        "gfw-aws-core-infrastructure.tfplan"
+        "core.tfplan"
       ;;
     destroy)
       terraform destroy \
-        -var-file="gfw-aws-core-infrastructure.tfvars" \
+        -var-file="core-${ENV}.tfvars" \
         -auto-approve
       ;;
     *)
-#      echo "ERROR: I don't have support for that Terraform subcommand!"
-#      exit 1
-      terraform ${1}
+      echo "ERROR: I don't have support for that Terraform subcommand!"
+      exit 1
+#      terraform ${1}
       ;;
     esac
 

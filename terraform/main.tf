@@ -3,15 +3,10 @@ terraform {
   required_version = ">=0.12.13"
   backend "s3" {
     region         = "us-east-1"
-    key            = "gfw-aws-core-infrastucture.tfstate"
+    key            = "core.tfstate"
     dynamodb_table = "aws-locks"
     encrypt        = true
   }
-}
-
-locals {
-  bucket_suffix   = var.environment == "production" ? "" : "-${var.environment}"
-  tf_state_bucket = "gfw-terraform${local.bucket_suffix}"
 }
 
 # Download any stable version in AWS provider of 2.36.0 or higher in 2.36 train
@@ -29,9 +24,5 @@ module "bootstrap" {
   ado_iam_role_name           = "IamRole"
   aws_iam_policy_permits_name = "IamPolicyPermits"
   aws_iam_policy_assume_name  = "IamPolicyAssume"
-  tags = {
-    Project     = var.project,
-    Environment = var.environment,
-    BuiltBy     = "Terraform"
-  }
+  tags = local.tags
 }

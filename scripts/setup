@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-python3 -m venv env
-source $PWD/env/bin/activate
-
-pip install -r requirements-dev.txt
-
-detect-secrets scan > .secrets.baseline
-pre-commit install

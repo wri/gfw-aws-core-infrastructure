@@ -26,5 +26,15 @@ module "bootstrap" {
 module "lambda_layers" {
   source    = "./modules/lambda_layers"
   s3_bucket = local.tf_state_bucket
-  project = local.project
+  project   = local.project
+}
+
+module "tiles_policy" {
+  source = "git::https://github.com/techfishio/terraform-aws-iam-policy-document-aggregator.git?ref=rf/GH-11--upgrade-to-terraform-0_12"
+  //    source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=master"
+  source_documents = [
+    data.template_file.tiles_bucket_policy_public.rendered,
+    data.template_file.tiles_bucket_policy_cloudfront.rendered,
+    data.template_file.tiles_bucket_policy_lambda.rendered
+  ]
 }

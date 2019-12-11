@@ -6,14 +6,14 @@ output "environment" {
 output "pipelines_bucket" {
   value = aws_s3_bucket.pipelines.id
 }
-
-output "data-lake_bucket" {
-  value = aws_s3_bucket.data-lake.id
-}
-
-output "tiles_bucket" {
-  value = aws_s3_bucket.data-lake.id
-}
+//
+//output "data-lake_bucket" {
+//  value = aws_s3_bucket.data-lake.id
+//}
+//
+//output "tiles_bucket" {
+//  value = aws_s3_bucket.data-lake.id
+//}
 
 output "tags" {
   value = local.tags
@@ -21,4 +21,8 @@ output "tags" {
 
 output "lambda_layer_shapely_pyyaml_arn" {
   value = module.lambda_layers.shapely_pyyaml_arn
+}
+
+output "account_id" {
+  value = data.aws_caller_identity.current.account_id
 }

@@ -1,0 +1,243 @@
+
+resource "aws_cloudfront_distribution" "tiles" {
+
+  aliases = ["tiles.globalforestwatch.org", ]
+
+  enabled         = true
+  http_version    = "http2"
+  is_ipv6_enabled = true
+  comment         = "tiles.globalforestwatch.org"
+  //  default_root_object = "index.html"
+
+  price_class = "PriceClass_All"
+
+  default_cache_behavior {
+    allowed_methods  = ["HEAD", "GET"]
+    cached_methods   = ["HEAD", "GET"]
+    target_origin_id = "S3-gfw-tiles"
+
+    compress = true
+
+
+    forwarded_values {
+      query_string = false
+
+      cookies {
+        forward = "none"
+      }
+    }
+
+    viewer_protocol_policy = "redirect-to-https"
+    min_ttl                = 0
+    default_ttl            = 86400
+    max_ttl                = 31536000
+
+  }
+
+  ordered_cache_behavior {
+    allowed_methods = [
+      "GET",
+      "HEAD",
+    ]
+    cached_methods = [
+      "GET",
+      "HEAD",
+    ]
+    compress               = false
+    default_ttl            = 86400
+    max_ttl                = 86400
+    min_ttl                = 0
+    path_pattern           = "glad_prod/*"
+    smooth_streaming       = false
+    target_origin_id       = "wri-tiles"
+    trusted_signers        = []
+    viewer_protocol_policy = "redirect-to-https"
+
+    forwarded_values {
+      headers                 = []
+      query_string            = false
+      query_string_cache_keys = []
+
+      cookies {
+        forward           = "none"
+        whitelisted_names = []
+      }
+    }
+  }
+  ordered_cache_behavior {
+    allowed_methods = [
+      "GET",
+      "HEAD",
+    ]
+    cached_methods = [
+      "GET",
+      "HEAD",
+    ]
+    compress               = false
+    default_ttl            = 86400
+    max_ttl                = 31536000
+    min_ttl                = 0
+    path_pattern           = "*/index.html"
+    smooth_streaming       = false
+    target_origin_id       = "Custom-4khgyzteea.execute-api.us-east-1.amazonaws.com/default"
+    trusted_signers        = []
+    viewer_protocol_policy = "redirect-to-https"
+
+    forwarded_values {
+      headers                 = []
+      query_string            = false
+      query_string_cache_keys = []
+
+      cookies {
+        forward           = "none"
+        whitelisted_names = []
+      }
+    }
+  }
+  ordered_cache_behavior {
+    allowed_methods = [
+      "GET",
+      "HEAD",
+    ]
+    cached_methods = [
+      "GET",
+      "HEAD",
+    ]
+    compress               = false
+    default_ttl            = 86400
+    max_ttl                = 31536000
+    min_ttl                = 0
+    path_pattern           = "index.html"
+    smooth_streaming       = false
+    target_origin_id       = "Custom-4khgyzteea.execute-api.us-east-1.amazonaws.com/default"
+    trusted_signers        = []
+    viewer_protocol_policy = "redirect-to-https"
+
+    forwarded_values {
+      headers                 = []
+      query_string            = false
+      query_string_cache_keys = []
+
+      cookies {
+        forward           = "none"
+        whitelisted_names = []
+      }
+    }
+  }
+  ordered_cache_behavior {
+    allowed_methods = [
+      "GET",
+      "HEAD",
+    ]
+    cached_methods = [
+      "GET",
+      "HEAD",
+    ]
+    compress               = false
+    default_ttl            = 0
+    max_ttl                = 31536000
+    min_ttl                = 0
+    path_pattern           = "*/latest/*"
+    smooth_streaming       = false
+    target_origin_id       = "S3-gfw-tiles"
+    trusted_signers        = []
+    viewer_protocol_policy = "redirect-to-https"
+
+    forwarded_values {
+      headers                 = []
+      query_string            = false
+      query_string_cache_keys = []
+
+      cookies {
+        forward           = "none"
+        whitelisted_names = []
+      }
+    }
+
+    lambda_function_association {
+      event_type   = "origin-request"
+      include_body = false
+      lambda_arn   = aws_lambda_function.redirect_latest_tile_cache.qualified_arn
+    }
+    lambda_function_association {
+      event_type   = "viewer-response"
+      include_body = false
+      lambda_arn   = aws_lambda_function.reset_response_header_caching.qualified_arn
+    }
+  }
+
+  origin {
+    domain_name = "gfw-tiles.s3-website-us-east-1.amazonaws.com"
+    origin_id   = "wdpa_protected_areas-latest"
+
+    custom_origin_config {
+      http_port                = 80
+      https_port               = 443
+      origin_keepalive_timeout = 5
+      origin_protocol_policy   = "http-only"
+      origin_read_timeout      = 30
+      origin_ssl_protocols = [
+        "TLSv1",
+        "TLSv1.1",
+        "TLSv1.2",
+      ]
+    }
+  }
+  origin {
+    domain_name = "wri-tiles.s3-website-us-east-1.amazonaws.com"
+    origin_id   = "wri-tiles"
+
+    custom_origin_config {
+      http_port                = 80
+      https_port               = 443
+      origin_keepalive_timeout = 5
+      origin_protocol_policy   = "http-only"
+      origin_read_timeout      = 30
+      origin_ssl_protocols = [
+        "TLSv1",
+        "TLSv1.1",
+        "TLSv1.2",
+      ]
+    }
+  }
+  origin {
+    domain_name = "4khgyzteea.execute-api.us-east-1.amazonaws.com"
+    origin_id   = "Custom-4khgyzteea.execute-api.us-east-1.amazonaws.com/default"
+    origin_path = "/default"
+
+    custom_origin_config {
+      http_port                = 80
+      https_port               = 443
+      origin_keepalive_timeout = 5
+      origin_protocol_policy   = "https-only"
+      origin_read_timeout      = 30
+      origin_ssl_protocols = [
+        "TLSv1",
+        "TLSv1.1",
+        "TLSv1.2",
+      ]
+    }
+  }
+
+  origin {
+    domain_name = "gfw-tiles.s3.amazonaws.com"
+    origin_id   = "S3-gfw-tiles"
+  }
+
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
+  viewer_certificate {
+    acm_certificate_arn            = "arn:aws:acm:us-east-1:401951483516:certificate/be6379f1-77a1-4bb9-9584-7fe8434e2e3b"
+    cloudfront_default_certificate = false
+    minimum_protocol_version       = "TLSv1.1_2016"
+    ssl_support_method             = "sni-only"
+  }
+
+  tags = local.tags
+
+}

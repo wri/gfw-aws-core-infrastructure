@@ -1,8 +1,13 @@
-data "template_file" "pipelines_bucket_policy" {
-  template = file("policies/s3_public.json")
-  vars = {
-    bucket_arn = aws_s3_bucket.pipelines.arn
-  }
+resource "aws_s3_bucket_policy" "pipelines" {
+  bucket = aws_s3_bucket.pipelines.id
+  policy = data.template_file.pipelines_bucket_policy.rendered
+}
+
+
+resource "aws_s3_bucket_policy" "tiles" {
+  bucket = aws_s3_bucket.tiles.id
+  policy = module.tiles_policy.result_document
+
 }
 
 
@@ -10,11 +15,6 @@ resource "aws_s3_bucket" "pipelines" {
   bucket = "gfw-pipelines${local.bucket_suffix}"
   acl    = "private"
   tags   = local.tags
-}
-
-resource "aws_s3_bucket_policy" "pipelines" {
-  bucket = aws_s3_bucket.pipelines.id
-  policy = data.template_file.pipelines_bucket_policy.rendered
 }
 
 
@@ -28,6 +28,36 @@ resource "aws_s3_bucket" "tiles" {
   bucket = "gfw-tiles${local.bucket_suffix}"
   acl    = "private"
   tags   = local.tags
+
+  cors_rule {
+    allowed_headers = [
+      "Authorization",
+    ]
+    allowed_methods = [
+      "GET",
+    ]
+    allowed_origins = [
+      "*",
+    ]
+    expose_headers  = []
+    max_age_seconds = 3000
+  }
+  website {
+    index_document = "index.html"
+    routing_rules = jsonencode(
+      [
+        {
+          Condition = {
+            KeyPrefixEquals = "wdpa_protected_areas/latest/"
+          }
+          Redirect = {
+            HostName             = "tiles.globalforestwatch.org"
+            ReplaceKeyPrefixWith = "wdpa_protected_areas/v201909/"
+          }
+        },
+      ]
+    )
+  }
 }
 
 # Test buckets only exist in DEV environment

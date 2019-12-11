@@ -18,3 +18,7 @@ output "tiles_bucket" {
 output "tags" {
   value = local.tags
 }
+
+output "lambda_layer_shapely_pyyaml_arn" {
+  value = module.lambda_layers.shapely_pyyaml_arn
+}

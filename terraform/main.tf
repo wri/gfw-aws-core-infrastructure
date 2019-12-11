@@ -17,12 +17,14 @@ provider "aws" {
 
 # Call the seed_module to build our ADO seed info
 module "bootstrap" {
-  source                      = "./modules/bootstrap"
-  name_of_s3_bucket           = local.tf_state_bucket
-  dynamo_db_table_name        = var.dynamo_db_lock_table_name
-  iam_user_name               = "IamUser"
-  ado_iam_role_name           = "IamRole"
-  aws_iam_policy_permits_name = "IamPolicyPermits"
-  aws_iam_policy_assume_name  = "IamPolicyAssume"
-  tags = local.tags
+  source               = "./modules/bootstrap"
+  s3_bucket            = local.tf_state_bucket
+  dynamo_db_table_name = var.dynamo_db_lock_table_name
+  tags                 = local.tags
+}
+
+module "lambda_layers" {
+  source    = "./modules/lambda_layers"
+  s3_bucket = local.tf_state_bucket
+  project = local.project
 }

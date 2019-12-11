@@ -1,6 +1,6 @@
 data "template_file" "pipelines_bucket_policy" {
   template = file("policies/s3_public.json")
-vars = {
+  vars = {
     bucket_arn = aws_s3_bucket.pipelines.arn
   }
 }
@@ -9,25 +9,25 @@ vars = {
 resource "aws_s3_bucket" "pipelines" {
   bucket = "gfw-pipelines${local.bucket_suffix}"
   acl    = "private"
-  tags = local.tags
+  tags   = local.tags
 }
 
 resource "aws_s3_bucket_policy" "pipelines" {
-      bucket = aws_s3_bucket.pipelines.id
-      policy = data.template_file.pipelines_bucket_policy.rendered
-    }
+  bucket = aws_s3_bucket.pipelines.id
+  policy = data.template_file.pipelines_bucket_policy.rendered
+}
 
 
 resource "aws_s3_bucket" "data-lake" {
   bucket = "gfw-data-lake${local.bucket_suffix}"
   acl    = "private"
-  tags = local.tags
+  tags   = local.tags
 }
 
 resource "aws_s3_bucket" "tiles" {
   bucket = "gfw-tiles${local.bucket_suffix}"
   acl    = "private"
-  tags = local.tags
+  tags   = local.tags
 }
 
 # Test buckets only exist in DEV environment

@@ -1,3 +1,4 @@
+resource "aws_cloudfront_origin_access_identity" "tiles" {}
 
 resource "aws_cloudfront_distribution" "tiles" {
 
@@ -167,7 +168,7 @@ resource "aws_cloudfront_distribution" "tiles" {
   }
 
   origin {
-    domain_name = "gfw-tiles.s3-website-us-east-1.amazonaws.com"
+    domain_name = aws_s3_bucket.tiles.website_endpoint //"gfw-tiles.s3-website-us-east-1.amazonaws.com"
     origin_id   = "wdpa_protected_areas-latest"
 
     custom_origin_config {
@@ -184,7 +185,7 @@ resource "aws_cloudfront_distribution" "tiles" {
     }
   }
   origin {
-    domain_name = "wri-tiles.s3-website-us-east-1.amazonaws.com"
+    domain_name = aws_s3_bucket.tiles.website_endpoint //"wri-tiles.s3-website-us-east-1.amazonaws.com"
     origin_id   = "wri-tiles"
 
     custom_origin_config {
@@ -220,7 +221,7 @@ resource "aws_cloudfront_distribution" "tiles" {
   }
 
   origin {
-    domain_name = "gfw-tiles.s3.amazonaws.com"
+    domain_name = aws_s3_bucket.tiles.bucket_domain_name // "gfw-tiles.s3.amazonaws.com"
     origin_id   = "S3-gfw-tiles"
   }
 
@@ -232,11 +233,12 @@ resource "aws_cloudfront_distribution" "tiles" {
   }
 
   viewer_certificate {
-    acm_certificate_arn            = "arn:aws:acm:us-east-1:401951483516:certificate/be6379f1-77a1-4bb9-9584-7fe8434e2e3b"
-    cloudfront_default_certificate = false
+    acm_certificate_arn            = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null
+    cloudfront_default_certificate = var.environment == "production" ? false : true
     minimum_protocol_version       = "TLSv1.1_2016"
     ssl_support_method             = "sni-only"
   }
+
 
   tags = local.tags
 

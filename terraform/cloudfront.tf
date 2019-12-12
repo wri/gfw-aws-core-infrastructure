@@ -185,7 +185,7 @@ resource "aws_cloudfront_distribution" "tiles" {
     }
   }
   origin {
-    domain_name = aws_s3_bucket.tiles.website_endpoint //"wri-tiles.s3-website-us-east-1.amazonaws.com"
+    domain_name = "wri-tiles.s3-website-us-east-1.amazonaws.com" // not managed by terraform b/c other account
     origin_id   = "wri-tiles"
 
     custom_origin_config {

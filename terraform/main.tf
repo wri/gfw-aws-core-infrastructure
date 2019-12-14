@@ -29,6 +29,12 @@ module "lambda_layers" {
   project   = local.project
 }
 
+module "tile_cache" {
+  source  = "./modules/tile_cache"
+  project = local.project
+  tags    = local.tags
+}
+
 module "tiles_policy" {
   source = "git::https://github.com/techfishio/terraform-aws-iam-policy-document-aggregator.git?ref=rf/GH-11--upgrade-to-terraform-0_12"
   //    source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=master"

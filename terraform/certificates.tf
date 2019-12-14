@@ -2,11 +2,11 @@ resource "aws_acm_certificate" "globalforestwatch" {
   domain_name       = "*.globalforestwatch.org"
   validation_method = "DNS"
 
-  tags = merge({"Name"= "Global Forest Watch Wildcard"},
+  tags = merge({ "Name" = "Global Forest Watch Wildcard" },
   local.tags)
 
   lifecycle {
     create_before_destroy = true
   }
-  count  = var.environment == "production" ? 1 : 0
+  count = var.environment == "production" ? 1 : 0
 }

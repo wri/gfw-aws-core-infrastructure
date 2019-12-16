@@ -55,6 +55,10 @@ output "default_security_group_id" {
   value = aws_security_group.default.id
 }
 
-//output "ephemeral_storage_batch_environment_arn" {
-//  value = module.batch_processing.ephemeral_storage_batch_environment_arn
-//}
+output "key_pair_tmaschler_gfw" {
+  value = aws_key_pair.tmaschler_gfw.key_name
+}
+
+output "ephemeral_storage_batch_environment_arn" {
+  value = module.batch_processing.ephemeral_storage_batch_environment_arn
+}

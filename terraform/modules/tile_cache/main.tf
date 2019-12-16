@@ -15,8 +15,8 @@ data "archive_file" "reset_response_header_caching" {
 }
 
 resource "aws_lambda_function" "redirect_latest_tile_cache" {
-  function_name    = "${var.project}-${local.module_name}-redirect_latest_tile_cache"
-//  function_name    = "redirect_latest_tile_cache"
+  function_name = "${var.project}-${local.module_name}-redirect_latest_tile_cache"
+  //  function_name    = "redirect_latest_tile_cache"
   filename         = data.archive_file.redirect_latest_tile_cache.output_path
   source_code_hash = data.archive_file.redirect_latest_tile_cache.output_base64sha256
   role             = aws_iam_role.lambda_edge_cloudfront.arn
@@ -29,8 +29,8 @@ resource "aws_lambda_function" "redirect_latest_tile_cache" {
 }
 
 resource "aws_lambda_function" "reset_response_header_caching" {
-  function_name    = "${var.project}-${local.module_name}-reset_response_header_caching"
-//  function_name    = "reset_response_header_caching"
+  function_name = "${var.project}-${local.module_name}-reset_response_header_caching"
+  //  function_name    = "reset_response_header_caching"
   filename         = data.archive_file.reset_response_header_caching.output_path
   source_code_hash = data.archive_file.reset_response_header_caching.output_base64sha256
   role             = aws_iam_role.lambda_edge_cloudfront.arn

@@ -58,3 +58,8 @@ variable "tags" {
   type        = map(string)
   description = "A mapping of keys and values to apply as tags to all resources that support them."
 }
+
+variable "security_group_ids" {
+  type        = list(string)
+  description = "A list of security groups to use for the bastion"
+}

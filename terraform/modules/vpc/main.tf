@@ -145,16 +145,7 @@ resource "aws_nat_gateway" "default" {
 #
 # Bastion resources
 #
-resource "aws_security_group" "bastion" {
-  vpc_id = aws_vpc.default.id
 
-  tags = merge(
-    {
-      Name = "${var.project}-sgBastion"
-    },
-    var.tags
-  )
-}
 
 resource "aws_instance" "bastion" {
   ami                         = var.bastion_ami
@@ -164,7 +155,7 @@ resource "aws_instance" "bastion" {
   key_name                    = var.key_name
   monitoring                  = true
   subnet_id                   = aws_subnet.public[0].id
-  vpc_security_group_ids      = [aws_security_group.bastion.id]
+  vpc_security_group_ids      = var.security_group_ids
   associate_public_ip_address = true
   //  user_data                   = var.user_data
 

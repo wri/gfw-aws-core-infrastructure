@@ -18,11 +18,6 @@ output "bastion_hostname" {
   description = "Bastion hostname for SSH access."
 }
 
-output "bastion_security_group_id" {
-  value       = aws_security_group.bastion.id
-  description = "Security group associated with the bastion for adding rules."
-}
-
 output "cidr_block" {
   value       = var.cidr_block
   description = "The CIDR range for the entire VPC."

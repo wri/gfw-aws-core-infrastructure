@@ -6,14 +6,14 @@ output "environment" {
 output "pipelines_bucket" {
   value = aws_s3_bucket.pipelines.id
 }
-//
-//output "data-lake_bucket" {
-//  value = aws_s3_bucket.data-lake.id
-//}
-//
-//output "tiles_bucket" {
-//  value = aws_s3_bucket.data-lake.id
-//}
+
+output "data-lake_bucket" {
+  value = aws_s3_bucket.data-lake.id
+}
+
+output "tiles_bucket" {
+  value = aws_s3_bucket.tiles.id
+}
 
 output "tags" {
   value = local.tags
@@ -51,6 +51,10 @@ output "cidr_block" {
   value = module.vpc.cidr_block
 }
 
-output "bastion_security_group_id" {
-  value = module.vpc.bastion_security_group_id
+output "default_security_group_id" {
+  value = aws_security_group.default.id
 }
+
+//output "ephemeral_storage_batch_environment_arn" {
+//  value = module.batch_processing.ephemeral_storage_batch_environment_arn
+//}

@@ -28,6 +28,26 @@ data "template_file" "tiles_bucket_policy_lambda" {
   }
 }
 
+data "template_file" "s3_write_pipelines" {
+  template = file("${path.root}/policies/s3_write_bucket.json")
+  vars = {
+    bucket_arn = aws_s3_bucket.pipelines.arn
+  }
+}
+
+data "template_file" "s3_write_data-lake" {
+  template = file("${path.root}/policies/s3_write_bucket.json")
+  vars = {
+    bucket_arn = aws_s3_bucket.data-lake.arn
+  }
+}
+
+data "template_file" "s3_write_tiles" {
+  template = file("${path.root}/policies/s3_write_bucket.json")
+  vars = {
+    bucket_arn = aws_s3_bucket.tiles.arn
+  }
+}
 
 //data "template_file" "ssh_keys_ec2_user" {
 //  template = file("${path.module}/user_data/add_ssh_keys.sh")

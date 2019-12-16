@@ -236,8 +236,8 @@ resource "aws_cloudfront_distribution" "tiles" {
   viewer_certificate {
     acm_certificate_arn            = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null
     cloudfront_default_certificate = var.environment == "production" ? false : true
-    minimum_protocol_version       = "TLSv1" // "TLSv1.1_2016"
-    ssl_support_method             = "sni-only"
+    minimum_protocol_version       = var.environment == "production" ? "TLSv1.1_2016" : "TLSv1"
+    ssl_support_method             = var.environment == "production" ? "sni-only" : null
   }
 
 

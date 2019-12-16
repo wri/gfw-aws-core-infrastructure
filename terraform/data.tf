@@ -1,19 +1,19 @@
 data "template_file" "pipelines_bucket_policy" {
-  template = file("policies/s3_public.json")
+  template = file("${path.module}/policies/s3_public.json")
   vars = {
     bucket_arn = aws_s3_bucket.pipelines.arn
   }
 }
 
 data "template_file" "tiles_bucket_policy_public" {
-  template = file("policies/s3_public.json")
+  template = file("${path.module}/policies/s3_public.json")
   vars = {
     bucket_arn = aws_s3_bucket.tiles.arn
   }
 }
 
 data "template_file" "tiles_bucket_policy_cloudfront" {
-  template = file("policies/s3_aws.json")
+  template = file("${path.module}/policies/s3_aws.json")
   vars = {
     bucket_arn       = aws_s3_bucket.tiles.arn
     aws_resource_arn = aws_cloudfront_origin_access_identity.tiles.iam_arn
@@ -21,15 +21,34 @@ data "template_file" "tiles_bucket_policy_cloudfront" {
 }
 
 data "template_file" "tiles_bucket_policy_lambda" {
-  template = file("policies/s3_aws.json")
+  template = file("${path.module}/policies/s3_aws.json")
   vars = {
     bucket_arn       = aws_s3_bucket.tiles.arn
     aws_resource_arn = module.tile_cache.lambda_edge_cloudfront_arn
   }
 }
 
+
+//data "template_file" "ssh_keys_ec2_user" {
+//  template = file("${path.module}/user_data/add_ssh_keys.sh")
+//  vars = {
+//    user         = "ec2-user",
+//    public_key_1 = aws_key_pair.tmaschler_gfw.public_key,
+//    public_key_2 = aws_key_pair.jterry_gfw.public_key
+//  }
+//}
+//
+//data "template_file" "ssh_keys_ubuntu" {
+//  template = file("${path.module}/user_data/add_ssh_keys.sh")
+//  vars = {
+//    user         = "ubuntu",
+//    public_key_1 = aws_key_pair.tmaschler_gfw.public_key,
+//    public_key_2 = aws_key_pair.jterry_gfw.public_key
+//  }
+//}
+
 data "local_file" "mount_nvme1n1_mime" {
-  filename = "user_data/mount_nvme1n1_mime.sh"
+  filename = "${path.module}/user_data/mount_nvme1n1_mime.sh"
 }
 
 data "aws_caller_identity" "current" {}
@@ -55,5 +74,15 @@ data "aws_ami" "latest-amazon-ecs-optimized" {
   }
 }
 
+
+data "aws_ami" "amazon_linux_ami" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm*"]
+  }
+}
 
 

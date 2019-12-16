@@ -44,3 +44,14 @@ module "tiles_policy" {
     data.template_file.tiles_bucket_policy_lambda.rendered
   ]
 }
+
+module "vpc" {
+  source = "./modules/vpc"
+
+  region = var.aws_region
+  //  user_data = data.template_file.ssh_keys_ec2_user.rendered
+  key_name    = aws_key_pair.tmaschler_gfw.key_name
+  bastion_ami = data.aws_ami.amazon_linux_ami.id
+  project     = local.project
+  tags        = local.tags
+}

@@ -124,6 +124,13 @@ resource "aws_eip" "nat" {
   count = length(var.public_subnet_cidr_blocks)
 
   vpc = true
+
+  tags = merge(
+    {
+      Name = "${var.project}-NAT_gateway-${count.index}"
+    },
+    var.tags
+  )
 }
 
 resource "aws_nat_gateway" "default" {

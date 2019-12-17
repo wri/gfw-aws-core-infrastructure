@@ -62,3 +62,11 @@ output "key_pair_tmaschler_gfw" {
 output "ephemeral_storage_batch_environment_arn" {
   value = module.batch_processing.ephemeral_storage_batch_environment_arn
 }
+
+output "emr-master-security-group_id" {
+  value = aws_security_group.emr-master.id
+}
+
+output "emr-worker-security-group_id" {
+  value = aws_security_group.emr-worker.id
+}

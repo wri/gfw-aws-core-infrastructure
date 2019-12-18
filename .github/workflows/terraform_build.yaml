@@ -38,7 +38,7 @@ jobs:
         ./scripts/infra plan
         ./scripts/infra apply
     - name: Deploy dev
-      if: success() && (! contains(github.ref, 'develop')) && (! contains(github.ref, 'master'))
+      if: success() && contains(github.ref, 'develop')
       env:
         ENV: dev
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_key_dev }}

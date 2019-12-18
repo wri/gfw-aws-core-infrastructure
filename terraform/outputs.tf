@@ -72,7 +72,7 @@ output "emr-worker-security-group_id" {
 }
 
 output "secrets_read-gfw-api-token_policy_arn" {
-  value = aws_iam_policy.secretes_read_gfw-api-token.arn
+  value = aws_iam_policy.secrets_read_gfw-api-token.arn
 }
 
 output "secrets_read-gfw-api-token_arn" {

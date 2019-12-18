@@ -49,6 +49,13 @@ data "template_file" "s3_write_tiles" {
   }
 }
 
+data "template_file" "secrets_read_gfw-api-token" {
+  template = file("${path.root}/policies/secrets_read.json")
+  vars = {
+    secret_arn = aws_secretsmanager_secret.gfw_api_token.arn
+  }
+}
+
 //data "template_file" "ssh_keys_ec2_user" {
 //  template = file("${path.module}/user_data/add_ssh_keys.sh")
 //  vars = {

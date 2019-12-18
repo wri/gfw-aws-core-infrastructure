@@ -14,3 +14,8 @@ resource "aws_iam_policy" "s3_write_tiles" {
   policy = data.template_file.s3_write_tiles.rendered
 
 }
+
+resource "aws_iam_policy" "secretes_read_gfw-api-token" {
+  name   = "${local.project}-secrets_read_gfw-api-token"
+  policy = data.template_file.secrets_read_gfw-api-token.rendered
+}

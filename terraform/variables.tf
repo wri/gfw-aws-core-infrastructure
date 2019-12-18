@@ -26,3 +26,8 @@ variable "dynamo_db_lock_table_name" {
   type        = string
   description = "Name of the lock table in Dynamo DB"
 }
+
+variable "gfw_api_token" {
+  type        = string
+  description = "Access token for the GFW/RW API."
+}

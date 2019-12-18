@@ -28,12 +28,12 @@ jobs:
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_staging }}
         GFW_API_TOKEN: ${{ secrets.gfw_api_token_staging }}
       run: ./scripts/infra plan
-    - name: Plan dev
-      if: success() && contains(github.ref, 'develop')
-      env:
-        ENV: dev
-        AWS_ACCESS_KEY_ID: ${{ secrets.aws_key_dev }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_dev }}
-        AWS_DEFAULT_REGION: ${{ secrets.aws_region_dev }}
-        GFW_API_TOKEN: ${{ secrets.gfw_api_token_staging }}
-      run: ./scripts/infra plan ${{ github.base_ref }}
+#    - name: Plan dev
+#      if: success() && (! contains(github.base_ref, 'master')) && (! contains(github.base_ref, 'develop'))
+#      env:
+#        ENV: dev
+#        AWS_ACCESS_KEY_ID: ${{ secrets.aws_key_dev }}
+#        AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_dev }}
+#        AWS_DEFAULT_REGION: ${{ secrets.aws_region_dev }}
+#        GFW_API_TOKEN: ${{ secrets.gfw_api_token_staging }}
+#      run: ./scripts/infra plan ${{ github.base_ref }}

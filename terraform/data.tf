@@ -49,6 +49,13 @@ data "template_file" "s3_write_tiles" {
   }
 }
 
+data "template_file" "secrets_read_gfw-api-token" {
+  template = file("${path.root}/policies/secrets_read.json")
+  vars = {
+    secret_arn = aws_secretsmanager_secret.gfw_api_token.arn
+  }
+}
+
 //data "template_file" "ssh_keys_ec2_user" {
 //  template = file("${path.module}/user_data/add_ssh_keys.sh")
 //  vars = {
@@ -105,4 +112,18 @@ data "aws_ami" "amazon_linux_ami" {
   }
 }
 
+data "local_file" "emr_assume" {
+  filename = "${path.root}/policies/emr_assume.json"
+}
 
+data "local_file" "ec2_assume" {
+  filename = "${path.root}/policies/ec2_assume.json"
+}
+
+data "local_file" "emr_default_policy" {
+  filename = "${path.root}/policies/emr_default.json"
+}
+
+data "local_file" "emr_ec2_default_policy" {
+  filename = "${path.root}/policies/emr_ec2_default.json"
+}

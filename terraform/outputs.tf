@@ -70,3 +70,19 @@ output "emr-master-security-group_id" {
 output "emr-worker-security-group_id" {
   value = aws_security_group.emr-worker.id
 }
+
+output "secrets_read-gfw-api-token_policy_arn" {
+  value = aws_iam_policy.secrets_read_gfw-api-token.arn
+}
+
+output "secrets_read-gfw-api-token_arn" {
+  value = aws_secretsmanager_secret.gfw_api_token.arn
+}
+
+output "emr_instance_profile_name" {
+  value = aws_iam_instance_profile.emr_profile.name
+}
+
+output "emr_service_role_name" {
+  value = aws_iam_role.iam_emr_service_role.name
+}

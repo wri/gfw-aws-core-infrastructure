@@ -54,6 +54,7 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
         -backend-config=vars/backend-${ENV}.tfvars
       terraform plan \
         -var-file="vars/core-${ENV}.tfvars" \
+        -var="gfw_api_token=${GFW_API_TOKEN}" \
         -out="core.tfplan"
       ;;
     apply)
@@ -63,6 +64,7 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
     destroy)
       terraform destroy \
         -var-file="vars/core-${ENV}.tfvars" \
+        -var="gfw_api_token=${GFW_API_TOKEN}" \
         -auto-approve
       ;;
     *)

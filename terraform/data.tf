@@ -112,4 +112,18 @@ data "aws_ami" "amazon_linux_ami" {
   }
 }
 
+data "local_file" "emr_assume" {
+  filename = "${path.root}/policies/emr_assume.json"
+}
 
+data "local_file" "ec2_assume" {
+  filename = "${path.root}/policies/ec2_assume.json"
+}
+
+data "local_file" "emr_default_policy" {
+  filename = "${path.root}/policies/emr_default.json"
+}
+
+data "local_file" "emr_ec2_default_policy" {
+  filename = "${path.root}/policies/emr_ec2_default.json"
+}

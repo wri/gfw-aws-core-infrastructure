@@ -79,8 +79,8 @@ output "secrets_read-gfw-api-token_arn" {
   value = aws_secretsmanager_secret.gfw_api_token.arn
 }
 
-output "emr_profile_role_name" {
-  value = aws_iam_role.iam_emr_profile_role.name
+output "emr_instance_profile_name" {
+  value = aws_iam_instance_profile.emr_profile.name
 }
 
 output "emr_service_role_name" {

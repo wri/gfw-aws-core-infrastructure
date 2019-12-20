@@ -34,7 +34,7 @@ resource "aws_iam_role_policy" "iam_emr_service_policy" {
 }
 
 resource "aws_iam_role" "iam_emr_profile_role" {
-  name = "${local.project}-iam_emr_profile_role"
+  name = "${local.project}-emr_profile"
 
   assume_role_policy = data.local_file.ec2_assume.content
 }

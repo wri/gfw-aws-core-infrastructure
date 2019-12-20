@@ -50,3 +50,7 @@ resource "aws_iam_role_policy" "iam_emr_profile_policy" {
 
   policy = data.local_file.emr_ec2_default_policy.content
 }
+
+resource "aws_iam_service_linked_role" "spot" {
+  aws_service_name = "spot.amazonaws.com"
+}

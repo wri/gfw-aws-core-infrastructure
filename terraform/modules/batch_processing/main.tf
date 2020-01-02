@@ -128,17 +128,19 @@ resource "aws_batch_compute_environment" "ephemeral-storage" {
     spot_iam_fleet_role = aws_iam_role.ec2_spot_fleet_role.arn
 
     instance_type = [
-      "c5d", "i3", "i3en", "m5ad", "m5d", "r5ad", "r5d", "z1d"
+      "i3", "c5d"
     ]
 
     max_vcpus = 256
     min_vcpus = 0
+    desired_vcpus = 32
 
     security_group_ids = [aws_security_group.batch.id]
 
     subnets = var.subnets
     launch_template {
       launch_template_id = var.launch_template_id
+      version            = var.launch_template_latest_version
     }
 
     type = "SPOT"

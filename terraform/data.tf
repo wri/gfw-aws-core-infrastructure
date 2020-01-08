@@ -16,7 +16,7 @@ data "template_file" "tiles_bucket_policy_cloudfront" {
   template = file("${path.module}/policies/s3_aws.json")
   vars = {
     bucket_arn       = aws_s3_bucket.tiles.arn
-    aws_resource_arn = aws_cloudfront_origin_access_identity.tiles.iam_arn
+    aws_resource_arn = module.tile_cache.cloudfront_origin_access_identity_iam_arn
   }
 }
 
@@ -35,6 +35,13 @@ data "template_file" "s3_write_pipelines" {
   }
 }
 
+data "template_file" "s3_write_tiles" {
+  template = file("${path.root}/policies/s3_write_bucket.json")
+  vars = {
+    bucket_arn = aws_s3_bucket.tiles.arn
+  }
+}
+
 data "template_file" "s3_write_data-lake" {
   template = file("${path.root}/policies/s3_write_bucket.json")
   vars = {
@@ -42,12 +49,7 @@ data "template_file" "s3_write_data-lake" {
   }
 }
 
-data "template_file" "s3_write_tiles" {
-  template = file("${path.root}/policies/s3_write_bucket.json")
-  vars = {
-    bucket_arn = aws_s3_bucket.tiles.arn
-  }
-}
+
 
 data "template_file" "secrets_read_gfw-api-token" {
   template = file("${path.root}/policies/secrets_read.json")

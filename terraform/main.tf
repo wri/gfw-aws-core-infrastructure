@@ -33,6 +33,11 @@ module "tile_cache" {
   source  = "./modules/tile_cache"
   project = local.project
   tags    = local.tags
+  environment = var.environment
+  certificate_arn = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null
+  bucket_domain_name = aws_s3_bucket.tiles.bucket_domain_name
+  website_endpoint = aws_s3_bucket.tiles.website_endpoint
+
 }
 
 module "tiles_policy" {

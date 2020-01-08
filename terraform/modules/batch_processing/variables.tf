@@ -2,6 +2,7 @@ variable "project" { type = string }
 variable "key_pair" { type = string }
 variable "subnets" { type = list(string) }
 variable "launch_template_id" { type = string }
+variable "launch_template_latest_version" { type = string }
 variable "vpc_id" { type = string }
 variable "vpc_cidr_blocks" { type = list(string) }
 variable "tags" { type = map(string) }

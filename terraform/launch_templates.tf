@@ -15,12 +15,8 @@ resource "aws_launch_template" "ecs-optimized-ephemeral-storage-mounted" {
       delete_on_termination = "true"
       encrypted             = "false"
       snapshot_id           = data.aws_ami.latest-amazon-ecs-optimized.root_snapshot_id
-
+      volume_size           = 8
     }
-  }
-
-  placement {
-    availability_zone = var.aws_region
   }
 
   tag_specifications {

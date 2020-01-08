@@ -133,7 +133,6 @@ resource "aws_batch_compute_environment" "ephemeral-storage" {
 
     max_vcpus = 256
     min_vcpus = 0
-    desired_vcpus = 32
 
     security_group_ids = [aws_security_group.batch.id]
 

@@ -30,9 +30,14 @@ module "lambda_layers" {
 }
 
 module "tile_cache" {
-  source  = "./modules/tile_cache"
-  project = local.project
-  tags    = local.tags
+  source             = "./modules/tile_cache"
+  project            = local.project
+  tags               = local.tags
+  environment        = var.environment
+  certificate_arn    = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null
+  bucket_domain_name = aws_s3_bucket.tiles.bucket_domain_name
+  website_endpoint   = aws_s3_bucket.tiles.website_endpoint
+
 }
 
 module "tiles_policy" {
@@ -69,4 +74,11 @@ module "batch_processing" {
   s3_data-lake_write             = aws_iam_policy.s3_write_data-lake.arn
   s3_tiles_write                 = aws_iam_policy.s3_write_tiles.arn
   s3_pipelines_write             = aws_iam_policy.s3_write_pipelines.arn
+}
+
+module "container_registry" {
+  source           = "./modules/container_registry"
+  project          = local.project
+  tags             = local.tags
+  lifecycle_policy = data.local_file.ecr_lifecycle_policy.content
 }

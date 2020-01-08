@@ -19,8 +19,16 @@ output "tags" {
   value = local.tags
 }
 
-output "lambda_layer_shapely_pyyaml_arn" {
-  value = module.lambda_layers.shapely_pyyaml_arn
+output "lambda_layer_shapely_arn" {
+  value = module.lambda_layers.shapely_arn
+}
+
+output "lambda_layer_rasterio_arn" {
+  value = module.lambda_layers.rasterio_arn
+}
+
+output "lambda_layer_pandas_arn" {
+  value = module.lambda_layers.pandas_arn
 }
 
 output "account_id" {

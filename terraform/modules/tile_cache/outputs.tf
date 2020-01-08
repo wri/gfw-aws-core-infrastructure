@@ -34,6 +34,6 @@ output "lambda_edge_cloudfront_arn" {
 }
 
 output "cloudfront_origin_access_identity_iam_arn" {
-  value = aws_cloudfront_origin_access_identity.tiles.iam_arn
+  value       = aws_cloudfront_origin_access_identity.tiles.iam_arn
   description = "IAM ARN of Cloud Front Origin Access Identity"
 }

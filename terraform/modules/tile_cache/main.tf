@@ -82,7 +82,7 @@ resource "aws_cloudfront_distribution" "tiles" {
   //  }
 
   origin {
-    domain_name = var.bucket_domain_name  // "gfw-tiles.s3.amazonaws.com"
+    domain_name = var.bucket_domain_name // "gfw-tiles.s3.amazonaws.com"
     origin_id   = "S3-gfw-tiles"
     s3_origin_config { origin_access_identity = "${aws_cloudfront_origin_access_identity.tiles.cloudfront_access_identity_path}" }
 

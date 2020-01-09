@@ -87,18 +87,14 @@ output "emr_service_role_name" {
   value = aws_iam_role.iam_emr_service_role.name
 }
 
-output "ecr_arn" {
-  value = module.container_registry.arn
+output "iam_policy_s3_write_data-lake_arn" {
+  value = aws_iam_policy.s3_write_data-lake.arn
 }
 
-output "ecr_name" {
-  value = module.container_registry.name
+output "iam_policy_s3_write_pipelines_arn" {
+  value = aws_iam_policy.s3_write_pipelines.arn
 }
 
-output "ecr_registry_id" {
-  value = module.container_registry.registry_id
-}
-
-output "ecr_repository_url" {
-  value = module.container_registry.repository_url
+output "iam_policy_s3_write_tiles_arn" {
+  value = aws_iam_policy.s3_write_tiles.arn
 }

@@ -146,6 +146,12 @@ resource "aws_batch_compute_environment" "ephemeral-storage" {
     tags = var.tags
   }
 
+  lifecycle {
+    ignore_changes = [
+      compute_resources.0.desired_vcpus,
+    ]
+  }
+
   service_role = aws_iam_role.aws_batch_service_role.arn
   type         = "MANAGED"
   state        = "ENABLED"

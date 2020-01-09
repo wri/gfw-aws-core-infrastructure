@@ -75,10 +75,3 @@ module "batch_processing" {
   s3_tiles_write                 = aws_iam_policy.s3_write_tiles.arn
   s3_pipelines_write             = aws_iam_policy.s3_write_pipelines.arn
 }
-
-module "container_registry" {
-  source           = "./modules/container_registry"
-  project          = local.project
-  tags             = local.tags
-  lifecycle_policy = data.local_file.ecr_lifecycle_policy.content
-}

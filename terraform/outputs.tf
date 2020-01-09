@@ -71,14 +71,6 @@ output "ephemeral_storage_batch_environment_arn" {
   value = module.batch_processing.ephemeral_storage_batch_environment_arn
 }
 
-output "emr-master-security-group_id" {
-  value = aws_security_group.emr-master.id
-}
-
-output "emr-worker-security-group_id" {
-  value = aws_security_group.emr-worker.id
-}
-
 output "secrets_read-gfw-api-token_policy_arn" {
   value = aws_iam_policy.secrets_read_gfw-api-token.arn
 }
@@ -93,4 +85,20 @@ output "emr_instance_profile_name" {
 
 output "emr_service_role_name" {
   value = aws_iam_role.iam_emr_service_role.name
+}
+
+output "ecr_arn" {
+  value = module.container_registry.arn
+}
+
+output "ecr_name" {
+  value = module.container_registry.name
+}
+
+output "ecr_registry_id" {
+  value = module.container_registry.registry_id
+}
+
+output "ecr_repository_url" {
+  value = module.container_registry.repository_url
 }

@@ -27,8 +27,8 @@ resource "aws_iam_role" "ecs_instance_role" {
   assume_role_policy = data.local_file.ec2_assume.content
 }
 
-resource "aws_iam_instance_profile" "ecs_instance_profile" {
-  name = "${var.project}-ecs_instance_profile"
+resource "aws_iam_instance_profile" "ecs_instance_role" {
+  name = "${var.project}-ecs_instance_role"
   role = aws_iam_role.ecs_instance_role.name
 }
 

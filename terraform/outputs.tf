@@ -87,6 +87,6 @@ output "iam_policy_s3_write_pipelines_arn" {
   value = aws_iam_policy.s3_write_pipelines.arn
 }
 
-output "iam_policy_s3_write_tiles_arn" {
+output "iam_policy_s3_write_tiles
   value = aws_iam_policy.s3_write_tiles.arn
 }

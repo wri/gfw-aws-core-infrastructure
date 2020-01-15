@@ -27,8 +27,8 @@ resource "aws_iam_role" "ecs_instance_role" {
   assume_role_policy = data.local_file.ec2_assume.content
 }
 
-resource "aws_iam_instance_profile" "ecs_instance_profile" {
-  name = "${var.project}-ecs_instance_profile"
+resource "aws_iam_instance_profile" "ecs_instance_role" {
+  name = "${var.project}-ecs_instance_role"
   role = aws_iam_role.ecs_instance_role.name
 }
 
@@ -124,7 +124,7 @@ resource "aws_batch_compute_environment" "ephemeral-storage" {
     bid_percentage = 100
     ec2_key_pair   = var.key_pair
 
-    instance_role       = aws_iam_instance_profile.ecs_instance_profile.arn
+    instance_role       = aws_iam_instance_profile.ecs_instance_role.arn
     spot_iam_fleet_role = aws_iam_role.ec2_spot_fleet_role.arn
 
     instance_type = [

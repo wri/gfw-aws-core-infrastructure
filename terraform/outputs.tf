@@ -23,6 +23,10 @@ output "lambda_layer_shapely_pyyaml_arn" {
   value = module.lambda_layers.shapely_pyyaml_arn
 }
 
+output "lambda_layer_rasterio_arn" {
+  value = module.lambda_layers.rasterio_arn
+}
+
 output "account_id" {
   value = data.aws_caller_identity.current.account_id
 }

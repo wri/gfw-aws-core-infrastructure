@@ -52,6 +52,7 @@ module "tiles_policy" {
 
 module "vpc" {
   source             = "./modules/vpc"
+  environment        = var.environment
   region             = var.aws_region
   key_name           = aws_key_pair.tmaschler_gfw.key_name
   bastion_ami        = data.aws_ami.amazon_linux_ami.id
@@ -59,19 +60,4 @@ module "vpc" {
   tags               = local.tags
   security_group_ids = [aws_security_group.default.id]
   //  user_data = data.template_file.ssh_keys_ec2_user.rendered
-}
-
-module "batch_processing" {
-  source                         = "./modules/batch_processing"
-  project                        = local.project
-  key_pair                       = aws_key_pair.tmaschler_gfw.key_name
-  subnets                        = module.vpc.public_subnet_ids
-  launch_template_id             = aws_launch_template.ecs-optimized-ephemeral-storage-mounted.id
-  launch_template_latest_version = aws_launch_template.ecs-optimized-ephemeral-storage-mounted.latest_version
-  tags                           = local.tags
-  vpc_id                         = module.vpc.id
-  vpc_cidr_blocks                = [module.vpc.cidr_block]
-  s3_data-lake_write             = aws_iam_policy.s3_write_data-lake.arn
-  s3_tiles_write                 = aws_iam_policy.s3_write_tiles.arn
-  s3_pipelines_write             = aws_iam_policy.s3_write_pipelines.arn
 }

@@ -1,3 +1,10 @@
+# We don't need redundancies the same level of redundancies in staging and dev as in production.
+
+
+locals {
+  nb_nat = var.environment == "production" ? length(var.private_subnet_cidr_blocks) : 1
+}
+
 #
 # VPC resources
 #
@@ -36,7 +43,7 @@ resource "aws_route" "private" {
 
   route_table_id         = aws_route_table.private[count.index].id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.default[count.index].id
+  nat_gateway_id         = aws_nat_gateway.default[var.environment == "production" ? count.index : 0].id
 }
 
 resource "aws_route_table" "public" {
@@ -57,7 +64,7 @@ resource "aws_route" "public" {
 }
 
 resource "aws_subnet" "private" {
-  count = length(var.private_subnet_cidr_blocks)
+  count = length(var.public_subnet_cidr_blocks)
 
   vpc_id            = aws_vpc.default.id
   cidr_block        = var.private_subnet_cidr_blocks[count.index]
@@ -121,7 +128,7 @@ resource "aws_vpc_endpoint" "s3" {
 # NAT resources
 #
 resource "aws_eip" "nat" {
-  count = length(var.public_subnet_cidr_blocks)
+  count = local.nb_nat
 
   vpc = true
 
@@ -136,7 +143,7 @@ resource "aws_eip" "nat" {
 resource "aws_nat_gateway" "default" {
   depends_on = ["aws_internet_gateway.default"]
 
-  count = length(var.public_subnet_cidr_blocks)
+  count = local.nb_nat
 
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public[count.index].id

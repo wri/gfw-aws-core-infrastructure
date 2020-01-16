@@ -59,10 +59,6 @@ output "key_pair_tmaschler_gfw" {
   value = aws_key_pair.tmaschler_gfw.key_name
 }
 
-output "ephemeral_storage_batch_environment_arn" {
-  value = module.batch_processing.ephemeral_storage_batch_environment_arn
-}
-
 output "secrets_read-gfw-api-token_policy_arn" {
   value = aws_iam_policy.secrets_read_gfw-api-token.arn
 }

@@ -23,6 +23,10 @@ output "lambda_layer_shapely_pyyaml_arn" {
   value = module.lambda_layers.shapely_pyyaml_arn
 }
 
+output "lambda_layer_rasterio_arn" {
+  value = module.lambda_layers.rasterio_arn
+}
+
 output "account_id" {
   value = data.aws_caller_identity.current.account_id
 }
@@ -59,10 +63,6 @@ output "key_pair_tmaschler_gfw" {
   value = aws_key_pair.tmaschler_gfw.key_name
 }
 
-output "ephemeral_storage_batch_environment_arn" {
-  value = module.batch_processing.ephemeral_storage_batch_environment_arn
-}
-
 output "secrets_read-gfw-api-token_policy_arn" {
   value = aws_iam_policy.secrets_read_gfw-api-token.arn
 }
@@ -79,18 +79,14 @@ output "emr_service_role_name" {
   value = aws_iam_role.iam_emr_service_role.name
 }
 
-output "ecr_arn" {
-  value = module.container_registry.arn
+output "iam_policy_s3_write_data-lake_arn" {
+  value = aws_iam_policy.s3_write_data-lake.arn
 }
 
-output "ecr_name" {
-  value = module.container_registry.name
+output "iam_policy_s3_write_pipelines_arn" {
+  value = aws_iam_policy.s3_write_pipelines.arn
 }
 
-output "ecr_registry_id" {
-  value = module.container_registry.registry_id
-}
-
-output "ecr_repository_url" {
-  value = module.container_registry.repository_url
+output "iam_policy_s3_write_tiles_arn" {
+  value = aws_iam_policy.s3_write_tiles.arn
 }

@@ -5,7 +5,7 @@
       "Sid": "",
       "Effect": "Allow",
       "Principal": {
-        "Service": "elasticmapreduce.amazonaws.com"
+        "Service": "${service}.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
     }

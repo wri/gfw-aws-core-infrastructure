@@ -23,7 +23,7 @@ resource "aws_iam_policy" "secrets_read_gfw-api-token" {
 
 resource "aws_iam_role" "iam_emr_service_role" {
   name               = "${local.project}-iam_emr_service_role"
-  assume_role_policy = data.local_file.emr_assume.content
+  assume_role_policy = data.template_file.trust_emr.rendered
 }
 
 resource "aws_iam_role_policy" "iam_emr_service_policy" {
@@ -36,7 +36,7 @@ resource "aws_iam_role_policy" "iam_emr_service_policy" {
 resource "aws_iam_role" "iam_emr_profile_role" {
   name = "${local.project}-emr_profile"
 
-  assume_role_policy = data.local_file.ec2_assume.content
+  assume_role_policy = data.template_file.trust_ec2.rendered
 }
 
 resource "aws_iam_instance_profile" "emr_profile" {

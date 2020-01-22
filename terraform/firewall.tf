@@ -15,8 +15,8 @@ resource "aws_security_group" "default" {
 
 resource "aws_security_group_rule" "default_ssh_ingress" {
   type              = "ingress"
-  from_port         = 22
-  to_port           = 22
+  from_port         = "22"
+  to_port           = "22"
   protocol          = "tcp"
   cidr_blocks       = ["216.70.220.184/32"]
   security_group_id = aws_security_group.default.id
@@ -24,8 +24,8 @@ resource "aws_security_group_rule" "default_ssh_ingress" {
 
 resource "aws_security_group_rule" "default_ssh_egress" {
   type      = "egress"
-  from_port = 22
-  to_port   = 22
+  from_port = "22"
+  to_port   = "22"
   protocol  = "tcp"
   cidr_blocks = [
   module.vpc.cidr_block]

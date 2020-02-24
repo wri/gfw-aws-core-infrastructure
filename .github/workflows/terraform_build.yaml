@@ -23,6 +23,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_production }}
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_production }}
         GFW_API_TOKEN: ${{ secrets.gfw_api_token_production }}
+        SLACK_DATA_UPDATES_HOOK: ${{ secrets.slack_data_updates_hook }}
       run: |
         ./scripts/infra plan
         ./scripts/infra apply
@@ -34,6 +35,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_staging }}
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_staging }}
         GFW_API_TOKEN: ${{ secrets.gfw_api_token_staging }}
+        SLACK_DATA_UPDATES_HOOK: ${{ secrets.slack_data_updates_hook }}
       run: |
         ./scripts/infra plan
         ./scripts/infra apply
@@ -45,6 +47,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_dev }}
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_dev }}
         GFW_API_TOKEN: ${{ secrets.gfw_api_token_staging }}
+        SLACK_DATA_UPDATES_HOOK: ${{ secrets.slack_data_updates_hook }}
       run: |
         ./scripts/infra plan
         ./scripts/infra apply

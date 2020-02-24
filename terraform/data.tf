@@ -69,6 +69,13 @@ data "template_file" "secrets_read_gfw-api-token" {
   }
 }
 
+data "template_file" "secrets_read_slack-data-updates-hook" {
+  template = file("${path.root}/policies/secrets_read.json.tpl")
+  vars = {
+    secret_arn = aws_secretsmanager_secret.slack_gfw_sync.arn
+  }
+}
+
 data "template_file" "trust_emr" {
   template = file("${path.root}/policies/trust_service.json.tpl")
   vars = {

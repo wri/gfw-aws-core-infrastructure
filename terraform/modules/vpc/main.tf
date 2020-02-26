@@ -94,6 +94,22 @@ resource "aws_subnet" "public" {
   )
 }
 
+resource "aws_db_subnet_group" "default" {
+
+  name       = "main"
+  subnet_ids = [
+      for subnet in aws_subnet.private:
+      subnet.id
+    ]
+
+  tags =  merge(
+    {
+      Name = "${var.project}-DBSubnetGroup"
+    },
+    var.tags
+  )
+}
+
 resource "aws_route_table_association" "private" {
   count = length(var.private_subnet_cidr_blocks)
 
@@ -123,6 +139,7 @@ resource "aws_vpc_endpoint" "s3" {
     var.tags
   )
 }
+
 
 #
 # NAT resources

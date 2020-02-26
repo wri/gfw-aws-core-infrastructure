@@ -55,6 +55,7 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
       terraform plan \
         -var-file="vars/core-${ENV}.tfvars" \
         -var="gfw_api_token=${GFW_API_TOKEN}" \
+        -var="slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
         -out="core.tfplan"
       ;;
     apply)
@@ -65,6 +66,7 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
       terraform destroy \
         -var-file="vars/core-${ENV}.tfvars" \
         -var="gfw_api_token=${GFW_API_TOKEN}" \
+        -var="slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
         -auto-approve
       ;;
     *)

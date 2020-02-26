@@ -67,9 +67,18 @@ output "secrets_read-gfw-api-token_policy_arn" {
   value = aws_iam_policy.secrets_read_gfw-api-token.arn
 }
 
+output "secrets_read-slack-gfw-sync_policy_arn" {
+  value = aws_iam_policy.secrets_read_slack-gfw-sync.arn
+}
+
 output "secrets_read-gfw-api-token_arn" {
   value = aws_secretsmanager_secret.gfw_api_token.arn
 }
+
+output "secrets_read-slack_gfw_sync_arn" {
+  value = aws_secretsmanager_secret.slack_gfw_sync.arn
+}
+
 
 output "emr_instance_profile_name" {
   value = aws_iam_instance_profile.emr_profile.name

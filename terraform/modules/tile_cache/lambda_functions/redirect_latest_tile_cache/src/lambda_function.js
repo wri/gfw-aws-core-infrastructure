@@ -45,9 +45,8 @@ function fetchRedirections(env) {
 
 exports.handler = async event => {
     var request = event.Records[0].cf.request;
-    const customHeaders = request.origin.custom.customHeaders;
+    const customHeaders = request.origin.s3.customHeaders;
     const env = customHeaders["x-env"][0].value;
-    console.log("Environment: " + env);
     console.log("REQUEST URI:" + request.uri);
     var elements = request.uri.split('/');
     const dataset = elements[1];
@@ -77,7 +76,7 @@ exports.handler = async event => {
         return request;
 
     } catch (_error) {
-        console.log("ERROR: " + _error)
+        console.log("ERROR: " + _error);
         return request;
     }
 };

@@ -2,7 +2,8 @@
 
 
 locals {
-  nb_nat = var.environment == "production" ? length(var.private_subnet_cidr_blocks) : 1
+  # saving costs for now, might want to scale nb of NAT gateways up at in production at a later point
+  nb_nat = 1  # var.environment == "production" ? length(var.private_subnet_cidr_blocks) : 1
 }
 
 #

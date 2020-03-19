@@ -42,7 +42,6 @@ module "tile_cache" {
 
 module "tiles_policy" {
   source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=0.2.0"
-//  source = "git::https://github.com/techfishio/terraform-aws-iam-policy-document-aggregator.git?ref=rf/GH-11--upgrade-to-terraform-0_12"
   source_documents = [
     data.template_file.tiles_bucket_policy_public.rendered,
     data.template_file.tiles_bucket_policy_cloudfront.rendered,

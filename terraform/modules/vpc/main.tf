@@ -2,7 +2,8 @@
 
 
 locals {
-  nb_nat = var.environment == "production" ? length(var.private_subnet_cidr_blocks) : 1
+  # saving costs for now, might want to scale nb of NAT gateways up at in production at a later point
+  nb_nat = 1  # var.environment == "production" ? length(var.private_subnet_cidr_blocks) : 1
 }
 
 #
@@ -94,6 +95,22 @@ resource "aws_subnet" "public" {
   )
 }
 
+resource "aws_db_subnet_group" "default" {
+
+  name       = "main"
+  subnet_ids = [
+      for subnet in aws_subnet.private:
+      subnet.id
+    ]
+
+  tags =  merge(
+    {
+      Name = "${var.project}-DBSubnetGroup"
+    },
+    var.tags
+  )
+}
+
 resource "aws_route_table_association" "private" {
   count = length(var.private_subnet_cidr_blocks)
 
@@ -123,6 +140,7 @@ resource "aws_vpc_endpoint" "s3" {
     var.tags
   )
 }
+
 
 #
 # NAT resources

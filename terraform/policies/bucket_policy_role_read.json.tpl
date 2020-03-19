@@ -4,6 +4,9 @@
     {
       "Effect": "Allow",
       "Action": "s3:ListBucket",
+      "Principal": {
+        "AWS": "${aws_resource_arn}"
+      },
       "Resource": "${bucket_arn}"
     },
     {

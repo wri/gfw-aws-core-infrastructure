@@ -14,6 +14,6 @@ exports.handler = async (event, context) => {
         value: "max-age=21600"
     }];
 
-    console.log("Overwrite headers for " + response.uri)
+    console.log("Overwrite headers for " + response.uri);
     return response;
 };

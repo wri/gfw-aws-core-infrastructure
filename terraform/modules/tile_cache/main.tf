@@ -62,6 +62,23 @@ resource "aws_cloudfront_distribution" "tiles" {
       ]
     }
   }
+//   origin {
+//    domain_name = "ec2-54-237-221-136.compute-1.amazonaws.com" // not managed by terraform b/c other account
+//    origin_id   = "fire-tiles"
+//
+//    custom_origin_config {
+//      http_port                = 80
+//      https_port               = 443
+//      origin_keepalive_timeout = 5
+//      origin_protocol_policy   = "http-only"
+//      origin_read_timeout      = 30
+//      origin_ssl_protocols = [
+//        "TLSv1",
+//        "TLSv1.1",
+//        "TLSv1.2",
+//      ]
+//    }
+//  }
   //  origin {
   //    domain_name = "4khgyzteea.execute-api.us-east-1.amazonaws.com"
   //    origin_id   = "Custom-4khgyzteea.execute-api.us-east-1.amazonaws.com/default"
@@ -85,7 +102,10 @@ resource "aws_cloudfront_distribution" "tiles" {
     domain_name = var.bucket_domain_name // "gfw-tiles.s3.amazonaws.com"
     origin_id   = "S3-gfw-tiles"
     s3_origin_config { origin_access_identity = "${aws_cloudfront_origin_access_identity.tiles.cloudfront_access_identity_path}" }
-
+    custom_header {
+      name = "X-Env"
+      value = var.environment
+    }
   }
 
   default_cache_behavior {
@@ -141,6 +161,38 @@ resource "aws_cloudfront_distribution" "tiles" {
       }
     }
   }
+
+//   ordered_cache_behavior {
+//    allowed_methods = [
+//      "GET",
+//      "HEAD",
+//    ]
+//    cached_methods = [
+//      "GET",
+//      "HEAD",
+//    ]
+//    compress               = false
+//    default_ttl            = 86400
+//    max_ttl                = 86400
+//    min_ttl                = 0
+//    path_pattern           = "nasa_viirs_fire_alerts/*"
+//    smooth_streaming       = false
+//    target_origin_id       = "fire-tiles"
+//    trusted_signers        = []
+//    viewer_protocol_policy = "redirect-to-https"
+//
+//    forwarded_values {
+//      headers                 = []
+//      query_string            = false
+//      query_string_cache_keys = []
+//
+//      cookies {
+//        forward           = "none"
+//        whitelisted_names = []
+//      }
+//    }
+//  }
+
   //  ordered_cache_behavior {
   //    allowed_methods = [
   //      "GET",
@@ -267,8 +319,8 @@ resource "aws_lambda_function" "redirect_latest_tile_cache" {
   filename         = data.archive_file.redirect_latest_tile_cache.output_path
   source_code_hash = data.archive_file.redirect_latest_tile_cache.output_base64sha256
   role             = aws_iam_role.lambda_edge_cloudfront.arn
-  runtime          = "nodejs8.10"
-  handler          = "index.handler"
+  runtime          = "nodejs10.x"
+  handler          = "lambda_function.handler"
   memory_size      = 128
   timeout          = 3
   publish          = true
@@ -281,12 +333,13 @@ resource "aws_lambda_function" "reset_response_header_caching" {
   filename         = data.archive_file.reset_response_header_caching.output_path
   source_code_hash = data.archive_file.reset_response_header_caching.output_base64sha256
   role             = aws_iam_role.lambda_edge_cloudfront.arn
-  runtime          = "nodejs8.10"
-  handler          = "index.handler"
+  runtime          = "nodejs10.x"
+  handler          = "lambda_function.handler"
   memory_size      = 128
   timeout          = 1
   publish          = true
   tags             = var.tags
+
 }
 
 #

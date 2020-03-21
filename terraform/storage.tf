@@ -12,7 +12,7 @@ resource "aws_s3_bucket_policy" "tiles" {
 
 resource "aws_s3_bucket_policy" "data-lake" {
   bucket = aws_s3_bucket.data-lake.id
-  policy = data.template_file.data-lake_bucket_policy_public.rendered
+  policy = module.data-lakle_policy.result_document
 }
 
 resource "aws_s3_bucket" "pipelines" {
@@ -26,7 +26,7 @@ resource "aws_s3_bucket" "data-lake" {
   bucket = "gfw-data-lake${local.bucket_suffix}"
   acl    = "private"
   tags   = local.tags
-  request_payer = "Requester"
+//  request_payer = "Requester"
 
 }
 

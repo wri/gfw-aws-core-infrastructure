@@ -49,6 +49,17 @@ module "tiles_policy" {
   ]
 }
 
+module "data-lakle_policy" {
+  source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=0.2.0"
+  source_documents = [
+    data.template_file.data-lake_bucket_policy_public.rendered,
+    data.template_file.data-lake_bucket_policy_emr_production.rendered,
+    data.template_file.data-lake_bucket_policy_emr_staging.rendered,
+    data.template_file.data-lake_bucket_policy_emr_dev.rendered
+  ]
+}
+
+
 module "vpc" {
   source             = "./modules/vpc"
   environment        = var.environment

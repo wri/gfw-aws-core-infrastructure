@@ -25,7 +25,7 @@ resource "aws_s3_bucket" "pipelines" {
 resource "aws_s3_bucket" "data-lake" {
   bucket = "gfw-data-lake${local.bucket_suffix}"
   acl    = "private"
-  tags   = local.tags
+  tags   = merge(local.tags, {"Remove": "RequestPayer"})
 //  request_payer = "Requester"
 
 }

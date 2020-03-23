@@ -3,11 +3,13 @@ data "aws_caller_identity" "current" {}
 
 data "aws_ami" "amazon_linux_ami" {
   most_recent = true
-  owners      = ["amazon"]
+  owners = [
+    "amazon"]
 
   filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm*"]
+    name = "name"
+    values = [
+      "amzn2-ami-hvm*"]
   }
 }
 
@@ -28,7 +30,7 @@ data "template_file" "tiles_bucket_policy_public" {
 data "template_file" "tiles_bucket_policy_cloudfront" {
   template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
   vars = {
-    bucket_arn       = aws_s3_bucket.tiles.arn
+    bucket_arn = aws_s3_bucket.tiles.arn
     aws_resource_arn = module.tile_cache.cloudfront_origin_access_identity_iam_arn
   }
 }
@@ -36,7 +38,7 @@ data "template_file" "tiles_bucket_policy_cloudfront" {
 data "template_file" "tiles_bucket_policy_lambda" {
   template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
   vars = {
-    bucket_arn       = aws_s3_bucket.tiles.arn
+    bucket_arn = aws_s3_bucket.tiles.arn
     aws_resource_arn = module.tile_cache.lambda_edge_cloudfront_arn
   }
 }
@@ -45,6 +47,31 @@ data "template_file" "data-lake_bucket_policy_public" {
   template = file("${path.root}/policies/bucket_policy_public_read.json.tpl")
   vars = {
     bucket_arn = aws_s3_bucket.data-lake.arn
+  }
+}
+
+
+data "template_file" "data-lake_bucket_policy_emr_production" {
+  template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
+  vars = {
+    bucket_arn = aws_s3_bucket.data-lake.arn
+    aws_resource_arn = "arn:aws:iam::${var.production_account_number}:role/core-emr_profile"
+  }
+}
+
+data "template_file" "data-lake_bucket_policy_emr_staging" {
+  template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
+  vars = {
+    bucket_arn = aws_s3_bucket.data-lake.arn
+    aws_resource_arn = "arn:aws:iam::${var.staging_account_number}:role/core-emr_profile"
+  }
+}
+
+data "template_file" "data-lake_bucket_policy_emr_dev" {
+  template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
+  vars = {
+    bucket_arn = aws_s3_bucket.data-lake.arn
+    aws_resource_arn = "arn:aws:iam::${var.dev_account_number}:role/core-emr_profile"
   }
 }
 

@@ -62,23 +62,23 @@ resource "aws_cloudfront_distribution" "tiles" {
       ]
     }
   }
-//   origin {
-//    domain_name = "ec2-54-237-221-136.compute-1.amazonaws.com" // not managed by terraform b/c other account
-//    origin_id   = "fire-tiles"
-//
-//    custom_origin_config {
-//      http_port                = 80
-//      https_port               = 443
-//      origin_keepalive_timeout = 5
-//      origin_protocol_policy   = "http-only"
-//      origin_read_timeout      = 30
-//      origin_ssl_protocols = [
-//        "TLSv1",
-//        "TLSv1.1",
-//        "TLSv1.2",
-//      ]
-//    }
-//  }
+   origin {
+    domain_name = "ec2-54-237-221-136.compute-1.amazonaws.com" // not managed by terraform b/c other account
+    origin_id   = "fire-tiles"
+
+    custom_origin_config {
+      http_port                = 80
+      https_port               = 443
+      origin_keepalive_timeout = 5
+      origin_protocol_policy   = "http-only"
+      origin_read_timeout      = 30
+      origin_ssl_protocols = [
+        "TLSv1",
+        "TLSv1.1",
+        "TLSv1.2",
+      ]
+    }
+  }
   //  origin {
   //    domain_name = "4khgyzteea.execute-api.us-east-1.amazonaws.com"
   //    origin_id   = "Custom-4khgyzteea.execute-api.us-east-1.amazonaws.com/default"

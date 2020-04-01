@@ -162,36 +162,36 @@ resource "aws_cloudfront_distribution" "tiles" {
     }
   }
 
-//   ordered_cache_behavior {
-//    allowed_methods = [
-//      "GET",
-//      "HEAD",
-//    ]
-//    cached_methods = [
-//      "GET",
-//      "HEAD",
-//    ]
-//    compress               = false
-//    default_ttl            = 86400
-//    max_ttl                = 86400
-//    min_ttl                = 0
-//    path_pattern           = "nasa_viirs_fire_alerts/*"
-//    smooth_streaming       = false
-//    target_origin_id       = "fire-tiles"
-//    trusted_signers        = []
-//    viewer_protocol_policy = "redirect-to-https"
-//
-//    forwarded_values {
-//      headers                 = []
-//      query_string            = false
-//      query_string_cache_keys = []
-//
-//      cookies {
-//        forward           = "none"
-//        whitelisted_names = []
-//      }
-//    }
-//  }
+   ordered_cache_behavior {
+    allowed_methods = [
+      "GET",
+      "HEAD",
+    ]
+    cached_methods = [
+      "GET",
+      "HEAD",
+    ]
+    compress               = false
+    default_ttl            = 86400
+    max_ttl                = 86400
+    min_ttl                = 0
+    path_pattern           = "nasa_viirs_fire_alerts/*"
+    smooth_streaming       = false
+    target_origin_id       = "fire-tiles"
+    trusted_signers        = []
+    viewer_protocol_policy = "redirect-to-https"
+
+    forwarded_values {
+      headers                 = []
+      query_string            = false
+      query_string_cache_keys = []
+
+      cookies {
+        forward           = "none"
+        whitelisted_names = []
+      }
+    }
+  }
 
   //  ordered_cache_behavior {
   //    allowed_methods = [

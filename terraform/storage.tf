@@ -26,7 +26,7 @@ resource "aws_s3_bucket" "data-lake" {
   bucket = "gfw-data-lake${local.bucket_suffix}"
   acl    = "private"
   tags   = local.tags
-  //  request_payer = "Requester"
+  request_payer = "BucketOwner"
 
 }
 

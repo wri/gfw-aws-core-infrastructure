@@ -70,4 +70,40 @@ module "vpc" {
   tags               = local.tags
   security_group_ids = [aws_security_group.default.id]
   //  user_data = data.template_file.ssh_keys_ec2_user.rendered
+  cluster-name = var.cluster-name
+}
+
+
+
+################
+
+data "aws_eks_cluster" "cluster" {
+  name = module.k8s-cluster.cluster_id
+}
+
+data "aws_eks_cluster_auth" "cluster" {
+  name = module.k8s-cluster.cluster_id
+}
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
+  token                  = data.aws_eks_cluster_auth.cluster.token
+  load_config_file       = false
+  version                = "~> 1.9"
+}
+
+module "k8s-cluster" {
+  source          = "terraform-aws-modules/eks/aws"
+  cluster_name    = var.cluster-name
+  cluster_version = "1.15"
+  subnets         = module.vpc.public_subnet_ids
+  vpc_id          = module.vpc.id
+
+  worker_groups = [
+    {
+      instance_type = "m4.large"
+      asg_max_size  = 2
+    }
+  ]
 }

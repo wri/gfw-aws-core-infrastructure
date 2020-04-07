@@ -38,19 +38,23 @@ variable "slack_data_updates_hook" {
 }
 
 variable "production_account_number" {
-  default = "401951483516"
-  type = string
+  default     = "401951483516"
+  type        = string
   description = "Account number of production account"
 }
 
 variable "staging_account_number" {
-  default = "274931322839"
-  type = string
+  default     = "274931322839"
+  type        = string
   description = "Account number of production account"
 }
 
 variable "dev_account_number" {
-  default = "563860007740"
-  type = string
+  default     = "563860007740"
+  type        = string
   description = "Account number of production account"
+}
+
+variable "cluster-name" {
+  default = "gfw-k8s-cluster"
 }

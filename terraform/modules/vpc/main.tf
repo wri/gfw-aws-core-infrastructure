@@ -3,7 +3,7 @@
 
 locals {
   # saving costs for now, might want to scale nb of NAT gateways up at in production at a later point
-  nb_nat = 1  # var.environment == "production" ? length(var.private_subnet_cidr_blocks) : 1
+  nb_nat = 1 # var.environment == "production" ? length(var.private_subnet_cidr_blocks) : 1
 }
 
 #
@@ -16,7 +16,8 @@ resource "aws_vpc" "default" {
 
   tags = merge(
     {
-      Name = "${var.project}-vpc"
+      Name                                        = "${var.project}-vpc"
+      "kubernetes.io/cluster/${var.cluster-name}" = "shared"
     },
     var.tags
   )
@@ -73,7 +74,9 @@ resource "aws_subnet" "private" {
 
   tags = merge(
     {
-      Name = "${var.project}-PrivateSubnet-${var.availability_zones[count.index]}"
+      Name                                        = "${var.project}-PrivateSubnet-${var.availability_zones[count.index]}"
+      "kubernetes.io/cluster/${var.cluster-name}" = "shared"
+      "kubernetes.io/role/internal-elb"           = "1"
     },
     var.tags
   )
@@ -89,7 +92,9 @@ resource "aws_subnet" "public" {
 
   tags = merge(
     {
-      Name = "${var.project}-PublicSubnet-${var.availability_zones[count.index]}"
+      Name                                        = "${var.project}-PublicSubnet-${var.availability_zones[count.index]}"
+      "kubernetes.io/cluster/${var.cluster-name}" = "shared"
+      "kubernetes.io/role/elb"                    = "1"
     },
     var.tags
   )
@@ -97,13 +102,13 @@ resource "aws_subnet" "public" {
 
 resource "aws_db_subnet_group" "default" {
 
-  name       = "main"
+  name = "main"
   subnet_ids = [
-      for subnet in aws_subnet.private:
-      subnet.id
-    ]
+    for subnet in aws_subnet.private :
+    subnet.id
+  ]
 
-  tags =  merge(
+  tags = merge(
     {
       Name = "${var.project}-DBSubnetGroup"
     },

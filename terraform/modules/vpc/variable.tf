@@ -78,3 +78,7 @@ variable "security_group_ids" {
   type        = list(string)
   description = "A list of security groups to use for the bastion"
 }
+
+variable "cluster-name" {
+  type = string
+}

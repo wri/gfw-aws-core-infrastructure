@@ -62,7 +62,7 @@ resource "aws_cloudfront_distribution" "tiles" {
       ]
     }
   }
-   origin {
+  origin {
     domain_name = "ec2-54-237-221-136.compute-1.amazonaws.com" // not managed by terraform b/c other account
     origin_id   = "fire-tiles"
 
@@ -103,7 +103,7 @@ resource "aws_cloudfront_distribution" "tiles" {
     origin_id   = "S3-gfw-tiles"
     s3_origin_config { origin_access_identity = "${aws_cloudfront_origin_access_identity.tiles.cloudfront_access_identity_path}" }
     custom_header {
-      name = "X-Env"
+      name  = "X-Env"
       value = var.environment
     }
   }
@@ -162,7 +162,7 @@ resource "aws_cloudfront_distribution" "tiles" {
     }
   }
 
-   ordered_cache_behavior {
+  ordered_cache_behavior {
     allowed_methods = [
       "GET",
       "HEAD",

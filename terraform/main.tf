@@ -61,49 +61,81 @@ module "data-lakle_policy" {
 
 
 module "vpc" {
-  source             = "./modules/vpc"
-  environment        = var.environment
-  region             = var.aws_region
-  key_name           = aws_key_pair.tmaschler_gfw.key_name
-  bastion_ami        = data.aws_ami.amazon_linux_ami.id
-  project            = local.project
-  tags               = local.tags
-  security_group_ids = [aws_security_group.default.id]
+  source      = "./modules/vpc"
+  environment = var.environment
+  region      = var.aws_region
+  key_name    = aws_key_pair.tmaschler_gfw.key_name
+  bastion_ami = data.aws_ami.amazon_linux_ami.id
+  project     = local.project
+  tags        = local.tags
+  //  private_subnet_tags = {
+  //    "kubernetes.io/cluster/${lower(replace(local.project, " ", "-"))}-k8s-cluster-${var.environment}" : "shared"
+  //    "kubernetes.io/role/internal-elb" : 1
+  //  }
+  //  public_subnet_tags = {
+  //    "kubernetes.io/cluster/${lower(replace(local.project, " ", "-"))}-k8s-cluster-${var.environment}" : "shared"
+  //    "kubernetes.io/role/elb" : 1
+  //  }
+  security_group_ids = [
+  aws_security_group.default.id]
   //  user_data = data.template_file.ssh_keys_ec2_user.rendered
-  cluster-name = var.cluster-name
 }
 
+//
+//
+//# Create a k8s cluster using AWS EKS
+//module "eks" {
+//  source      = "./modules/eks"
+//  project     = local.project
+//  vpc_id      = module.vpc.id
+//  environment = var.environment
+//  subnet_ids = [
+//    module.vpc.private_subnets[0].id,
+//    module.vpc.private_subnets[1].id,
+//    module.vpc.private_subnets[2].id,
+//    module.vpc.private_subnets[3].id,
+//    module.vpc.private_subnets[5].id
+//  ]
+//}
+//
+//module "webapps-node-group" {
+//  source          = "./modules/node_group"
+//  cluster         = module.eks.cluster
+//  cluster_name    = module.eks.cluster_name
+//  node_group_name = "webapps-node-group"
+//  instance_types  = var.webapps_node_group_instance_types
+//  min_size        = var.webapps_node_group_min_size
+//  max_size        = var.webapps_node_group_max_size
+//  desired_size    = var.webapps_node_group_desired_size
+//  node_role_arn   = module.eks.node_role_arn
+//  subnet_ids = [
+//    module.vpc.private_subnets[0].id,
+//    module.vpc.private_subnets[1].id,
+//    module.vpc.private_subnets[2].id,
+//    module.vpc.private_subnets[3].id,
+//    module.vpc.private_subnets[5].id
+//  ]
+//  labels = {
+//    type : "webapps"
+//  }
+//}
 
 
-################
-
-data "aws_eks_cluster" "cluster" {
-  name = module.k8s-cluster.cluster_id
-}
-
-data "aws_eks_cluster_auth" "cluster" {
-  name = module.k8s-cluster.cluster_id
-}
-
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-  token                  = data.aws_eks_cluster_auth.cluster.token
-  load_config_file       = false
-  version                = "~> 1.9"
-}
-
-module "k8s-cluster" {
-  source          = "terraform-aws-modules/eks/aws"
-  cluster_name    = var.cluster-name
-  cluster_version = "1.15"
-  subnets         = module.vpc.public_subnet_ids
-  vpc_id          = module.vpc.id
-
-  worker_groups = [
-    {
-      instance_type = "m4.large"
-      asg_max_size  = 2
-    }
-  ]
+module "postgresql" {
+  source                      = "./modules/postgresql"
+  availability_zone_names     = [module.vpc.private_subnets[0].availability_zone, module.vpc.private_subnets[1].availability_zone, module.vpc.private_subnets[2].availability_zone]
+  log_retention_period        = 30
+  private_subnet_ids          = [module.vpc.private_subnets[0].id, module.vpc.private_subnets[1].id, module.vpc.private_subnets[2].id]
+  project                     = var.project
+  rds_backup_retention_period = var.rds_backup_retention_period
+  rds_db_name                 = "geostore"
+  rds_instance_class          = var.rds_instance_class
+  rds_instance_count          = 1
+  rds_password                = var.rds_password
+  rds_user_name               = "gfw"
+  tags                        = local.tags
+  vpc_id                      = module.vpc.id
+  rds_password_ro             = "gfw_read_only"
+  rds_port                    = 5432
+  rds_user_name_ro            = var.rds_password_ro
 }

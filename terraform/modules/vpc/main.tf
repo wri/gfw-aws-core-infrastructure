@@ -16,8 +16,7 @@ resource "aws_vpc" "default" {
 
   tags = merge(
     {
-      Name                                        = "${var.project}-vpc"
-      "kubernetes.io/cluster/${var.cluster-name}" = "shared"
+      Name = "${var.project}-vpc"
     },
     var.tags
   )
@@ -74,11 +73,10 @@ resource "aws_subnet" "private" {
 
   tags = merge(
     {
-      Name                                        = "${var.project}-PrivateSubnet-${var.availability_zones[count.index]}"
-      "kubernetes.io/cluster/${var.cluster-name}" = "shared"
-      "kubernetes.io/role/internal-elb"           = "1"
+      Name = "${var.project}-PrivateSubnet-${var.availability_zones[count.index]}"
     },
-    var.tags
+    var.tags,
+    //    var.private_subnet_tags
   )
 }
 
@@ -92,27 +90,10 @@ resource "aws_subnet" "public" {
 
   tags = merge(
     {
-      Name                                        = "${var.project}-PublicSubnet-${var.availability_zones[count.index]}"
-      "kubernetes.io/cluster/${var.cluster-name}" = "shared"
-      "kubernetes.io/role/elb"                    = "1"
+      Name = "${var.project}-PublicSubnet-${var.availability_zones[count.index]}"
     },
-    var.tags
-  )
-}
-
-resource "aws_db_subnet_group" "default" {
-
-  name = "main"
-  subnet_ids = [
-    for subnet in aws_subnet.private :
-    subnet.id
-  ]
-
-  tags = merge(
-    {
-      Name = "${var.project}-DBSubnetGroup"
-    },
-    var.tags
+    var.tags,
+    //    var.public_subnet_tags
   )
 }
 
@@ -182,7 +163,49 @@ resource "aws_nat_gateway" "default" {
 #
 # Bastion resources
 #
+resource "aws_iam_role" "eks_manager" {
+  name = "eks_manager"
 
+  assume_role_policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "sts:AssumeRole",
+            "Principal": {
+               "Service": "ec2.amazonaws.com"
+            },
+            "Effect": "Allow",
+            "Sid": ""
+        }
+    ]
+}
+EOF
+}
+
+# IAM Role for bastion host, that allows it to connect to k8s
+resource "aws_iam_policy" "eks-admin-EKSManagerPolicy" {
+  name   = "EKSManagerPolicy"
+  path   = "/"
+  policy = data.aws_iam_policy_document.eks-admin-EKSManagerPolicy-document.json
+}
+
+resource "aws_iam_role_policy" "eks-admin-EKSManagerPolicy" {
+  name = "test_policy"
+  role = aws_iam_role.eks_manager.id
+
+  policy = data.aws_iam_policy_document.eks-admin-EKSManagerPolicy-document.json
+}
+
+
+resource "aws_iam_instance_profile" "bastion_profile" {
+  name = "bastion_profile"
+  role = aws_iam_role.eks_manager.name
+
+  depends_on = [
+    aws_iam_role.eks_manager
+  ]
+}
 
 resource "aws_instance" "bastion" {
   ami                         = var.bastion_ami
@@ -194,7 +217,12 @@ resource "aws_instance" "bastion" {
   subnet_id                   = aws_subnet.public[0].id
   vpc_security_group_ids      = var.security_group_ids
   associate_public_ip_address = true
+  iam_instance_profile        = aws_iam_instance_profile.bastion_profile.name
   //  user_data                   = var.user_data
+
+  lifecycle {
+    ignore_changes = [ami, user_data]
+  }
 
   tags = merge(
     {

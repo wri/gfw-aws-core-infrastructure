@@ -12,9 +12,6 @@ jobs:
     - name: Install dependencies
       run: |
         ./scripts/setup
-    - name: Build Lambda layers
-      if: success()
-      run: ./scripts/cibuild
     - name: Deploy production
       if: success() && contains(github.ref, 'master')
       env:

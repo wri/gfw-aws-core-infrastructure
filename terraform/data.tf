@@ -31,15 +31,16 @@ data "template_file" "tiles_bucket_policy_cloudfront" {
   template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
   vars = {
     bucket_arn       = aws_s3_bucket.tiles.arn
-    aws_resource_arn = module.tile_cache.cloudfront_origin_access_identity_iam_arn
+    aws_resource_arn = aws_cloudfront_origin_access_identity.tiles.iam_arn
   }
 }
+
 
 data "template_file" "tiles_bucket_policy_lambda" {
   template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
   vars = {
     bucket_arn       = aws_s3_bucket.tiles.arn
-    aws_resource_arn = module.tile_cache.lambda_edge_cloudfront_arn
+    aws_resource_arn = aws_iam_role.lambda_edge_cloudfront.arn
   }
 }
 

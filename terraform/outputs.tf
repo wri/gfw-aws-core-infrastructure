@@ -15,16 +15,17 @@ output "tiles_bucket" {
   value = aws_s3_bucket.tiles.id
 }
 
+output "tiles_bucket_domain_name" {
+  value = aws_s3_bucket.tiles.bucket_domain_name
+
+}
+
+output "tiles_bucket_website_endpoint" {
+  value = aws_s3_bucket.tiles.website_endpoint
+}
+
 output "tags" {
   value = local.tags
-}
-
-output "lambda_layer_shapely_pyyaml_arn" {
-  value = module.lambda_layers.shapely_pyyaml_arn
-}
-
-output "lambda_layer_rasterio_arn" {
-  value = module.lambda_layers.rasterio_arn
 }
 
 output "account_id" {
@@ -119,4 +120,17 @@ output "secrets_postgresql-writer_arn" {
 
 output "secrets_postgresql-writer_policy_arn" {
   value = module.postgresql.secrets_postgresql-writer_policy_arn
+}
+
+output "lambda_edge_cloudfront_arn" {
+  value       = aws_iam_role.lambda_edge_cloudfront.arn
+  description = "Environment of current state."
+}
+
+output "cloudfront_access_identity_path" {
+  value       = aws_cloudfront_origin_access_identity.tiles.cloudfront_access_identity_path
+  description = "IAM ARN of Cloud Front Origin Access Identity"
+}
+output "acm_certificate" {
+ value = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null
 }

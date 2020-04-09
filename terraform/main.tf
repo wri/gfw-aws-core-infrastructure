@@ -1,6 +1,6 @@
 # Require TF version to be same as or greater than 0.12.13
 terraform {
-  required_version = ">=0.12.13"
+  required_version = ">=0.12.24"
   backend "s3" {
     region         = "us-east-1"
     key            = "core.tfstate"
@@ -12,7 +12,7 @@ terraform {
 # Download any stable version in AWS provider of 2.36.0 or higher in 2.36 train
 provider "aws" {
   region  = "us-east-1"
-  version = "~> 2.54.0"
+  version = "~> 2.56.0"
 }
 
 # Call the seed_module to build our ADO seed info
@@ -23,22 +23,17 @@ module "bootstrap" {
   tags                 = local.tags
 }
 
-module "lambda_layers" {
-  source    = "./modules/lambda_layers"
-  s3_bucket = local.tf_state_bucket
-  project   = local.project
-}
 
-module "tile_cache" {
-  source             = "./modules/tile_cache"
-  project            = local.project
-  tags               = local.tags
-  environment        = var.environment
-  certificate_arn    = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null
-  bucket_domain_name = aws_s3_bucket.tiles.bucket_domain_name
-  website_endpoint   = aws_s3_bucket.tiles.website_endpoint
-
-}
+//module "tile_cache" {
+//  source             = "./modules/tile_cache"
+//  project            = local.project
+//  tags               = local.tags
+//  environment        = var.environment
+//  certificate_arn    = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null
+//  bucket_domain_name = aws_s3_bucket.tiles.bucket_domain_name
+//  website_endpoint   = aws_s3_bucket.tiles.website_endpoint
+//
+//}
 
 module "tiles_policy" {
   source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=0.2.0"

@@ -99,3 +99,24 @@ output "iam_policy_s3_write_pipelines_arn" {
 output "iam_policy_s3_write_tiles_arn" {
   value = aws_iam_policy.s3_write_tiles.arn
 }
+
+output "postgresql_security_group_id" {
+  value       = module.postgresql.security_group_id
+  description = "Security group ID to access postgresql database"
+}
+
+output "secrets_postgresql-reader_arn" {
+  value = module.postgresql.secrets_postgresql-reader_arn
+}
+
+output "secrets_postgresql-reader_policy_arn" {
+  value = module.postgresql.secrets_postgresql-reader_policy_arn
+}
+
+output "secrets_postgresql-writer_arn" {
+  value = module.postgresql.secrets_postgresql-writer_arn
+}
+
+output "secrets_postgresql-writer_policy_arn" {
+  value = module.postgresql.secrets_postgresql-writer_policy_arn
+}

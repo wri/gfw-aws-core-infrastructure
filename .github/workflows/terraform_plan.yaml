@@ -18,6 +18,8 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_production }}
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_production }}
         GFW_API_TOKEN: ${{ secrets.gfw_api_token_production }}
+        RDS_PASSWORD: ${{ secrets.rds_password_production }}
+        RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_production }}
       run: ./scripts/infra plan
     - name: Plan staging
       if: success() && contains(github.base_ref, 'develop')
@@ -27,6 +29,8 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_staging }}
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_staging }}
         GFW_API_TOKEN: ${{ secrets.gfw_api_token_staging }}
+        RDS_PASSWORD: ${{ secrets.rds_password_staging }}
+        RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_staging }}
       run: ./scripts/infra plan
 #    - name: Plan dev
 #      if: success() && (! contains(github.base_ref, 'master')) && (! contains(github.base_ref, 'develop'))

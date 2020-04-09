@@ -5,9 +5,9 @@
 
 resource "aws_rds_cluster" "aurora_cluster" {
 
-  cluster_identifier           = "${var.project}-aurora-cluster"
+  cluster_identifier           = "gfw-aurora" # "${var.project}-aurora-cluster"
   engine                       = "aurora-postgresql"
-  engine-version               = "11.6.postgresql_aurora.3.1.1"
+  engine_version               = "11.6"
   database_name                = var.rds_db_name
   master_username              = var.rds_user_name
   master_password              = var.rds_password
@@ -16,13 +16,13 @@ resource "aws_rds_cluster" "aurora_cluster" {
   preferred_maintenance_window = "sat:16:00-sat:17:00"
   db_subnet_group_name         = aws_db_subnet_group.default.name
   final_snapshot_identifier    = "${var.project}-aurora-cluster"
-  vpc_security_group_ids = [
-  aws_security_group.postgresql.id]
-  availability_zones              = var.availability_zone_names
+  vpc_security_group_ids       = [aws_security_group.postgresql.id]
+  availability_zones           = var.availability_zone_names
   copy_tags_to_snapshot           = true
   apply_immediately               = true
   port                            = var.rds_port
-  enabled_cloudwatch_logs_exports = "postgresql"
+  storage_encrypted                   = true
+  enabled_cloudwatch_logs_exports = ["postgresql"]
   tags = merge(
     {
       Name = "${var.project}-Aurora-DB-Cluster"
@@ -40,14 +40,17 @@ resource "aws_rds_cluster" "aurora_cluster" {
 resource "aws_rds_cluster_instance" "aurora_cluster_instance" {
 
   count              = var.rds_instance_count
-  identifier         = "${var.project}-aurora_instance-${count.index}"
+  identifier         = "gfw-aurora" #"${var.project}-aurora-instance-${count.index}"
   cluster_identifier = aws_rds_cluster.aurora_cluster.id
   instance_class     = var.rds_instance_class
+  engine                          = "aurora-postgresql"
   //"db.t3.medium", "db.r5.xlarge"
   db_subnet_group_name  = aws_db_subnet_group.default.name
   publicly_accessible   = false
   apply_immediately     = true
   copy_tags_to_snapshot = true
+  monitoring_interval             = 60
+  promotion_tier                  = 1
 
   tags = merge(
     {
@@ -151,37 +154,40 @@ resource "aws_security_group_rule" "postgresql_egress" {
 }
 
 
-#### Add read-only user
-###
-provider "postgresql" {
-  host            = aws_rds_cluster.aurora_cluster.endpoint
-  port            = var.rds_port
-  database        = var.rds_db_name
-  username        = var.rds_user_name
-  password        = var.rds_password
-  sslmode         = "require"
-  connect_timeout = 15
-}
-
-resource "postgresql_role" "gfw_reader" {
-  name     = var.rds_user_name_ro
-  login    = true
-  password = var.rds_password_ro
-}
-
-resource "postgresql_default_privileges" "read_only_tables" {
-  role     = postgresql_role.gfw_reader.name
-  database = var.rds_db_name
-  schema   = "public"
-  owner       = var.rds_user_name
-  object_type = "table"
-  privileges  = ["SELECT"]
-}
-
+//#### Add read-only user
+//###
+//provider "postgresql" {
+//  host            = aws_rds_cluster.aurora_cluster.endpoint
+//  port            = var.rds_port
+//  database        = var.rds_db_name
+//  username        = var.rds_user_name
+//  password        = var.rds_password
+//  sslmode         = "require"
+//  connect_timeout = 15
+//
+//}
+//
+//resource "postgresql_role" "gfw_reader" {
+//  name     = var.rds_user_name_ro
+//  login    = true
+//  password = var.rds_password_ro
+//
+//  depends_on = ["aws_rds_cluster.aurora_cluster"]
+//}
+//
+//resource "postgresql_default_privileges" "read_only_tables" {
+//  role     = postgresql_role.gfw_reader.name
+//  database = var.rds_db_name
+//  schema   = "public"
+//  owner       = var.rds_user_name
+//  object_type = "table"
+//  privileges  = ["SELECT"]
+//}
+//
 #### Secret Manager
 resource "aws_secretsmanager_secret" "postgresql-reader" {
   description = "Connection string for Aurora PostgreSQL cluster"
-  name        = "${var.project}-PostgreSQL-secret"
+  name        = "${var.project}-postgresql-reader-secret"
   tags        = var.tags
 }
 
@@ -198,13 +204,23 @@ resource "aws_secretsmanager_secret_version" "postgresql-reader" {
     "dbInstanceIdentifier" = aws_rds_cluster.aurora_cluster.cluster_identifier
   })
 
-
 }
 
+data "template_file" "secrets_postgresql-reader" {
+  template = file("${path.root}/policies/iam_policy_secrets_read.json.tpl")
+  vars = {
+    secret_arn = aws_secretsmanager_secret.postgresql-reader.arn
+  }
+}
+
+resource "aws_iam_policy" "secrets_postgresql-reader" {
+  name   = "${var.project}-secrets_postgresql-reader"
+  policy = data.template_file.secrets_postgresql-reader.rendered
+}
 
 resource "aws_secretsmanager_secret" "postgresql-writer" {
   description = "Connection string for Aurora PostgreSQL cluster"
-  name        = "${var.project}-PostgreSQL-secret"
+  name        = "${var.project}-postgresql-writera-secret"
   tags        = var.tags
 }
 
@@ -220,4 +236,16 @@ resource "aws_secretsmanager_secret_version" "postgresql-writer" {
     "port"                 = var.rds_port,
     "dbInstanceIdentifier" = aws_rds_cluster.aurora_cluster.cluster_identifier
   })
+}
+
+data "template_file" "secrets_postgresql-writer" {
+  template = file("${path.root}/policies/iam_policy_secrets_read.json.tpl")
+  vars = {
+    secret_arn = aws_secretsmanager_secret.postgresql-writer.arn
+  }
+}
+
+resource "aws_iam_policy" "secrets_postgresql-writer" {
+  name   = "${var.project}-secrets_postgresql-writer"
+  policy = data.template_file.secrets_postgresql-writer.rendered
 }

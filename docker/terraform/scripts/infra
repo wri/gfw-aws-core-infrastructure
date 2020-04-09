@@ -56,6 +56,8 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
         -var-file="vars/core-${ENV}.tfvars" \
         -var="gfw_api_token=${GFW_API_TOKEN}" \
         -var="slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
+        -var="rds_password"=${RDS_PASSWORD} \
+        -var="rds_password_ro"=${RDS_PASSWORD_RO} \
         -out="core.tfplan"
       ;;
     apply)
@@ -67,6 +69,8 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
         -var-file="vars/core-${ENV}.tfvars" \
         -var="gfw_api_token=${GFW_API_TOKEN}" \
         -var="slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
+        -var="rds_password"=${RDS_PASSWORD} \
+        -var="rds_password_ro"=${RDS_PASSWORD_RO} \
         -auto-approve
       ;;
     *)

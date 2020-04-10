@@ -11,8 +11,16 @@ output "secrets_postgresql-reader_policy_arn" {
   value = aws_iam_policy.secrets_postgresql-reader.arn
 }
 
+output "secrets_postgresql-reader_policy_name" {
+  value = aws_iam_policy.secrets_postgresql-reader.name
+}
+
 output "secrets_postgresql-writer_arn" {
   value = aws_secretsmanager_secret.postgresql-writer.arn
+}
+
+output "secrets_postgresql-writer_name" {
+  value = aws_secretsmanager_secret.postgresql-writer.name
 }
 
 output "secrets_postgresql-writer_policy_arn" {

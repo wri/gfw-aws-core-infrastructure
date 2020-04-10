@@ -20,11 +20,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_production }}
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_production }}
       run: |
-        ./scripts/infra plan \
-        -var "gfw_api_token=${{ secrets.gfw_api_token_production }} \
-        -var "slack_data_updates_hook=${{ secrets.slack_data_updates_hook }} \
-        -var "rds_password=${{ secrets.rds_password_production }} \
-        -var "rds_password_ro=${{ secrets.rds_password_ro_production }}
+        ./scripts/infra plan -var "gfw_api_token=${{ secrets.gfw_api_token_production }}" -var "slack_data_updates_hook=${{ secrets.slack_data_updates_hook }}" -var "rds_password=${{ secrets.rds_password_production }}" -var "rds_password_ro=${{ secrets.rds_password_ro_production }}"
         ./scripts/infra apply
     - name: Deploy staging
       if: success() && contains(github.ref, 'develop')
@@ -34,7 +30,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_staging }}
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_staging }}
       run: |
-        ./scripts/infra plan -var "gfw_api_token=${{ secrets.gfw_api_token_staging }} -var "slack_data_updates_hook=${{ secrets.slack_data_updates_hook }} -var "rds_password=${{ secrets.rds_password_staging }} -var "rds_password_ro=${{ secrets.rds_password_ro_staging }}
+        ./scripts/infra plan -var "gfw_api_token=${{ secrets.gfw_api_token_staging }}" -var "slack_data_updates_hook=${{ secrets.slack_data_updates_hook }}" -var "rds_password=${{ secrets.rds_password_staging }}" -var "rds_password_ro=${{ secrets.rds_password_ro_staging }}"
         ./scripts/infra apply
     - name: Deploy dev
       if: success() && (! contains(github.ref, 'develop')) && (! contains(github.ref, 'master'))
@@ -44,5 +40,5 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_dev }}
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_dev }}
       run: |
-        ./scripts/infra plan -var="gfw_api_token=${{ secrets.gfw_api_token_staging }} -var="slack_data_updates_hook= ${{ secrets.slack_data_updates_hook }} -var="rds_password=${{ secrets.rds_password_dev }} -var="rds_password_ro=${{ secrets.rds_password_ro_dev }}
+        ./scripts/infra plan -var "gfw_api_token=${{ secrets.gfw_api_token_staging }}" -var "slack_data_updates_hook=${{ secrets.slack_data_updates_hook }}" -var "rds_password=${{ secrets.rds_password_dev }}" -var "rds_password_ro=${{ secrets.rds_password_ro_dev }}"
         ./scripts/infra apply

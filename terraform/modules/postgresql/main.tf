@@ -126,7 +126,7 @@ resource "aws_appautoscaling_policy" "replicas" {
 resource "aws_security_group" "postgresql" {
   vpc_id = var.vpc_id
   name = "${var.project}-sgPostgreSQL"
-
+  revoke_rules_on_delete = true
   tags = merge(
     {
       Name = "${var.project}-sgPostgreSQL"

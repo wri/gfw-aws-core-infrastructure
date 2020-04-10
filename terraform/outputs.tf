@@ -131,6 +131,7 @@ output "cloudfront_access_identity_path" {
   value       = aws_cloudfront_origin_access_identity.tiles.cloudfront_access_identity_path
   description = "IAM ARN of Cloud Front Origin Access Identity"
 }
+
 output "acm_certificate" {
  value = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null
 }

@@ -221,7 +221,7 @@ resource "aws_iam_policy" "secrets_postgresql-reader" {
 
 resource "aws_secretsmanager_secret" "postgresql-writer" {
   description = "Connection string for Aurora PostgreSQL cluster"
-  name        = "${var.project}-postgresql-writera-secret"
+  name        = "${var.project}-postgresql-writer-secret"
   tags        = var.tags
 }
 

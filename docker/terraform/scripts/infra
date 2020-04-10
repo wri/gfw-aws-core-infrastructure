@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 function usage {
   echo -n \
     "Usage: $(basename "$0") COMMAND OPTION[S]
@@ -10,7 +9,7 @@ Execute Terraform subcommands.
 
 set -e
 
-if [[ -n "${GFW_AWS_CORE_INFRASTRUCTURE_DEBUG}" ]]; then
+if [[ -n "${GFW_TERRAFORM_DEBUG}" ]]; then
   set -x
 fi
 
@@ -47,31 +46,38 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
       terraform fmt -recursive .
       ;;
     plan)
+      echo "Starting terraform plan..."
+      shift
       # Clear stale modules, then re-initialize
       rm -rf .terraform
       # select or create the current workspace
+      echo "Terraform plan - Running pre-plan init"
       terraform init \
-        -backend-config=vars/backend-${ENV}.tfvars
+        -backend-config=vars/backend-${ENV}.tfvars \
+        "$@"
+      echo "Terraform plan - Running plan"
       terraform plan \
-        -var-file="vars/core-${ENV}.tfvars" \
-        -var="gfw_api_token=${GFW_API_TOKEN}" \
-        -var="slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
-        -var="rds_password=${RDS_PASSWORD}" \
-        -var="rds_password_ro=${RDS_PASSWORD_RO}" \
-        -out="core.tfplan"
+        -var-file="vars/terraform-${ENV}.tfvars" \
+        -out="terraform.tfplan" \
+        "$@"
+      echo "Terraform plan finished."
       ;;
     apply)
+      shift
+      echo "Starting terraform apply..."
       terraform apply \
-        "core.tfplan"
+        "terraform.tfplan" \
+        "$@"
+      echo "Terraform apply finished."
       ;;
     destroy)
+      shift
+      echo "Starting terraform destroy..."
       terraform destroy \
-        -var-file="vars/core-${ENV}.tfvars" \
-        -var="gfw_api_token=${GFW_API_TOKEN}" \
-        -var="slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
-        -var="rds_password=${RDS_PASSWORD}" \
-        -var="rds_password_ro=${RDS_PASSWORD_RO}" \
-        -auto-approve
+        -var-file="vars/terraform-${ENV}.tfvars" \
+        -auto-approve \
+        "$@"
+      echo "Terraform destroy finished."
       ;;
     *)
       echo "ERROR: I don't have support for that Terraform subcommand!"

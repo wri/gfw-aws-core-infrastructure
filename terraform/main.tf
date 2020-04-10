@@ -24,17 +24,6 @@ module "bootstrap" {
 }
 
 
-//module "tile_cache" {
-//  source             = "./modules/tile_cache"
-//  project            = local.project
-//  tags               = local.tags
-//  environment        = var.environment
-//  certificate_arn    = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null
-//  bucket_domain_name = aws_s3_bucket.tiles.bucket_domain_name
-//  website_endpoint   = aws_s3_bucket.tiles.website_endpoint
-//
-//}
-
 module "tiles_policy" {
   source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=0.2.0"
   source_documents = [
@@ -130,7 +119,7 @@ module "postgresql" {
   rds_user_name               = "gfw"
   tags                        = local.tags
   vpc_id                      = module.vpc.id
-  rds_password_ro             = "gfw_read_only"
+  rds_password_ro             = var.rds_password_ro
   rds_port                    = 5432
-  rds_user_name_ro            = var.rds_password_ro
+  rds_user_name_ro            = "gfw_read_only"
 }

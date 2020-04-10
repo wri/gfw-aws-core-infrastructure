@@ -12,7 +12,5 @@ services:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
-      - GFW_API_TOKEN
-      - SLACK_DATA_UPDATES_HOOK
     working_dir: /usr/local/src
     entrypoint: infra

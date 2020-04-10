@@ -15,12 +15,7 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_key_production }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_production }}
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_production }}
-      run: |
-        ./scripts/infra plan \
-        -var "gfw_api_token=${{ secrets.gfw_api_token_production }} \
-        -var "slack_data_updates_hook=${{ secrets.slack_data_updates_hook }} \
-        -var "rds_password=${{ secrets.rds_password_production }} \
-        -var "rds_password_ro=${{ secrets.rds_password_ro_production }}
+      run: ./scripts/infra plan -var "gfw_api_token=${{ secrets.gfw_api_token_production }} -var "slack_data_updates_hook=${{ secrets.slack_data_updates_hook }} -var "rds_password=${{ secrets.rds_password_production }} -var "rds_password_ro=${{ secrets.rds_password_ro_production }}
     - name: Plan staging
       if: success() && contains(github.base_ref, 'develop')
       env:
@@ -28,12 +23,7 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_key_staging }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_staging }}
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_staging }}
-      run: |
-        ./scripts/infra plan \
-        -var "gfw_api_token=${{ secrets.gfw_api_token_staging }} \
-        -var "slack_data_updates_hook=${{ secrets.slack_data_updates_hook }} \
-        -var "rds_password=${{ secrets.rds_password_staging }} \
-        -var "rds_password_ro=${{ secrets.rds_password_ro_staging }}
+      run: ./scripts/infra plan -var "gfw_api_token=${{ secrets.gfw_api_token_staging }} -var "slack_data_updates_hook=${{ secrets.slack_data_updates_hook }} -var "rds_password=${{ secrets.rds_password_staging }} -var "rds_password_ro=${{ secrets.rds_password_ro_staging }}
 #    - name: Plan dev
 #      if: success() && (! contains(github.base_ref, 'master')) && (! contains(github.base_ref, 'develop'))
 #      env:

@@ -25,10 +25,10 @@ jobs:
         RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_production }}
       run: |
         ./scripts/infra plan \
-        -var="gfw_api_token=${GFW_API_TOKEN}" \
-        -var="slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
-        -var="rds_password=${RDS_PASSWORD}" \
-        -var="rds_password_ro=${RDS_PASSWORD_RO}"
+        -var "gfw_api_token=${GFW_API_TOKEN}" \
+        -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
+        -var "rds_password=${RDS_PASSWORD}" \
+        -var "rds_password_ro=${RDS_PASSWORD_RO}"
         ./scripts/infra apply
     - name: Deploy staging
       if: success() && contains(github.ref, 'develop')
@@ -43,10 +43,10 @@ jobs:
         RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_staging }}
       run: |
         ./scripts/infra plan \
-        -var="gfw_api_token=${GFW_API_TOKEN}" \
-        -var="slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
-        -var="rds_password=${RDS_PASSWORD}" \
-        -var="rds_password_ro=${RDS_PASSWORD_RO}"
+        -var "gfw_api_token=${GFW_API_TOKEN}" \
+        -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
+        -var "rds_password=${RDS_PASSWORD}" \
+        -var "rds_password_ro=${RDS_PASSWORD_RO}"
         ./scripts/infra apply
     - name: Deploy dev
       if: success() && (! contains(github.ref, 'develop')) && (! contains(github.ref, 'master'))

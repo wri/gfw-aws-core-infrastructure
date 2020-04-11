@@ -24,16 +24,16 @@ module "bootstrap" {
 }
 
 
-module "tiles_policy" {
-  source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=0.2.0"
-  source_documents = [
-    data.template_file.tiles_bucket_policy_public.rendered,
-    data.template_file.tiles_bucket_policy_cloudfront.rendered,
-    data.template_file.tiles_bucket_policy_lambda.rendered
-  ]
-}
+//module "tiles_policy" {
+//  source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=0.2.0"
+//  source_documents = [
+//    data.template_file.tiles_bucket_policy_public.rendered,
+//    data.template_file.tiles_bucket_policy_cloudfront.rendered,
+//    data.template_file.tiles_bucket_policy_lambda.rendered
+//  ]
+//}
 
-module "data-lakle_policy" {
+module "data-lake_policy" {
   source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=0.2.0"
   source_documents = [
     data.template_file.data-lake_bucket_policy_public.rendered,

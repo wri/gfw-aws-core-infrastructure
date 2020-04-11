@@ -11,18 +11,18 @@ output "data-lake_bucket" {
   value = aws_s3_bucket.data-lake.id
 }
 
-output "tiles_bucket" {
-  value = aws_s3_bucket.tiles.id
-}
-
-output "tiles_bucket_domain_name" {
-  value = aws_s3_bucket.tiles.bucket_domain_name
-
-}
-
-output "tiles_bucket_website_endpoint" {
-  value = aws_s3_bucket.tiles.website_endpoint
-}
+//output "tiles_bucket" {
+//  value = aws_s3_bucket.tiles.id
+//}
+//
+//output "tiles_bucket_domain_name" {
+//  value = aws_s3_bucket.tiles.bucket_domain_name
+//
+//}
+//
+//output "tiles_bucket_website_endpoint" {
+//  value = aws_s3_bucket.tiles.website_endpoint
+//}
 
 output "tags" {
   value = local.tags
@@ -97,9 +97,9 @@ output "iam_policy_s3_write_pipelines_arn" {
   value = aws_iam_policy.s3_write_pipelines.arn
 }
 
-output "iam_policy_s3_write_tiles_arn" {
-  value = aws_iam_policy.s3_write_tiles.arn
-}
+//output "iam_policy_s3_write_tiles_arn" {
+//  value = aws_iam_policy.s3_write_tiles.arn
+//}
 
 output "postgresql_security_group_id" {
   value       = module.postgresql.security_group_id
@@ -130,15 +130,15 @@ output "secrets_postgresql-writer_policy_arn" {
   value = module.postgresql.secrets_postgresql-writer_policy_arn
 }
 
-output "lambda_edge_cloudfront_arn" {
-  value       = aws_iam_role.lambda_edge_cloudfront.arn
-  description = "Environment of current state."
-}
+//output "lambda_edge_cloudfront_arn" {
+//  value       = aws_iam_role.lambda_edge_cloudfront.arn
+//  description = "Environment of current state."
+//}
 
-output "cloudfront_access_identity_path" {
-  value       = aws_cloudfront_origin_access_identity.tiles.cloudfront_access_identity_path
-  description = "IAM ARN of Cloud Front Origin Access Identity"
-}
+//output "cloudfront_access_identity_path" {
+//  value       = aws_cloudfront_origin_access_identity.tiles.cloudfront_access_identity_path
+//  description = "IAM ARN of Cloud Front Origin Access Identity"
+//}
 
 output "acm_certificate" {
  value = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null

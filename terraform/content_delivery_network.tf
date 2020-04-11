@@ -1,1 +1,1 @@
-resource "aws_cloudfront_origin_access_identity" "tiles" {}
+//resource "aws_cloudfront_origin_access_identity" "tiles" {}

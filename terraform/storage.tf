@@ -3,13 +3,6 @@ resource "aws_s3_bucket_policy" "pipelines" {
   policy = data.template_file.pipelines_bucket_policy.rendered
 }
 
-
-//resource "aws_s3_bucket_policy" "tiles" {
-//  bucket = aws_s3_bucket.tiles.id
-//  policy = module.tiles_policy.result_document
-//
-//}
-
 resource "aws_s3_bucket_policy" "data-lake" {
   bucket = aws_s3_bucket.data-lake.id
   policy = module.data-lake_policy.result_document
@@ -19,6 +12,48 @@ resource "aws_s3_bucket" "pipelines" {
   bucket = "gfw-pipelines${local.bucket_suffix}"
   acl    = "private"
   tags   = local.tags
+
+  lifecycle_rule {
+    id      = "geotrellis_logs"
+    enabled = true
+
+    prefix = "geotrellis/logs/"
+
+    transition {
+      days          = 3
+      storage_class = "ONEZONE_IA"
+    }
+
+    transition {
+      days          = 30
+      storage_class = "GLACIER"
+    }
+
+    expiration {
+      days = 60
+    }
+  }
+
+  lifecycle_rule {
+    id      = "geotrellis_results"
+    enabled = true
+
+    prefix = "geotrellis/results/"
+
+    transition {
+      days          = 7
+      storage_class = "STANDARD_IA" # or "ONEZONE_IA"
+    }
+
+    transition {
+      days          = 30
+      storage_class = "GLACIER"
+    }
+
+    expiration {
+      days = 60
+    }
+  }
 }
 
 
@@ -28,43 +63,21 @@ resource "aws_s3_bucket" "data-lake" {
   tags          = local.tags
   request_payer = "BucketOwner"
 
+//  lifecycle_rule {
+//    id      = "intelligent_tiering"
+//    enabled = true
+//
+//    tags = {
+//      "rule"      = "tiering"
+//    }
+//
+//    transition {
+//      days          = 1
+//      storage_class = "INTELLIGENT_TIERING"
+//    }
+//  }
 }
-//
-//resource "aws_s3_bucket" "tiles" {
-//  bucket = "gfw-tiles${local.bucket_suffix}"
-//  acl    = "private"
-//  tags   = local.tags
-//
-//  cors_rule {
-//    allowed_headers = [
-//      "Authorization",
-//    ]
-//    allowed_methods = [
-//      "GET",
-//    ]
-//    allowed_origins = [
-//      "*",
-//    ]
-//    expose_headers  = []
-//    max_age_seconds = 3000
-//  }
-//  website {
-//    index_document = "index.html"
-//    routing_rules = jsonencode(
-//      [
-//        {
-//          Condition = {
-//            KeyPrefixEquals = "wdpa_protected_areas/latest/"
-//          }
-//          Redirect = {
-//            HostName             = "tiles.globalforestwatch.org"
-//            ReplaceKeyPrefixWith = "wdpa_protected_areas/v201909/"
-//          }
-//        },
-//      ]
-//    )
-//  }
-//}
+
 
 # Test buckets only exist in DEV environment
 # Use count argument to create condition
@@ -82,10 +95,3 @@ resource "aws_s3_bucket" "data-lake-test" {
   tags   = local.tags
   count  = var.environment == "dev" ? 1 : 0
 }
-//
-//resource "aws_s3_bucket" "tiles-test" {
-//  bucket = "gfw-tiles-test"
-//  acl    = "private"
-//  tags   = local.tags
-//  count  = var.environment == "dev" ? 1 : 0
-//}

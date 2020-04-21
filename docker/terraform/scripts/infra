@@ -45,6 +45,14 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
     fmt)
       terraform fmt -recursive .
       ;;
+    init)
+      echo "Initalizing terraform ..."
+      shift
+      # Clear stale modules, then re-initialize
+      rm -rf .terraform
+      terraform init \
+        -backend-config=vars/backend-${ENV}.tfvars
+        ;;
     plan)
       echo "Starting terraform plan..."
       shift

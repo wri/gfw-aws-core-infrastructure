@@ -114,6 +114,10 @@ output "secrets_postgresql-reader_name" {
   value = module.postgresql.secrets_postgresql-reader_name
 }
 
+output "secrets_postgresql-reader_policy" {
+  value = module.postgresql.secrets_postgresql-reader_policy
+}
+
 output "secrets_postgresql-reader_policy_arn" {
   value = module.postgresql.secrets_postgresql-reader_policy_arn
 }
@@ -124,6 +128,10 @@ output "secrets_postgresql-writer_arn" {
 
 output "secrets_postgresql-writer_name" {
   value = module.postgresql.secrets_postgresql-writer_name
+}
+
+output "secrets_postgresql-writer_policy" {
+  value = module.postgresql.secrets_postgresql-writer_policy
 }
 
 output "secrets_postgresql-writer_policy_arn" {

@@ -33,12 +33,12 @@ resource "aws_security_group" "lb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  egress {
-    from_port   = var.data_api_listener_port
-    to_port     = var.data_api_listener_port
-    protocol    = "tcp"
-    cidr_blocks = [aws_security_group.data_api_tasks.arn]
-  }
+  //  egress {
+  //    from_port   = var.data_api_listener_port
+  //    to_port     = var.data_api_listener_port
+  //    protocol    = "tcp"
+  //    security_groups = [aws_security_group.data_api_tasks.arn]
+  //  }
 
   # Tile cache rules
   ingress {
@@ -48,12 +48,12 @@ resource "aws_security_group" "lb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  egress {
-    from_port   = var.tile_cache_listener_port
-    to_port     = var.tile_cache_listener_port
-    protocol    = "tcp"
-    cidr_blocks = [aws_security_group.tile_cache_tasks.arn]
-  }
+  //  egress {
+  //    from_port   = var.tile_cache_listener_port
+  //    to_port     = var.tile_cache_listener_port
+  //    protocol    = "tcp"
+  //    security_groups = [aws_security_group.tile_cache_tasks.id]
+  //  }
 
   tags = merge(
     {
@@ -63,6 +63,25 @@ resource "aws_security_group" "lb" {
   )
 }
 
+# these rules depends on other security groups so separating them allows them
+# to be created after both
+resource "aws_security_group_rule" "lb_data_api_egress" {
+  security_group_id        = aws_security_group.lb.id
+  from_port                = var.data_api_listener_port
+  to_port                  = var.data_api_listener_port
+  protocol                 = "tcp"
+  type                     = "egress"
+  source_security_group_id = aws_security_group.data_api_tasks.id
+}
+
+resource "aws_security_group_rule" "lb_tile_cache_egress" {
+  security_group_id        = aws_security_group.lb.id
+  from_port                = var.tile_cache_listener_port
+  to_port                  = var.tile_cache_listener_port
+  protocol                 = "tcp"
+  type                     = "egress"
+  source_security_group_id = aws_security_group.tile_cache_tasks.id
+}
 
 # Traffic to the ECS Cluster should only come from the ALB
 # Task should only communicate with the ALB

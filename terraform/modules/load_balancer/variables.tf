@@ -3,7 +3,7 @@ variable "project" {
 }
 
 variable "name_suffix" {
-  type = string
+  type    = string
   default = ""
 }
 
@@ -21,21 +21,21 @@ variable "public_subnet_ids" {
 
 
 variable "data_api_listener_port" {
-  type  = number
+  type    = number
   default = 80
 }
 
 variable "data_api_container_port" {
-  type  = number
+  type    = number
   default = 80
 }
 
 variable "tile_cache_listener_port" {
-  type  = number
+  type    = number
   default = 7113
 }
 
 variable "tile_cache_container_port" {
-  type  = number
+  type    = number
   default = 80
 }

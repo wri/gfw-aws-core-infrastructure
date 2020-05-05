@@ -25,7 +25,7 @@ resource "aws_s3_bucket" "pipelines" {
     }
 
     transition {
-      days          = 30
+      days          = 40
       storage_class = "GLACIER"
     }
 

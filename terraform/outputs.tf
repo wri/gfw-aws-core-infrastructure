@@ -141,5 +141,37 @@ output "secrets_postgresql-writer_policy_arn" {
 //}
 
 output "acm_certificate" {
- value = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null
+  value = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null
+}
+
+output "load_balancer_arn" {
+  value = module.load_balancer.load_balancer_arn
+}
+
+output "data_api_listener_port" {
+  value = module.load_balancer.data_api_listener_port
+}
+
+output "load_balancer_security_group_id" {
+  value = module.load_balancer.load_balancer_security_group_id
+}
+
+output "data_api_container_port" {
+  value = module.load_balancer.data_api_container_port
+}
+
+output "data_api_load_balancer_security_group_id" {
+  value = module.load_balancer.data_api_load_balancer_security_group_id
+}
+
+output "tile_cache_listener_port" {
+  value = module.load_balancer.tile_cache_listener_port
+}
+
+output "tile_cache_container_port" {
+  value = module.load_balancer.tile_cache_container_port
+}
+
+output "tile_cache_load_balancer_security_group_id" {
+  value = module.load_balancer.data_api_load_balancer_security_group_id
 }

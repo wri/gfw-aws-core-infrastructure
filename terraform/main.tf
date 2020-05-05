@@ -123,3 +123,11 @@ module "postgresql" {
   rds_port                    = 5432
   rds_user_name_ro            = "gfw_read_only"
 }
+
+module "load_balancer" {
+  source = "./modules/load_balancer"
+  project = local.project
+  tags = local.tags
+  vpc_id = module.vpc.id
+  public_subnet_ids = module.vpc.public_subnet_ids
+}

@@ -63,19 +63,19 @@ resource "aws_s3_bucket" "data-lake" {
   tags          = local.tags
   request_payer = "BucketOwner"
 
-//  lifecycle_rule {
-//    id      = "intelligent_tiering"
-//    enabled = true
-//
-//    tags = {
-//      "rule"      = "tiering"
-//    }
-//
-//    transition {
-//      days          = 1
-//      storage_class = "INTELLIGENT_TIERING"
-//    }
-//  }
+  //  lifecycle_rule {
+  //    id      = "intelligent_tiering"
+  //    enabled = true
+  //
+  //    tags = {
+  //      "rule"      = "tiering"
+  //    }
+  //
+  //    transition {
+  //      days          = 1
+  //      storage_class = "INTELLIGENT_TIERING"
+  //    }
+  //  }
 }
 
 

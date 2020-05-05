@@ -5,23 +5,23 @@
 
 resource "aws_rds_cluster" "aurora_cluster" {
 
-  cluster_identifier           = "gfw-aurora" # "${var.project}-aurora-cluster"
-  engine                       = "aurora-postgresql"
-  engine_version               = "11.6"
-  database_name                = var.rds_db_name
-  master_username              = var.rds_user_name
-  master_password              = var.rds_password
-  backup_retention_period      = var.rds_backup_retention_period
-  preferred_backup_window      = "14:00-15:00"
-  preferred_maintenance_window = "sat:16:00-sat:17:00"
-  db_subnet_group_name         = aws_db_subnet_group.default.name
-  final_snapshot_identifier    = "${var.project}-aurora-cluster"
-  vpc_security_group_ids       = [aws_security_group.postgresql.id]
-  availability_zones           = var.availability_zone_names
+  cluster_identifier              = "gfw-aurora" # "${var.project}-aurora-cluster"
+  engine                          = "aurora-postgresql"
+  engine_version                  = "11.6"
+  database_name                   = var.rds_db_name
+  master_username                 = var.rds_user_name
+  master_password                 = var.rds_password
+  backup_retention_period         = var.rds_backup_retention_period
+  preferred_backup_window         = "14:00-15:00"
+  preferred_maintenance_window    = "sat:16:00-sat:17:00"
+  db_subnet_group_name            = aws_db_subnet_group.default.name
+  final_snapshot_identifier       = "${var.project}-aurora-cluster"
+  vpc_security_group_ids          = [aws_security_group.postgresql.id]
+  availability_zones              = var.availability_zone_names
   copy_tags_to_snapshot           = true
   apply_immediately               = true
   port                            = var.rds_port
-  storage_encrypted                   = true
+  storage_encrypted               = true
   enabled_cloudwatch_logs_exports = ["postgresql"]
   tags = merge(
     {
@@ -43,14 +43,14 @@ resource "aws_rds_cluster_instance" "aurora_cluster_instance" {
   identifier         = "gfw-aurora" #"${var.project}-aurora-instance-${count.index}"
   cluster_identifier = aws_rds_cluster.aurora_cluster.id
   instance_class     = var.rds_instance_class
-  engine                          = "aurora-postgresql"
+  engine             = "aurora-postgresql"
   //"db.t3.medium", "db.r5.xlarge"
   db_subnet_group_name  = aws_db_subnet_group.default.name
   publicly_accessible   = false
   apply_immediately     = true
   copy_tags_to_snapshot = true
-  monitoring_interval             = 60
-  promotion_tier                  = 1
+  monitoring_interval   = 60
+  promotion_tier        = 1
 
   tags = merge(
     {
@@ -124,8 +124,8 @@ resource "aws_appautoscaling_policy" "replicas" {
 # Allow access to aurora to all resources which are in the same security group
 
 resource "aws_security_group" "postgresql" {
-  vpc_id = var.vpc_id
-  name = "${var.project}-sgPostgreSQL"
+  vpc_id                 = var.vpc_id
+  name                   = "${var.project}-sgPostgreSQL"
   revoke_rules_on_delete = true
   tags = merge(
     {

@@ -20,7 +20,7 @@ resource "aws_s3_bucket" "pipelines" {
     prefix = "geotrellis/logs/"
 
     transition {
-      days          = 3
+      days          = 30
       storage_class = "ONEZONE_IA"
     }
 

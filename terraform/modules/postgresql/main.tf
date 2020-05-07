@@ -155,36 +155,6 @@ resource "aws_security_group_rule" "postgresql_egress" {
 }
 
 
-//#### Add read-only user
-//###
-//provider "postgresql" {
-//  host            = aws_rds_cluster.aurora_cluster.endpoint
-//  port            = var.rds_port
-//  database        = var.rds_db_name
-//  username        = var.rds_user_name
-//  password        = var.rds_password
-//  sslmode         = "require"
-//  connect_timeout = 15
-//
-//}
-//
-//resource "postgresql_role" "gfw_reader" {
-//  name     = var.rds_user_name_ro
-//  login    = true
-//  password = var.rds_password_ro
-//
-//  depends_on = ["aws_rds_cluster.aurora_cluster"]
-//}
-//
-//resource "postgresql_default_privileges" "read_only_tables" {
-//  role     = postgresql_role.gfw_reader.name
-//  database = var.rds_db_name
-//  schema   = "public"
-//  owner       = var.rds_user_name
-//  object_type = "table"
-//  privileges  = ["SELECT"]
-//}
-//
 #### Secret Manager
 resource "aws_secretsmanager_secret" "postgresql-reader" {
   description = "Connection string for Aurora PostgreSQL cluster"

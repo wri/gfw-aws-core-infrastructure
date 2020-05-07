@@ -97,10 +97,6 @@ output "iam_policy_s3_write_pipelines_arn" {
   value = aws_iam_policy.s3_write_pipelines.arn
 }
 
-//output "iam_policy_s3_write_tiles_arn" {
-//  value = aws_iam_policy.s3_write_tiles.arn
-//}
-
 output "postgresql_security_group_id" {
   value       = module.postgresql.security_group_id
   description = "Security group ID to access postgresql database"
@@ -112,10 +108,6 @@ output "secrets_postgresql-reader_arn" {
 
 output "secrets_postgresql-reader_name" {
   value = module.postgresql.secrets_postgresql-reader_name
-}
-
-output "secrets_postgresql-reader_policy" {
-  value = module.postgresql.secrets_postgresql-reader_policy
 }
 
 output "secrets_postgresql-reader_policy_arn" {
@@ -130,56 +122,11 @@ output "secrets_postgresql-writer_name" {
   value = module.postgresql.secrets_postgresql-writer_name
 }
 
-output "secrets_postgresql-writer_policy" {
-  value = module.postgresql.secrets_postgresql-writer_policy
-}
-
 output "secrets_postgresql-writer_policy_arn" {
   value = module.postgresql.secrets_postgresql-writer_policy_arn
 }
-
-//output "lambda_edge_cloudfront_arn" {
-//  value       = aws_iam_role.lambda_edge_cloudfront.arn
-//  description = "Environment of current state."
-//}
-
-//output "cloudfront_access_identity_path" {
-//  value       = aws_cloudfront_origin_access_identity.tiles.cloudfront_access_identity_path
-//  description = "IAM ARN of Cloud Front Origin Access Identity"
-//}
 
 output "acm_certificate" {
   value = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null
 }
 
-output "load_balancer_arn" {
-  value = module.load_balancer.load_balancer_arn
-}
-
-output "data_api_listener_port" {
-  value = module.load_balancer.data_api_listener_port
-}
-
-output "load_balancer_security_group_id" {
-  value = module.load_balancer.load_balancer_security_group_id
-}
-
-output "data_api_container_port" {
-  value = module.load_balancer.data_api_container_port
-}
-
-output "data_api_load_balancer_security_group_id" {
-  value = module.load_balancer.data_api_load_balancer_security_group_id
-}
-
-output "tile_cache_listener_port" {
-  value = module.load_balancer.tile_cache_listener_port
-}
-
-output "tile_cache_container_port" {
-  value = module.load_balancer.tile_cache_container_port
-}
-
-output "tile_cache_load_balancer_security_group_id" {
-  value = module.load_balancer.data_api_load_balancer_security_group_id
-}

@@ -6,6 +6,10 @@ RUN \
         make \
         python3 \
         zip \
+        docker \
+        openrc \
     && pip3 install awscli
 
-COPY scripts/infra /usr/local/bin/
+RUN rc-update add docker boot
+
+COPY scripts/* /usr/local/bin/

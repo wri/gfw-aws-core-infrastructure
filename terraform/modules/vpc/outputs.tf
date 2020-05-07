@@ -48,8 +48,3 @@ output "nat_gateway_ips" {
   value       = [aws_eip.nat.*.public_ip]
   description = "Public IP addresses of the VPC NAT gateways."
 }
-
-output "eks_manager_role" {
-  value       = aws_iam_role.eks_manager
-  description = "EKS Manager role."
-}

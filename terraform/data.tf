@@ -19,30 +19,6 @@ data "template_file" "pipelines_bucket_policy" {
     bucket_arn = aws_s3_bucket.pipelines.arn
   }
 }
-//
-//data "template_file" "tiles_bucket_policy_public" {
-//  template = file("${path.root}/policies/bucket_policy_public_read.json.tpl")
-//  vars = {
-//    bucket_arn = aws_s3_bucket.tiles.arn
-//  }
-//}
-//
-//data "template_file" "tiles_bucket_policy_cloudfront" {
-//  template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
-//  vars = {
-//    bucket_arn       = aws_s3_bucket.tiles.arn
-//    aws_resource_arn = aws_cloudfront_origin_access_identity.tiles.iam_arn
-//  }
-//}
-//
-//
-//data "template_file" "tiles_bucket_policy_lambda" {
-//  template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
-//  vars = {
-//    bucket_arn       = aws_s3_bucket.tiles.arn
-//    aws_resource_arn = aws_iam_role.lambda_edge_cloudfront.arn
-//  }
-//}
 
 data "template_file" "data-lake_bucket_policy_public" {
   template = file("${path.root}/policies/bucket_policy_public_read.json.tpl")
@@ -50,7 +26,6 @@ data "template_file" "data-lake_bucket_policy_public" {
     bucket_arn = aws_s3_bucket.data-lake.arn
   }
 }
-
 
 data "template_file" "data-lake_bucket_policy_emr_production" {
   template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
@@ -76,7 +51,6 @@ data "template_file" "data-lake_bucket_policy_emr_dev" {
   }
 }
 
-
 data "template_file" "s3_write_pipelines" {
   template = file("${path.root}/policies/iam_policy_s3_write.json.tpl")
   vars = {
@@ -84,12 +58,6 @@ data "template_file" "s3_write_pipelines" {
   }
 }
 
-//data "template_file" "s3_write_tiles" {
-//  template = file("${path.root}/policies/iam_policy_s3_write.json.tpl")
-//  vars = {
-//    bucket_arn = aws_s3_bucket.tiles.arn
-//  }
-//}
 
 data "template_file" "s3_write_data-lake" {
   template = file("${path.root}/policies/iam_policy_s3_write.json.tpl")

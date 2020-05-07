@@ -9,12 +9,6 @@ resource "aws_iam_policy" "s3_write_data-lake" {
 
 }
 
-//resource "aws_iam_policy" "s3_write_tiles" {
-//  name   = "${local.project}-s3_write_tiles"
-//  policy = data.template_file.s3_write_tiles.rendered
-//
-//}
-
 resource "aws_iam_policy" "secrets_read_gfw-api-token" {
   name   = "${local.project}-secrets_read_gfw-api-token"
   policy = data.template_file.secrets_read_gfw-api-token.rendered
@@ -24,7 +18,6 @@ resource "aws_iam_policy" "secrets_read_slack-gfw-sync" {
   name   = "${local.project}-secrets_read_slack-gfw-sync"
   policy = data.template_file.secrets_read_slack-gfw-sync.rendered
 }
-
 
 resource "aws_iam_role" "iam_emr_service_role" {
   name               = "${local.project}-iam_emr_service_role"
@@ -59,41 +52,3 @@ resource "aws_iam_role_policy" "iam_emr_profile_policy" {
 resource "aws_iam_service_linked_role" "spot" {
   aws_service_name = "spot.amazonaws.com"
 }
-
-
-//
-//#
-//# Lambda@Edge IAM resources
-//#
-//
-//data "aws_iam_policy_document" "lambda_edge_assume_role" {
-//  statement {
-//    effect = "Allow"
-//
-//    principals {
-//      type = "Service"
-//      identifiers = [
-//        "lambda.amazonaws.com",
-//        "edgelambda.amazonaws.com"
-//      ]
-//    }
-//
-//    actions = ["sts:AssumeRole"]
-//  }
-//}
-//
-//
-//resource "aws_iam_role" "lambda_edge_cloudfront" {
-//  name               = "${local.project}-tile_cache-lambda_edge_cloudfront"
-//  assume_role_policy = data.aws_iam_policy_document.lambda_edge_assume_role.json
-//}
-//
-//resource "aws_iam_role_policy_attachment" "lambda_edge_basic_exec" {
-//  role       = aws_iam_role.lambda_edge_cloudfront.name
-//  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-//}
-//
-//resource "aws_iam_role_policy_attachment" "s3_read_only" {
-//  role       = aws_iam_role.lambda_edge_cloudfront.name
-//  policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
-//}

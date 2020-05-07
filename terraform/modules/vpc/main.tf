@@ -163,49 +163,6 @@ resource "aws_nat_gateway" "default" {
 #
 # Bastion resources
 #
-resource "aws_iam_role" "eks_manager" {
-  name = "eks_manager"
-
-  assume_role_policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": "sts:AssumeRole",
-            "Principal": {
-               "Service": "ec2.amazonaws.com"
-            },
-            "Effect": "Allow",
-            "Sid": ""
-        }
-    ]
-}
-EOF
-}
-
-# IAM Role for bastion host, that allows it to connect to k8s
-resource "aws_iam_policy" "eks-admin-EKSManagerPolicy" {
-  name   = "EKSManagerPolicy"
-  path   = "/"
-  policy = data.aws_iam_policy_document.eks-admin-EKSManagerPolicy-document.json
-}
-
-resource "aws_iam_role_policy" "eks-admin-EKSManagerPolicy" {
-  name = "test_policy"
-  role = aws_iam_role.eks_manager.id
-
-  policy = data.aws_iam_policy_document.eks-admin-EKSManagerPolicy-document.json
-}
-
-
-resource "aws_iam_instance_profile" "bastion_profile" {
-  name = "bastion_profile"
-  role = aws_iam_role.eks_manager.name
-
-  depends_on = [
-    aws_iam_role.eks_manager
-  ]
-}
 
 resource "aws_instance" "bastion" {
   ami                         = var.bastion_ami
@@ -217,7 +174,6 @@ resource "aws_instance" "bastion" {
   subnet_id                   = aws_subnet.public[0].id
   vpc_security_group_ids      = var.security_group_ids
   associate_public_ip_address = true
-  iam_instance_profile        = aws_iam_instance_profile.bastion_profile.name
   //  user_data                   = var.user_data
 
   lifecycle {

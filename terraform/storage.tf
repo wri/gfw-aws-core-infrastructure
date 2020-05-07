@@ -41,7 +41,7 @@ resource "aws_s3_bucket" "pipelines" {
     prefix = "geotrellis/results/"
 
     transition {
-      days          = 30 # initally set to 7 days but this is somehow no longer possible
+      days          = 30            # initally set to 7 days but this is somehow no longer possible
       storage_class = "STANDARD_IA" # or "ONEZONE_IA"
     }
 

@@ -39,17 +39,17 @@ resource "aws_rds_cluster" "aurora_cluster" {
 # Only define one instance, other instances are defined using appautoscaling
 resource "aws_rds_cluster_instance" "aurora_cluster_instance" {
 
-  count              = var.rds_instance_count
-  identifier         = "gfw-aurora" #"${var.project}-aurora-instance-${count.index}"
-  cluster_identifier = aws_rds_cluster.aurora_cluster.id
-  instance_class     = var.rds_instance_class
-  engine             = "aurora-postgresql"
-  //"db.t3.medium", "db.r5.xlarge"
+  count                 = var.rds_instance_count
+  identifier            = "gfw-aurora" #"${var.project}-aurora-instance-${count.index}"
+  cluster_identifier    = aws_rds_cluster.aurora_cluster.id
+  instance_class        = var.rds_instance_class
+  engine                = "aurora-postgresql"
   db_subnet_group_name  = aws_db_subnet_group.default.name
   publicly_accessible   = false
   apply_immediately     = true
   copy_tags_to_snapshot = true
   monitoring_interval   = 60
+  monitoring_role_arn   = aws_iam_role.rds_enhanced_monitoring.arn
   promotion_tier        = 1
 
   tags = merge(
@@ -66,6 +66,31 @@ resource "aws_rds_cluster_instance" "aurora_cluster_instance" {
 
 }
 
+############
+#### RDS Monitoring Role
+############
+
+resource "aws_iam_role" "rds_enhanced_monitoring" {
+  name               = "${var.project}-rds_enhanced_monitoring-role"
+  assume_role_policy = data.template_file.rds_enhanced_monitoring.rendered
+}
+
+resource "aws_iam_role_policy_attachment" "rds_enhanced_monitoring" {
+  role       = aws_iam_role.rds_enhanced_monitoring.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
+}
+
+data template_file "rds_enhanced_monitoring" {
+
+  template = file("${path.root}/policies/trust_service.json.tpl")
+  vars = {
+    service = "monitoring.rds"
+  }
+}
+
+############
+##### DB Subnet Group
+############
 
 resource "aws_db_subnet_group" "default" {
 
@@ -80,6 +105,12 @@ resource "aws_db_subnet_group" "default" {
   )
 }
 
+
+##########
+### Logging
+##########
+
+
 resource "aws_cloudwatch_log_group" "postgresql" {
   name              = "/aws/rds/cluster/${aws_rds_cluster.aurora_cluster.cluster_identifier}/postgresql"
   retention_in_days = var.log_retention_period
@@ -92,7 +123,10 @@ resource "aws_cloudwatch_log_group" "postgresql" {
   )
 }
 
+########
 ### Auto scaling
+########
+
 
 resource "aws_appautoscaling_target" "replicas" {
   service_namespace  = "rds"
@@ -120,7 +154,12 @@ resource "aws_appautoscaling_policy" "replicas" {
   }
 }
 
+
+##########
 #### Security Groups
+##########
+
+
 # Allow access to aurora to all resources which are in the same security group
 
 resource "aws_security_group" "postgresql" {
@@ -154,8 +193,10 @@ resource "aws_security_group_rule" "postgresql_egress" {
   security_group_id = aws_security_group.postgresql.id
 }
 
-
+#########
 #### Secret Manager
+##########
+
 resource "aws_secretsmanager_secret" "postgresql-reader" {
   description = "Connection string for Aurora PostgreSQL cluster"
   name        = "${var.project}-postgresql-reader-secret"

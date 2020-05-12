@@ -11,19 +11,6 @@ output "data-lake_bucket" {
   value = aws_s3_bucket.data-lake.id
 }
 
-//output "tiles_bucket" {
-//  value = aws_s3_bucket.tiles.id
-//}
-//
-//output "tiles_bucket_domain_name" {
-//  value = aws_s3_bucket.tiles.bucket_domain_name
-//
-//}
-//
-//output "tiles_bucket_website_endpoint" {
-//  value = aws_s3_bucket.tiles.website_endpoint
-//}
-
 output "tags" {
   value = local.tags
 }
@@ -130,3 +117,6 @@ output "acm_certificate" {
   value = var.environment == "production" ? aws_acm_certificate.globalforestwatch[0].arn : null
 }
 
+output "aurora_cluster_instance_class" {
+  value = module.postgresql.aurora_cluster_instance_class
+}

@@ -19,7 +19,6 @@
 |------|-------------|------|---------|:--------:|
 | application | Name of the current application | `string` | `"gfw-aws-core-infrastructure"` | no |
 | aws\_region | A valid AWS region to configure the underlying AWS SDK. | `string` | `"us-east-1"` | no |
-| cluster-name | n/a | `string` | `"gfw-k8s-cluster"` | no |
 | dev\_account\_number | Account number of production account | `string` | `"563860007740"` | no |
 | dynamo\_db\_lock\_table\_name | Name of the lock table in Dynamo DB | `string` | `"aws-locks"` | no |
 | environment | An environment namespace for the infrastructure. | `string` | n/a | yes |
@@ -33,10 +32,6 @@
 | rds\_password\_ro | n/a | `string` | n/a | yes |
 | slack\_data\_updates\_hook | Hook for Slack data-updates channel | `string` | n/a | yes |
 | staging\_account\_number | Account number of production account | `string` | `"274931322839"` | no |
-| webapps\_node\_group\_desired\_size | n/a | `number` | `1` | no |
-| webapps\_node\_group\_instance\_types | n/a | `string` | `"m5a.large"` | no |
-| webapps\_node\_group\_max\_size | n/a | `number` | `1` | no |
-| webapps\_node\_group\_min\_size | n/a | `number` | `1` | no |
 
 ## Outputs
 

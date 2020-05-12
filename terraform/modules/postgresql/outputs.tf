@@ -28,5 +28,5 @@ output "secrets_postgresql-writer_policy_arn" {
 }
 
 output "aurora_cluster_instance_class"{
-  value = aws_rds_cluster_instance.aurora_cluster_instance.instance_class
+  value = aws_rds_cluster_instance.aurora_cluster_instance[0].instance_class
 }

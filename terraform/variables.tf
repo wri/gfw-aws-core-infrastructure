@@ -55,27 +55,6 @@ variable "dev_account_number" {
   description = "Account number of production account"
 }
 
-variable "cluster-name" {
-  default = "gfw-k8s-cluster"
-}
-
-
-variable "webapps_node_group_instance_types" {
-  type    = string
-  default = "m5a.large"
-}
-variable "webapps_node_group_min_size" {
-  type    = number
-  default = 1
-}
-variable "webapps_node_group_max_size" {
-  type    = number
-  default = 1
-}
-variable "webapps_node_group_desired_size" {
-  type    = number
-  default = 1
-}
 
 variable "rds_backup_retention_period" {
   type = number

@@ -3,7 +3,7 @@
 
 locals {
   # saving costs for now, might want to scale nb of NAT gateways up at in production at a later point
-  nb_nat = 1  # var.environment == "production" ? length(var.private_subnet_cidr_blocks) : 1
+  nb_nat = 1 # var.environment == "production" ? length(var.private_subnet_cidr_blocks) : 1
 }
 
 #
@@ -75,7 +75,8 @@ resource "aws_subnet" "private" {
     {
       Name = "${var.project}-PrivateSubnet-${var.availability_zones[count.index]}"
     },
-    var.tags
+    var.tags,
+    //    var.private_subnet_tags
   )
 }
 
@@ -91,23 +92,8 @@ resource "aws_subnet" "public" {
     {
       Name = "${var.project}-PublicSubnet-${var.availability_zones[count.index]}"
     },
-    var.tags
-  )
-}
-
-resource "aws_db_subnet_group" "default" {
-
-  name       = "main"
-  subnet_ids = [
-      for subnet in aws_subnet.private:
-      subnet.id
-    ]
-
-  tags =  merge(
-    {
-      Name = "${var.project}-DBSubnetGroup"
-    },
-    var.tags
+    var.tags,
+    //    var.public_subnet_tags
   )
 }
 
@@ -159,7 +145,7 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_nat_gateway" "default" {
-  depends_on = ["aws_internet_gateway.default"]
+  depends_on = [aws_internet_gateway.default]
 
   count = local.nb_nat
 
@@ -178,7 +164,6 @@ resource "aws_nat_gateway" "default" {
 # Bastion resources
 #
 
-
 resource "aws_instance" "bastion" {
   ami                         = var.bastion_ami
   availability_zone           = var.availability_zones[0]
@@ -190,6 +175,10 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids      = var.security_group_ids
   associate_public_ip_address = true
   //  user_data                   = var.user_data
+
+  lifecycle {
+    ignore_changes = [ami, user_data]
+  }
 
   tags = merge(
     {

@@ -8,8 +8,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build Lambda layers
-      run: ./scripts/cibuild
     - name: Plan production
       if: success() && contains(github.base_ref, 'master')
       env:
@@ -18,7 +16,10 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_production }}
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_production }}
         GFW_API_TOKEN: ${{ secrets.gfw_api_token_production }}
-      run: ./scripts/infra plan
+        SLACK_DATA_UPDATES_HOOK: ${{ secrets.slack_data_updates_hook }}
+        RDS_PASSWORD: ${{ secrets.rds_password_production }}
+        RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_production }}
+      run: ./scripts/infra plan -var "gfw_api_token=${GFW_API_TOKEN}" -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" -var "rds_password=${RDS_PASSWORD}" -var "rds_password_ro=${RDS_PASSWORD_RO}"
     - name: Plan staging
       if: success() && contains(github.base_ref, 'develop')
       env:
@@ -27,7 +28,10 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_staging }}
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_staging }}
         GFW_API_TOKEN: ${{ secrets.gfw_api_token_staging }}
-      run: ./scripts/infra plan
+        SLACK_DATA_UPDATES_HOOK: ${{ secrets.slack_data_updates_hook }}
+        RDS_PASSWORD: ${{ secrets.rds_password_staging }}
+        RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_staging }}
+      run: ./scripts/infra plan -var "gfw_api_token=${GFW_API_TOKEN}" -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" -var "rds_password=${RDS_PASSWORD}" -var "rds_password_ro=${RDS_PASSWORD_RO}"
 #    - name: Plan dev
 #      if: success() && (! contains(github.base_ref, 'master')) && (! contains(github.base_ref, 'develop'))
 #      env:

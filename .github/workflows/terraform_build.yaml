@@ -12,9 +12,6 @@ jobs:
     - name: Install dependencies
       run: |
         ./scripts/setup
-    - name: Build Lambda layers
-      if: success()
-      run: ./scripts/cibuild
     - name: Deploy production
       if: success() && contains(github.ref, 'master')
       env:
@@ -24,8 +21,10 @@ jobs:
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_production }}
         GFW_API_TOKEN: ${{ secrets.gfw_api_token_production }}
         SLACK_DATA_UPDATES_HOOK: ${{ secrets.slack_data_updates_hook }}
+        RDS_PASSWORD: ${{ secrets.rds_password_production }}
+        RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_production }}
       run: |
-        ./scripts/infra plan
+        ./scripts/infra plan -var "gfw_api_token=${GFW_API_TOKEN}" -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" -var "rds_password=${RDS_PASSWORD}" -var "rds_password_ro=${RDS_PASSWORD_RO}"
         ./scripts/infra apply
     - name: Deploy staging
       if: success() && contains(github.ref, 'develop')
@@ -36,8 +35,10 @@ jobs:
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_staging }}
         GFW_API_TOKEN: ${{ secrets.gfw_api_token_staging }}
         SLACK_DATA_UPDATES_HOOK: ${{ secrets.slack_data_updates_hook }}
+        RDS_PASSWORD: ${{ secrets.rds_password_staging }}
+        RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_staging }}
       run: |
-        ./scripts/infra plan
+        ./scripts/infra plan -var "gfw_api_token=${GFW_API_TOKEN}" -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" -var "rds_password=${RDS_PASSWORD}" -var "rds_password_ro=${RDS_PASSWORD_RO}"
         ./scripts/infra apply
     - name: Deploy dev
       if: success() && (! contains(github.ref, 'develop')) && (! contains(github.ref, 'master'))
@@ -48,6 +49,8 @@ jobs:
         AWS_DEFAULT_REGION: ${{ secrets.aws_region_dev }}
         GFW_API_TOKEN: ${{ secrets.gfw_api_token_staging }}
         SLACK_DATA_UPDATES_HOOK: ${{ secrets.slack_data_updates_hook }}
+        RDS_PASSWORD: ${{ secrets.rds_password_dev }}
+        RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_dev }}
       run: |
-        ./scripts/infra plan
+        ./scripts/infra plan -var "gfw_api_token=${GFW_API_TOKEN}" -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" -var "rds_password=${RDS_PASSWORD}" -var "rds_password_ro=${RDS_PASSWORD_RO}"
         ./scripts/infra apply

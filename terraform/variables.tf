@@ -38,19 +38,35 @@ variable "slack_data_updates_hook" {
 }
 
 variable "production_account_number" {
-  default = "401951483516"
-  type = string
+  default     = "401951483516"
+  type        = string
   description = "Account number of production account"
 }
 
 variable "staging_account_number" {
-  default = "274931322839"
-  type = string
+  default     = "274931322839"
+  type        = string
   description = "Account number of production account"
 }
 
 variable "dev_account_number" {
-  default = "563860007740"
-  type = string
+  default     = "563860007740"
+  type        = string
   description = "Account number of production account"
 }
+
+
+variable "rds_backup_retention_period" {
+  type = number
+}
+
+variable "log_retention_period" {
+  type = number
+}
+
+variable "rds_instance_class" {
+  type = string
+}
+
+variable "rds_password" { type = string }
+variable "rds_password_ro" { type = string }

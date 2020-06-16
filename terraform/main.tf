@@ -1,6 +1,6 @@
 # Require TF version to be same as or greater than 0.12.13
 terraform {
-  required_version = ">=0.12.24"
+  required_version = ">=0.12.26"
   backend "s3" {
     region         = "us-east-1"
     key            = "core.tfstate"

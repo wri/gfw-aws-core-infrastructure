@@ -39,18 +39,19 @@ resource "aws_rds_cluster" "aurora_cluster" {
 # Only define one instance, other instances are defined using appautoscaling
 resource "aws_rds_cluster_instance" "aurora_cluster_instance" {
 
-  count                 = var.rds_instance_count
-  identifier            = "gfw-aurora" #"${var.project}-aurora-instance-${count.index}"
-  cluster_identifier    = aws_rds_cluster.aurora_cluster.id
-  instance_class        = var.rds_instance_class
-  engine                = "aurora-postgresql"
-  db_subnet_group_name  = aws_db_subnet_group.default.name
-  publicly_accessible   = false
-  apply_immediately     = true
-  copy_tags_to_snapshot = true
-  monitoring_interval   = 60
-  monitoring_role_arn   = aws_iam_role.rds_enhanced_monitoring.arn
-  promotion_tier        = 1
+  count                        = var.rds_instance_count
+  identifier                   = "gfw-aurora" #"${var.project}-aurora-instance-${count.index}"
+  cluster_identifier           = aws_rds_cluster.aurora_cluster.id
+  instance_class               = var.rds_instance_class
+  engine                       = "aurora-postgresql"
+  db_subnet_group_name         = aws_db_subnet_group.default.name
+  publicly_accessible          = false
+  apply_immediately            = true
+  copy_tags_to_snapshot        = true
+  monitoring_interval          = 60
+  monitoring_role_arn          = aws_iam_role.rds_enhanced_monitoring.arn
+  promotion_tier               = 1
+  performance_insights_enabled = true
 
   tags = merge(
     {

@@ -11,20 +11,8 @@ output "data-lake_bucket" {
   value = aws_s3_bucket.data-lake.id
 }
 
-output "tiles_bucket" {
-  value = aws_s3_bucket.tiles.id
-}
-
 output "tags" {
   value = local.tags
-}
-
-output "lambda_layer_shapely_pyyaml_arn" {
-  value = module.lambda_layers.shapely_pyyaml_arn
-}
-
-output "lambda_layer_rasterio_arn" {
-  value = module.lambda_layers.rasterio_arn
 }
 
 output "account_id" {
@@ -96,6 +84,39 @@ output "iam_policy_s3_write_pipelines_arn" {
   value = aws_iam_policy.s3_write_pipelines.arn
 }
 
-output "iam_policy_s3_write_tiles_arn" {
-  value = aws_iam_policy.s3_write_tiles.arn
+output "postgresql_security_group_id" {
+  value       = module.postgresql.security_group_id
+  description = "Security group ID to access postgresql database"
+}
+
+output "secrets_postgresql-reader_arn" {
+  value = module.postgresql.secrets_postgresql-reader_arn
+}
+
+output "secrets_postgresql-reader_name" {
+  value = module.postgresql.secrets_postgresql-reader_name
+}
+
+output "secrets_postgresql-reader_policy_arn" {
+  value = module.postgresql.secrets_postgresql-reader_policy_arn
+}
+
+output "secrets_postgresql-writer_arn" {
+  value = module.postgresql.secrets_postgresql-writer_arn
+}
+
+output "secrets_postgresql-writer_name" {
+  value = module.postgresql.secrets_postgresql-writer_name
+}
+
+output "secrets_postgresql-writer_policy_arn" {
+  value = module.postgresql.secrets_postgresql-writer_policy_arn
+}
+
+output "acm_certificate" {
+  value = var.environment == "dev" ? null : aws_acm_certificate.globalforestwatch[0].arn
+}
+
+output "aurora_cluster_instance_class" {
+  value = module.postgresql.aurora_cluster_instance_class
 }

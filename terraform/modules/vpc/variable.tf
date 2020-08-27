@@ -13,10 +13,10 @@ variable "region" {
   description = "A valid AWS region to house VPC resources."
 }
 
-variable "key_name" {
-  type        = string
-  description = "A key pair used to control login access to EC2 instances."
-}
+//variable "key_name" {
+//  type        = string
+//  description = "A key pair used to control login access to EC2 instances."
+//}
 
 variable "user_data" {
   type        = string

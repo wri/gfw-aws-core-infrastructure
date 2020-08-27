@@ -177,7 +177,7 @@ resource "aws_instance" "bastion" {
   user_data                   = var.user_data
 
   lifecycle {
-    ignore_changes = [ami, user_data]
+    ignore_changes = [ami]
   }
 
   tags = merge(

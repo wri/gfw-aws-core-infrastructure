@@ -57,20 +57,41 @@ variable "dev_account_number" {
 
 
 variable "rds_backup_retention_period" {
-  type = number
+  type        = number
+  description = "Time in days to keep RDS backup files"
 }
 
 variable "log_retention_period" {
-  type = number
+  type        = number
+  description = "Time in days to keep log files"
 }
 
 variable "rds_instance_class" {
-  type = string
+  type        = string
+  description = "RDS Aurora instance type for write node"
 }
 
-variable "rds_password" { type = string }
-variable "rds_password_ro" { type = string }
-variable "gfw-gee-export_key" { type = string }
-variable "tmaschler_ip" { type = string }
-variable "jterry_ip" { type = string }
-variable "dmannarino_ip" { type = string }
+variable "rds_password" {
+  type        = string
+  description = "Superuser password for RDS Aurora database"
+}
+variable "rds_password_ro" {
+  type        = string
+  description = "Read Only user password for RDS Aurora database"
+}
+variable "gfw-gee-export_key" {
+  type        = string
+  description = "GCS key for service account"
+}
+variable "tmaschler_ip" {
+  type        = string
+  description = "Thomas' home IP address"
+}
+variable "jterry_ip" {
+  type        = string
+  description = "Justin's home IP address"
+}
+variable "dmannarino_ip" {
+  type        = string
+  description = "Daniel's home IP address"
+}

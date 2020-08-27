@@ -3,10 +3,10 @@
 
 resource "aws_security_group" "default" {
   vpc_id = module.vpc.id
-  name   = "${var.project}-default"
+  name   = "${local.project}-default"
   tags = merge(
     {
-      Name = "${var.project}-default"
+      Name = "${local.project}-default"
     },
     local.tags
   )
@@ -86,10 +86,10 @@ resource "aws_security_group_rule" "default_https_egress" {
 
 resource "aws_security_group" "webserver" {
   vpc_id = module.vpc.id
-  name   = "${var.project}-webserver"
+  name   = "${local.project}-webserver"
   tags = merge(
     {
-      Name = "${var.project}-webserver"
+      Name = "${local.project}-webserver"
     },
     local.tags
   )

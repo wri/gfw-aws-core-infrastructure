@@ -18,10 +18,10 @@ variable "key_name" {
   description = "A key pair used to control login access to EC2 instances."
 }
 
-//variable "user_data" {
-//  type        = string
-//  description = "User data to bootstrap EC2 instance"
-//}
+variable "user_data" {
+  type        = string
+  description = "User data to bootstrap EC2 instance"
+}
 
 variable "cidr_block" {
   default     = "10.0.0.0/16" // 10.0.0.0 - 10.0.255.255

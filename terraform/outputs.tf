@@ -67,6 +67,9 @@ output "secrets_read-slack_gfw_sync_arn" {
   value = aws_secretsmanager_secret.slack_gfw_sync.arn
 }
 
+output "secrets_read-gfw-gee-export_policy_arn" {
+  value = aws_iam_policy.secrets_read_gfw-gee-export_key.arn
+}
 
 output "emr_instance_profile_name" {
   value = aws_iam_instance_profile.emr_profile.name

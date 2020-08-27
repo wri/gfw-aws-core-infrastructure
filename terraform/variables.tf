@@ -70,3 +70,7 @@ variable "rds_instance_class" {
 
 variable "rds_password" { type = string }
 variable "rds_password_ro" { type = string }
+variable "gfw-gee-export_key" { type = string }
+variable "tmaschler_ip" { type = string }
+variable "jterry_ip" { type = string }
+variable "dmannarino_ip" { type = string }

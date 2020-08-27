@@ -32,12 +32,14 @@ module "vpc" {
   source      = "./modules/vpc"
   environment = var.environment
   region      = var.aws_region
-  key_name    = aws_key_pair.tmaschler_gfw.key_name
+  //  key_name    = aws_key_pair.tmaschler_gfw.key_name
   bastion_ami = data.aws_ami.amazon_linux_ami.id
   project     = local.project
   tags        = local.tags
   security_group_ids = [
-  aws_security_group.default.id]
+    aws_security_group.default.id,
+  module.postgresql.security_group_id]
+  user_data = data.template_file.bastion_setup.rendered
 
 }
 

@@ -12,7 +12,7 @@ terraform {
 # Download any stable version in AWS provider of 2.36.0 or higher in 2.36 train
 provider "aws" {
   region  = "us-east-1"
-  version = "~> 2.56.0"
+  version = "~> 3.3.0"
 }
 
 # Call the seed_module to build our ADO seed info
@@ -25,7 +25,7 @@ module "bootstrap" {
 
 
 module "data-lake_policy" {
-  source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=0.2.0"
+  source = "git::https://github.com/savealive/terraform-aws-iam-policy-document-aggregator.git?ref=0.4.1"
   source_documents = [
     data.template_file.data-lake_bucket_policy_public.rendered,
     data.template_file.data-lake_bucket_policy_emr_production.rendered,

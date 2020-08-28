@@ -13,15 +13,15 @@ variable "region" {
   description = "A valid AWS region to house VPC resources."
 }
 
-variable "key_name" {
-  type        = string
-  description = "A key pair used to control login access to EC2 instances."
-}
-
-//variable "user_data" {
+//variable "key_name" {
 //  type        = string
-//  description = "User data to bootstrap EC2 instance"
+//  description = "A key pair used to control login access to EC2 instances."
 //}
+
+variable "user_data" {
+  type        = string
+  description = "User data to bootstrap EC2 instance"
+}
 
 variable "cidr_block" {
   default     = "10.0.0.0/16" // 10.0.0.0 - 10.0.255.255

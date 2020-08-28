@@ -19,6 +19,11 @@ resource "aws_iam_policy" "secrets_read_slack-gfw-sync" {
   policy = data.template_file.secrets_read_slack-gfw-sync.rendered
 }
 
+resource "aws_iam_policy" "secrets_read_gfw-gee-export_key" {
+  name   = "${local.project}-secrets_read_gfw-gee-export_key"
+  policy = data.template_file.secrets_read_gfw-gee-export_key.rendered
+}
+
 resource "aws_iam_role" "iam_emr_service_role" {
   name               = "${local.project}-iam_emr_service_role"
   assume_role_policy = data.template_file.trust_emr.rendered

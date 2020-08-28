@@ -165,19 +165,19 @@ resource "aws_nat_gateway" "default" {
 #
 
 resource "aws_instance" "bastion" {
-  ami                         = var.bastion_ami
-  availability_zone           = var.availability_zones[0]
-  ebs_optimized               = true
-  instance_type               = var.bastion_instance_type
-  key_name                    = var.key_name
+  ami               = var.bastion_ami
+  availability_zone = var.availability_zones[0]
+  ebs_optimized     = true
+  instance_type     = var.bastion_instance_type
+  //  key_name                    = var.key_name
   monitoring                  = true
   subnet_id                   = aws_subnet.public[0].id
   vpc_security_group_ids      = var.security_group_ids
   associate_public_ip_address = true
-  //  user_data                   = var.user_data
+  user_data                   = var.user_data
 
   lifecycle {
-    ignore_changes = [ami, user_data]
+    ignore_changes = [ami]
   }
 
   tags = merge(

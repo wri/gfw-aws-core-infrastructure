@@ -23,14 +23,15 @@ jobs:
         TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
-      run: ./scripts/infra plan -var "gfw_api_token=${GFW_API_TOKEN}" \
-                                -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
-                                -var "rds_password=${RDS_PASSWORD}" \
-                                -var "rds_password_ro=${RDS_PASSWORD_RO}" \
-                                -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
-                                -var "tmaschler_ip=${TMASCHLER_IP}" \
-                                -var "jterry_ip=${JTERRY_IP}" \
-                                -var "dmannarino_ip=${DMANNARINO_IP}"
+      run: |
+        ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
+                              -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
+                              -var "rds_password=${RDS_PASSWORD}" \
+                              -var "rds_password_ro=${RDS_PASSWORD_RO}" \
+                              -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
+                              -var "tmaschler_ip=${TMASCHLER_IP}" \
+                              -var "jterry_ip=${JTERRY_IP}" \
+                              -var "dmannarino_ip=${DMANNARINO_IP}"
     - name: Plan staging
       if: success() && contains(github.base_ref, 'develop')
       env:
@@ -46,11 +47,12 @@ jobs:
         TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
-      run: ./scripts/infra plan -var "gfw_api_token=${GFW_API_TOKEN}" \
-                                -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
-                                -var "rds_password=${RDS_PASSWORD}" \
-                                -var "rds_password_ro=${RDS_PASSWORD_RO}" \
-                                -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
-                                -var "tmaschler_ip=${TMASCHLER_IP}" \
-                                -var "jterry_ip=${JTERRY_IP}" \
-                                -var "dmannarino_ip=${DMANNARINO_IP}"
+      run: |
+        ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
+                              -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
+                              -var "rds_password=${RDS_PASSWORD}" \
+                              -var "rds_password_ro=${RDS_PASSWORD_RO}" \
+                              -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
+                              -var "tmaschler_ip=${TMASCHLER_IP}" \
+                              -var "jterry_ip=${JTERRY_IP}" \
+                              -var "dmannarino_ip=${DMANNARINO_IP}"

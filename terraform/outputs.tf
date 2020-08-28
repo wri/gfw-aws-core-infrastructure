@@ -48,7 +48,7 @@ output "default_security_group_id" {
 }
 
 output "key_pair_tmaschler_gfw" {
-  value = aws_key_pair.tmaschler_gfw.key_name
+  value = aws_key_pair.all["tmaschler_gfw"].key_name
 }
 
 output "secrets_read-gfw-api-token_policy_arn" {

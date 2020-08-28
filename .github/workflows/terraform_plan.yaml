@@ -14,30 +14,45 @@ jobs:
         ENV: production
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_key_production }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_production }}
-        AWS_DEFAULT_REGION: ${{ secrets.aws_region_production }}
+        AWS_REGION: ${{ secrets.aws_region_production }}
         GFW_API_TOKEN: ${{ secrets.gfw_api_token_production }}
         SLACK_DATA_UPDATES_HOOK: ${{ secrets.slack_data_updates_hook }}
         RDS_PASSWORD: ${{ secrets.rds_password_production }}
         RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_production }}
-      run: ./scripts/infra plan -var "gfw_api_token=${GFW_API_TOKEN}" -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" -var "rds_password=${RDS_PASSWORD}" -var "rds_password_ro=${RDS_PASSWORD_RO}"
+        GCS_GFW_GEE_EXPORT_KEY: ${{ secrets.gcs_gfw_gee_export_key }}
+        TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
+        JTERRY_IP: ${{ secrets.jterry_ip }}
+        DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
+      run: |
+        ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
+                              -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
+                              -var "rds_password=${RDS_PASSWORD}" \
+                              -var "rds_password_ro=${RDS_PASSWORD_RO}" \
+                              -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
+                              -var "tmaschler_ip=${TMASCHLER_IP}" \
+                              -var "jterry_ip=${JTERRY_IP}" \
+                              -var "dmannarino_ip=${DMANNARINO_IP}"
     - name: Plan staging
       if: success() && contains(github.base_ref, 'develop')
       env:
         ENV: staging
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_key_staging }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_staging }}
-        AWS_DEFAULT_REGION: ${{ secrets.aws_region_staging }}
+        AWS_REGION: ${{ secrets.aws_region_staging }}
         GFW_API_TOKEN: ${{ secrets.gfw_api_token_staging }}
         SLACK_DATA_UPDATES_HOOK: ${{ secrets.slack_data_updates_hook }}
         RDS_PASSWORD: ${{ secrets.rds_password_staging }}
         RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_staging }}
-      run: ./scripts/infra plan -var "gfw_api_token=${GFW_API_TOKEN}" -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" -var "rds_password=${RDS_PASSWORD}" -var "rds_password_ro=${RDS_PASSWORD_RO}"
-#    - name: Plan dev
-#      if: success() && (! contains(github.base_ref, 'master')) && (! contains(github.base_ref, 'develop'))
-#      env:
-#        ENV: dev
-#        AWS_ACCESS_KEY_ID: ${{ secrets.aws_key_dev }}
-#        AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_dev }}
-#        AWS_DEFAULT_REGION: ${{ secrets.aws_region_dev }}
-#        GFW_API_TOKEN: ${{ secrets.gfw_api_token_staging }}
-#      run: ./scripts/infra plan ${{ github.base_ref }}
+        GCS_GFW_GEE_EXPORT_KEY: ${{ secrets.gcs_gfw_gee_export_key }}
+        TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
+        JTERRY_IP: ${{ secrets.jterry_ip }}
+        DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
+      run: |
+        ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
+                              -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
+                              -var "rds_password=${RDS_PASSWORD}" \
+                              -var "rds_password_ro=${RDS_PASSWORD_RO}" \
+                              -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
+                              -var "tmaschler_ip=${TMASCHLER_IP}" \
+                              -var "jterry_ip=${JTERRY_IP}" \
+                              -var "dmannarino_ip=${DMANNARINO_IP}"

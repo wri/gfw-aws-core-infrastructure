@@ -18,6 +18,8 @@ module "bootstrap" {
 
 
 module "data-lake_policy" {
+  # revert back to cloudposse once this PR is merged
+  # https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator/pull/21
   source = "git::https://github.com/savealive/terraform-aws-iam-policy-document-aggregator.git?ref=0.4.1"
   source_documents = [
     data.template_file.data-lake_bucket_policy_public.rendered,
@@ -32,12 +34,14 @@ module "vpc" {
   source      = "./modules/vpc"
   environment = var.environment
   region      = var.aws_region
-  key_name    = aws_key_pair.tmaschler_gfw.key_name
+  //  key_name    = aws_key_pair.tmaschler_gfw.key_name
   bastion_ami = data.aws_ami.amazon_linux_ami.id
   project     = local.project
   tags        = local.tags
   security_group_ids = [
-  aws_security_group.default.id]
+    aws_security_group.default.id,
+  module.postgresql.security_group_id]
+  user_data = data.template_file.bastion_setup.rendered
 
 }
 

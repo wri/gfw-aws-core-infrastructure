@@ -124,7 +124,7 @@ data "template_file" "data-lake_bucket_policy_emr" {
   vars = {
     bucket_arn = aws_s3_bucket.data-lake.arn
     aws_resource_arn = jsonencode(formatlist("arn:aws:iam::%s:role/core-emr_profile",
-    matchkeys(values(var.wri_accounts), keys(var.wri_accounts), ["gfw_production", "gfw_staging", "gfw_dev", "wri"])))
+    matchkeys(values(var.wri_accounts), keys(var.wri_accounts), ["gfw_production", "gfw_staging", "gfw_dev"])))
   }
 }
 
@@ -147,7 +147,7 @@ module "data-lake_policy" {
   source = "git::https://github.com/savealive/terraform-aws-iam-policy-document-aggregator.git?ref=0.4.1"
   source_documents = [
     data.template_file.data-lake_bucket_policy_wri.rendered,
-//    data.template_file.data-lake_bucket_policy_emr.rendered,
+    data.template_file.data-lake_bucket_policy_emr.rendered,
   ]
 }
 

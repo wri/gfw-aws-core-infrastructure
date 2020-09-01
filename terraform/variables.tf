@@ -64,6 +64,7 @@ variable "wri_accounts" {
     "rw_api_production" : "534760749991"
     "rw_api_staging" : "843801476059"
     "rw_api_dev" : "842534099497"
+    "wri" : "838255262149"
   }
 }
 

@@ -83,47 +83,77 @@ resource "aws_s3_bucket" "data-lake-test" {
 ##################
 
 
-data "template_file" "pipelines_bucket_policy" {
+data "template_file" "pipelines_bucket_policy_jars" {
   template = file("${path.root}/policies/bucket_policy_public_read.json.tpl")
   vars = {
     bucket_arn = aws_s3_bucket.pipelines.arn
+    prefix     = "geotrellis/jars/"
   }
 }
 
-data "template_file" "data-lake_bucket_policy_public" {
+data "template_file" "pipelines_bucket_policy_results" {
   template = file("${path.root}/policies/bucket_policy_public_read.json.tpl")
   vars = {
+    bucket_arn = aws_s3_bucket.pipelines.arn
+    prefix     = "geotrellis/results/"
+  }
+}
+
+data "template_file" "pipelines_bucket_policy_fires" {
+  template = file("${path.root}/policies/bucket_policy_public_read.json.tpl")
+  vars = {
+    bucket_arn = aws_s3_bucket.pipelines.arn
+    prefix     = "fires"
+  }
+}
+
+
+# allow access to root user of other WRI accounts.
+# this will allow admins of other accounts to give other users read access
+data "template_file" "data-lake_bucket_policy_wri" {
+  template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
+  vars = {
+    bucket_arn       = aws_s3_bucket.data-lake.arn
+    aws_resource_arn = jsonencode(formatlist("arn:aws:iam::%s:root", values(var.wri_accounts)))
+  }
+}
+
+# EMR of GFW and WRI accounts should be able to read data lake data
+data "template_file" "data-lake_bucket_policy_emr" {
+  template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
+  vars = {
     bucket_arn = aws_s3_bucket.data-lake.arn
+    aws_resource_arn = jsonencode(formatlist("arn:aws:iam::%s:role/core-emr_profile",
+    matchkeys(values(var.wri_accounts), keys(var.wri_accounts), ["gfw", "wri"])))
   }
 }
 
-data "template_file" "data-lake_bucket_policy_emr_production" {
-  template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
-  vars = {
-    bucket_arn       = aws_s3_bucket.data-lake.arn
-    aws_resource_arn = "arn:aws:iam::${var.production_account_number}:role/core-emr_profile"
-  }
+# merge pipeline policies into one document
+module "pipeline_policy" {
+  # revert back to cloudposse once this PR is merged
+  # https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator/pull/21
+  source = "git::https://github.com/savealive/terraform-aws-iam-policy-document-aggregator.git?ref=0.4.1"
+  source_documents = [
+    data.template_file.pipelines_bucket_policy_jars.rendered,
+    data.template_file.pipelines_bucket_policy_results.rendered,
+    data.template_file.pipelines_bucket_policy_fires.rendered
+  ]
 }
 
-data "template_file" "data-lake_bucket_policy_emr_staging" {
-  template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
-  vars = {
-    bucket_arn       = aws_s3_bucket.data-lake.arn
-    aws_resource_arn = "arn:aws:iam::${var.staging_account_number}:role/core-emr_profile"
-  }
-}
-
-data "template_file" "data-lake_bucket_policy_emr_dev" {
-  template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
-  vars = {
-    bucket_arn       = aws_s3_bucket.data-lake.arn
-    aws_resource_arn = "arn:aws:iam::${var.dev_account_number}:role/core-emr_profile"
-  }
+# merge data-lake policies into one document
+module "data-lake_policy" {
+  # revert back to cloudposse once this PR is merged
+  # https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator/pull/21
+  source = "git::https://github.com/savealive/terraform-aws-iam-policy-document-aggregator.git?ref=0.4.1"
+  source_documents = [
+    data.template_file.data-lake_bucket_policy_wri.rendered,
+    data.template_file.data-lake_bucket_policy_emr.rendered,
+  ]
 }
 
 resource "aws_s3_bucket_policy" "pipelines" {
   bucket = aws_s3_bucket.pipelines.id
-  policy = data.template_file.pipelines_bucket_policy.rendered
+  policy = module.pipeline_policy.result_document
 }
 
 resource "aws_s3_bucket_policy" "data-lake" {
@@ -169,11 +199,9 @@ resource "aws_iam_policy" "s3_write_pipelines" {
 resource "aws_iam_policy" "s3_write_data-lake" {
   name   = "${local.project}-s3_write_data-lake"
   policy = data.template_file.s3_write_data-lake.rendered
-
 }
 
 resource "aws_iam_policy" "s3_write_raw_data-lake" {
   name   = "${local.project}-s3_write_raw_data-lake"
   policy = data.template_file.s3_write_raw_data-lake.rendered
-
 }

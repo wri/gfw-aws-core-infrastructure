@@ -10,7 +10,7 @@
             "Effect": "Allow",
             "Action": "s3:*Object",
             "Resource": [
-                "${bucket_arn}/*"
+                "${bucket_arn}/${prefix}*"
             ]
         }
     ]

@@ -55,6 +55,18 @@ variable "dev_account_number" {
   description = "Account number of production account"
 }
 
+variable "wri_accounts" {
+  default = {
+    "gfw_production" : "401951483516"
+    "gfw_staging" : "274931322839"
+    "gfw_dev" : "563860007740"
+    "gfw_pro" : "617001639586"
+    "rw_api_production" : "534760749991"
+    "rw_api_staging" : "843801476059"
+    "rw_api_dev" : "842534099497"
+  }
+}
+
 
 variable "rds_backup_retention_period" {
   type        = number

@@ -1,12 +1,7 @@
-resource "aws_s3_bucket_policy" "pipelines" {
-  bucket = aws_s3_bucket.pipelines.id
-  policy = data.template_file.pipelines_bucket_policy.rendered
-}
+################
+# Buckets
+################
 
-resource "aws_s3_bucket_policy" "data-lake" {
-  bucket = aws_s3_bucket.data-lake.id
-  policy = module.data-lake_policy.result_document
-}
 
 resource "aws_s3_bucket" "pipelines" {
   bucket = "gfw-pipelines${local.bucket_suffix}"
@@ -62,20 +57,6 @@ resource "aws_s3_bucket" "data-lake" {
   acl           = "private"
   tags          = local.tags
   request_payer = "BucketOwner"
-
-  //  lifecycle_rule {
-  //    id      = "intelligent_tiering"
-  //    enabled = true
-  //
-  //    tags = {
-  //      "rule"      = "tiering"
-  //    }
-  //
-  //    transition {
-  //      days          = 1
-  //      storage_class = "INTELLIGENT_TIERING"
-  //    }
-  //  }
 }
 
 
@@ -94,4 +75,105 @@ resource "aws_s3_bucket" "data-lake-test" {
   acl    = "private"
   tags   = local.tags
   count  = var.environment == "dev" ? 1 : 0
+}
+
+
+##################
+# Bucket policies
+##################
+
+
+data "template_file" "pipelines_bucket_policy" {
+  template = file("${path.root}/policies/bucket_policy_public_read.json.tpl")
+  vars = {
+    bucket_arn = aws_s3_bucket.pipelines.arn
+  }
+}
+
+data "template_file" "data-lake_bucket_policy_public" {
+  template = file("${path.root}/policies/bucket_policy_public_read.json.tpl")
+  vars = {
+    bucket_arn = aws_s3_bucket.data-lake.arn
+  }
+}
+
+data "template_file" "data-lake_bucket_policy_emr_production" {
+  template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
+  vars = {
+    bucket_arn       = aws_s3_bucket.data-lake.arn
+    aws_resource_arn = "arn:aws:iam::${var.production_account_number}:role/core-emr_profile"
+  }
+}
+
+data "template_file" "data-lake_bucket_policy_emr_staging" {
+  template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
+  vars = {
+    bucket_arn       = aws_s3_bucket.data-lake.arn
+    aws_resource_arn = "arn:aws:iam::${var.staging_account_number}:role/core-emr_profile"
+  }
+}
+
+data "template_file" "data-lake_bucket_policy_emr_dev" {
+  template = file("${path.root}/policies/bucket_policy_role_read.json.tpl")
+  vars = {
+    bucket_arn       = aws_s3_bucket.data-lake.arn
+    aws_resource_arn = "arn:aws:iam::${var.dev_account_number}:role/core-emr_profile"
+  }
+}
+
+resource "aws_s3_bucket_policy" "pipelines" {
+  bucket = aws_s3_bucket.pipelines.id
+  policy = data.template_file.pipelines_bucket_policy.rendered
+}
+
+resource "aws_s3_bucket_policy" "data-lake" {
+  bucket = aws_s3_bucket.data-lake.id
+  policy = module.data-lake_policy.result_document
+}
+
+
+##################
+# IAM policies
+##################
+
+
+data "template_file" "s3_write_pipelines" {
+  template = file("${path.root}/policies/iam_policy_s3_write.json.tpl")
+  vars = {
+    bucket_arn = aws_s3_bucket.pipelines.arn
+    prefix     = ""
+  }
+}
+
+data "template_file" "s3_write_data-lake" {
+  template = file("${path.root}/policies/iam_policy_s3_write.json.tpl")
+  vars = {
+    bucket_arn = aws_s3_bucket.data-lake.arn
+    prefix     = ""
+  }
+}
+
+data "template_file" "s3_write_raw_data-lake" {
+  template = file("${path.root}/policies/iam_policy_s3_write.json.tpl")
+  vars = {
+    bucket_arn = aws_s3_bucket.data-lake.arn
+    prefix     = "*/raw/"
+  }
+}
+
+resource "aws_iam_policy" "s3_write_pipelines" {
+  name   = "${local.project}-s3_write_pipelines"
+  policy = data.template_file.s3_write_pipelines.rendered
+}
+
+resource "aws_iam_policy" "s3_write_data-lake" {
+  name   = "${local.project}-s3_write_data-lake"
+  policy = data.template_file.s3_write_data-lake.rendered
+
+}
+
+resource "aws_iam_policy" "s3_write_raw_data-lake" {
+  name   = "${local.project}-s3_write_raw_data-lake"
+  policy = data.template_file.s3_write_raw_data-lake.rendered
+
 }

@@ -130,9 +130,7 @@ data "template_file" "data-lake_bucket_policy_emr" {
 
 # merge pipeline policies into one document
 module "pipeline_policy" {
-  # revert back to cloudposse once this PR is merged
-  # https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator/pull/21
-  source = "git::https://github.com/savealive/terraform-aws-iam-policy-document-aggregator.git?ref=0.4.1"
+  source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=0.6.0"
   source_documents = [
     data.template_file.pipelines_bucket_policy_jars.rendered,
     data.template_file.pipelines_bucket_policy_results.rendered,
@@ -142,9 +140,7 @@ module "pipeline_policy" {
 
 # merge data-lake policies into one document
 module "data-lake_policy" {
-  # revert back to cloudposse once this PR is merged
-  # https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator/pull/21
-  source = "git::https://github.com/savealive/terraform-aws-iam-policy-document-aggregator.git?ref=0.4.1"
+  source = "git::https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator.git?ref=0.6.0"
   source_documents = [
     data.template_file.data-lake_bucket_policy_wri.rendered,
     data.template_file.data-lake_bucket_policy_emr.rendered,

@@ -40,7 +40,7 @@ resource "aws_rds_cluster" "aurora_cluster" {
 resource "aws_rds_cluster_instance" "aurora_cluster_instance" {
 
   count                        = var.rds_instance_count
-  identifier                   = "gfw-aurora" #"${var.project}-aurora-instance-${count.index}"
+  identifier                   = "${var.project}-aurora-instance-${count.index}"
   cluster_identifier           = aws_rds_cluster.aurora_cluster.id
   instance_class               = var.rds_instance_class
   engine                       = "aurora-postgresql"

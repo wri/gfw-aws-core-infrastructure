@@ -7,7 +7,7 @@
         "s3:GetObject"
       ],
       "Principal": "*",
-      "Resource": "${bucket_arn}/*"
+      "Resource": "${bucket_arn}/${prefix}*"
     }
   ]
 }

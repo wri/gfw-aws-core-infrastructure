@@ -87,6 +87,10 @@ output "iam_policy_s3_write_data-lake_arn" {
   value = aws_iam_policy.s3_write_data-lake.arn
 }
 
+output "iam_policy_s3_write_raw_data-lake_arn" {
+  value = aws_iam_policy.s3_write_raw_data-lake.arn
+}
+
 output "iam_policy_s3_write_pipelines_arn" {
   value = aws_iam_policy.s3_write_pipelines.arn
 }

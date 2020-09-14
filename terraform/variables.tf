@@ -37,22 +37,18 @@ variable "slack_data_updates_hook" {
   description = "Hook for Slack data-updates channel"
 }
 
-variable "production_account_number" {
-  default     = "401951483516"
-  type        = string
-  description = "Account number of production account"
-}
 
-variable "staging_account_number" {
-  default     = "274931322839"
-  type        = string
-  description = "Account number of production account"
-}
-
-variable "dev_account_number" {
-  default     = "563860007740"
-  type        = string
-  description = "Account number of production account"
+variable "wri_accounts" {
+  default = {
+    "gfw_production" : "401951483516"
+    "gfw_staging" : "274931322839"
+    "gfw_dev" : "563860007740"
+    "gfw_pro" : "617001639586"
+    "rw_api_production" : "534760749991"
+    "rw_api_staging" : "843801476059"
+    "rw_api_dev" : "842534099497"
+    "wri" : "838255262149"
+  }
 }
 
 
@@ -69,6 +65,11 @@ variable "log_retention_period" {
 variable "rds_instance_class" {
   type        = string
   description = "RDS Aurora instance type for write node"
+}
+
+variable "rds_instance_count" {
+  type        = number
+  description = "RDS Aurora instance count"
 }
 
 variable "rds_password" {

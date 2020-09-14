@@ -17,17 +17,7 @@ module "bootstrap" {
 }
 
 
-module "data-lake_policy" {
-  # revert back to cloudposse once this PR is merged
-  # https://github.com/cloudposse/terraform-aws-iam-policy-document-aggregator/pull/21
-  source = "git::https://github.com/savealive/terraform-aws-iam-policy-document-aggregator.git?ref=0.4.1"
-  source_documents = [
-    data.template_file.data-lake_bucket_policy_public.rendered,
-    data.template_file.data-lake_bucket_policy_emr_production.rendered,
-    data.template_file.data-lake_bucket_policy_emr_staging.rendered,
-    data.template_file.data-lake_bucket_policy_emr_dev.rendered
-  ]
-}
+
 
 
 module "vpc" {
@@ -55,7 +45,7 @@ module "postgresql" {
   rds_backup_retention_period = var.rds_backup_retention_period
   rds_db_name                 = "geostore"
   rds_instance_class          = var.rds_instance_class
-  rds_instance_count          = 1
+  rds_instance_count          = var.rds_instance_count
   rds_password                = var.rds_password
   rds_user_name               = "gfw"
   tags                        = local.tags

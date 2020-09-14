@@ -67,6 +67,11 @@ variable "rds_instance_class" {
   description = "RDS Aurora instance type for write node"
 }
 
+variable "rds_instance_count" {
+  type        = number
+  description = "RDS Aurora instance count"
+}
+
 variable "rds_password" {
   type        = string
   description = "Superuser password for RDS Aurora database"

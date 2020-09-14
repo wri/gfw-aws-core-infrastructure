@@ -45,7 +45,7 @@ module "postgresql" {
   rds_backup_retention_period = var.rds_backup_retention_period
   rds_db_name                 = "geostore"
   rds_instance_class          = var.rds_instance_class
-  rds_instance_count          = 1
+  rds_instance_count          = var.rds_instance_count
   rds_password                = var.rds_password
   rds_user_name               = "gfw"
   tags                        = local.tags

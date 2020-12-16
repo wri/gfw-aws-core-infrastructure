@@ -16,23 +16,16 @@ module "bootstrap" {
   tags                 = local.tags
 }
 
-
-
-
-
 module "vpc" {
   source      = "./modules/vpc"
   environment = var.environment
   region      = var.aws_region
-  //  key_name    = aws_key_pair.tmaschler_gfw.key_name
-  bastion_ami = data.aws_ami.amazon_linux_ami.id
   project     = local.project
   tags        = local.tags
   security_group_ids = [
-    aws_security_group.default.id,
+    module.security.default_security_group_id,
   module.postgresql.security_group_id]
-  user_data = data.template_file.bastion_setup.rendered
-
+  keys = values(aws_key_pair.all)[*].public_key
 }
 
 
@@ -53,4 +46,90 @@ module "postgresql" {
   rds_password_ro             = var.rds_password_ro
   rds_port                    = 5432
   rds_user_name_ro            = "gfw_read_only"
+}
+
+module "data-lake_bucket" {
+  source         = "./modules/storage"
+  bucket_name    = "gfw-data-lake${local.bucket_suffix}"
+  project        = local.project
+  requester_pays = false
+  tags           = local.tags
+  read_roles = [
+    jsonencode(formatlist("arn:aws:iam::%s:root", values(var.wri_accounts))),
+    jsonencode(formatlist("arn:aws:iam::%s:role/core-emr_profile",
+  matchkeys(values(var.wri_accounts), keys(var.wri_accounts), ["gfw_production", "gfw_staging", "gfw_dev"])))]
+  write_policy_prefix = ["", "*/raw/"]
+}
+
+module "pipeline_bucket" {
+  source      = "./modules/storage"
+  bucket_name = "gfw-pipelines${local.bucket_suffix}"
+  project     = local.project
+  lifecycle_rules = [
+    {
+      id      = "geotrellis_logs"
+      enabled = true
+      prefix  = "geotrellis/logs/"
+      transition = [{
+        days          = 30 # initially set to 3 days, but somehow this is no longer possible
+        storage_class = "ONEZONE_IA"
+        }, {
+        days          = 60
+        storage_class = "GLACIER"
+      }]
+      expiration = {
+        days = 90
+      }
+    },
+    {
+      id      = "geotrellis_results"
+      enabled = true
+      prefix  = "geotrellis/results/"
+      transition = [{
+        days          = 30            # initally set to 7 days but this is somehow no longer possible
+        storage_class = "STANDARD_IA" # or "ONEZONE_IA"
+        }, {
+        days          = 60
+        storage_class = "GLACIER"
+      }]
+      expiration = {
+        days = 90
+      }
+  }]
+  tags           = local.tags
+  public_folders = ["geotrellis/jars/", "geotrellis/results/", "fires/"]
+}
+
+module "data-lake-test-bucket" {
+  count       = var.environment == "dev" ? 1 : 0
+  source      = "./modules/storage"
+  bucket_name = "gfw-data-lake-test"
+  project     = local.project
+  tags        = local.tags
+}
+
+
+module "pipeline-test-bucket" {
+  count       = var.environment == "dev" ? 1 : 0
+  source      = "./modules/storage"
+  bucket_name = "gfw-pipeline-test"
+  project     = local.project
+  tags        = local.tags
+}
+
+module "security" {
+  source          = "./modules/security"
+  project         = local.project
+  ssh_cidr_blocks = ["216.70.220.184/32", "${var.tmaschler_ip}/32", "${var.jterry_ip}/32", "${var.dmannarino_ip}/32"]
+  tags            = local.tags
+  vpc_cidre_block = module.vpc.cidr_block
+  vpc_id          = module.vpc.id
+}
+
+module "secrets" {
+  source  = "./modules/secrets"
+  project = local.project
+  secrets = [{ name = "gfw-api/token", secret_string = jsonencode({ "token" = var.gfw_api_token, "email" = "gfw-sync@wri.org" }) },
+    { name = "slack/gfw-sync", secret_string = jsonencode({ "data-updates" = var.slack_data_updates_hook }) },
+  { name = "gcs/gfw-gee-export", secret_string = var.gfw-gee-export_key }]
 }

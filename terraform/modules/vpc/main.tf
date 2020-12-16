@@ -163,18 +163,28 @@ resource "aws_nat_gateway" "default" {
 #
 # Bastion resources
 #
+data "aws_ami" "amazon_linux_ami" {
+  most_recent = true
+  owners = [
+  "amazon"]
+
+  filter {
+    name = "name"
+    values = [
+    "amzn2-ami-hvm*"]
+  }
+}
 
 resource "aws_instance" "bastion" {
-  ami               = var.bastion_ami
-  availability_zone = var.availability_zones[0]
-  ebs_optimized     = true
-  instance_type     = var.bastion_instance_type
-  //  key_name                    = var.key_name
+  ami                         = data.aws_ami.amazon_linux_ami.id
+  availability_zone           = var.availability_zones[0]
+  ebs_optimized               = true
+  instance_type               = var.bastion_instance_type
   monitoring                  = true
   subnet_id                   = aws_subnet.public[0].id
   vpc_security_group_ids      = var.security_group_ids
   associate_public_ip_address = true
-  user_data                   = var.user_data
+  user_data                   = data.template_file.bastion_setup.rendered
 
   lifecycle {
     ignore_changes = [ami]
@@ -186,4 +196,18 @@ resource "aws_instance" "bastion" {
     },
     var.tags
   )
+}
+
+
+# User data script to bootstrap authorized ssh keys
+data "template_file" "bastion_setup" {
+  template = file("${path.module}/user_data/bastion_setup.sh.tpl")
+  vars = {
+    user                = "ec2-user"
+    authorized_ssh_keys = <<EOT
+%{for row in formatlist("echo \"%v\" >> /home/ec2-user/.ssh/authorized_keys", var.keys)~}
+${row}
+%{endfor~}
+EOT
+  }
 }

@@ -12,7 +12,7 @@ resource "aws_secretsmanager_secret_version" "default" {
 }
 
 data "template_file" "default" {
-  template = file("${path.module}/template/iam_policy_secrets_read.json.tpl")
+  template = file("${path.module}/templates/iam_policy_secrets_read.json.tpl")
   vars = {
     secret_arn = aws_secretsmanager_secret.default.arn
   }

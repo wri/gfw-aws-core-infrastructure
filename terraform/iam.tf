@@ -1,3 +1,5 @@
+### IAM EMR roles needed for S3 bucket policy
+
 data "template_file" "trust_emr" {
   template = file("${path.root}/templates/trust_service.json.tpl")
   vars = {

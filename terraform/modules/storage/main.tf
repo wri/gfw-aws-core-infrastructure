@@ -49,6 +49,8 @@ resource "aws_s3_bucket" "default" {
 #################
 
 resource "aws_s3_bucket_policy" "default" {
+  count = length(concat(data.template_file.public_folders_bucket_policy[*].rendered,
+  data.template_file.read_access_role_bucket_policy[*].rendered))
   bucket = aws_s3_bucket.default.id
   policy = module.bucket_policy.result_document
 }

@@ -123,3 +123,12 @@ output "acm_certificate" {
 output "aurora_cluster_instance_class" {
   value = module.postgresql.aurora_cluster_instance_class
 }
+
+output "emr_instance_profile_name" {
+  value = aws_iam_instance_profile.emr_profile.name
+}
+
+
+output "emr_service_role_name" {
+  value = aws_iam_role.iam_emr_service_role.name
+}

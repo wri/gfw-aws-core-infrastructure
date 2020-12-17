@@ -112,7 +112,7 @@ module "data-lake-test-bucket" {
 module "pipeline-test-bucket" {
   count       = var.environment == "dev" ? 1 : 0
   source      = "./modules/storage"
-  bucket_name = "gfw-pipeline-test"
+  bucket_name = "gfw-pipelines-test"
   project     = local.project
   tags        = local.tags
 }

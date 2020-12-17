@@ -127,23 +127,23 @@ module "firewall" {
 }
 
 module "api_token_secret" {
-  source  = "./modules/secrets"
-  project = local.project
-  name = "gfw-api/token"
+  source        = "./modules/secrets"
+  project       = local.project
+  name          = "gfw-api/token"
   secret_string = jsonencode({ "token" = var.gfw_api_token, "email" = "gfw-sync@wri.org" })
 }
 
 
 module "slack_secret" {
-  source  = "./modules/secrets"
-  project = local.project
-  name = "slack/gfw-sync"
+  source        = "./modules/secrets"
+  project       = local.project
+  name          = "slack/gfw-sync"
   secret_string = jsonencode({ "data-updates" = var.slack_data_updates_hook })
 }
 
 module "gcs_gfw_gee_export_secret" {
-  source  = "./modules/secrets"
-  project = local.project
-  name = "gcs/gfw-gee-export"
+  source        = "./modules/secrets"
+  project       = local.project
+  name          = "gcs/gfw-gee-export"
   secret_string = var.gfw-gee-export_key
 }

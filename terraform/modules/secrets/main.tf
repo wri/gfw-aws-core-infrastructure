@@ -3,7 +3,7 @@
 ##################
 
 resource "aws_secretsmanager_secret" "default" {
-  name  = var.name
+  name = var.name
 }
 
 resource "aws_secretsmanager_secret_version" "default" {

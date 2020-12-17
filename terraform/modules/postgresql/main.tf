@@ -199,23 +199,23 @@ resource "aws_security_group_rule" "postgresql_egress" {
 ##########
 
 module "read_only_secret" {
-  source = "../../modules/secrets"
+  source  = "../../modules/secrets"
   project = var.project
-  name = "postgresql/read-only"
+  name    = "postgresql/read-only"
   secret_string = jsonencode({
-    "username" = var.rds_user_name_ro,
-    "engine" = "postgresql",
-    "dbname" = var.rds_db_name,
-    "host" = aws_rds_cluster.aurora_cluster.reader_endpoint,
-    "password" = var.rds_password_ro,
-    "port" = var.rds_port,
+    "username"             = var.rds_user_name_ro,
+    "engine"               = "postgresql",
+    "dbname"               = var.rds_db_name,
+    "host"                 = aws_rds_cluster.aurora_cluster.reader_endpoint,
+    "password"             = var.rds_password_ro,
+    "port"                 = var.rds_port,
     "dbInstanceIdentifier" = aws_rds_cluster.aurora_cluster.cluster_identifier
   })
 }
 module "write_secret" {
-  source = "../../modules/secrets"
+  source  = "../../modules/secrets"
   project = var.project
-  name = "postgresql/write"
+  name    = "postgresql/write"
   secret_string = jsonencode({
     "username"             = var.rds_user_name,
     "engine"               = "postgresql",

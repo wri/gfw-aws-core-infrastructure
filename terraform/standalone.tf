@@ -36,8 +36,3 @@ resource "aws_cloudwatch_log_group" "batch_job" {
   retention_in_days = 30
 }
 
-
-# Not sure what this is for but cannot delete it. So just keep it
-resource "aws_iam_service_linked_role" "spot" {
-  aws_service_name = "spot.amazonaws.com"
-}

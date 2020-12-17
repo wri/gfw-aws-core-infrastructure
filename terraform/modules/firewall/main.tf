@@ -11,15 +11,15 @@ resource "aws_security_group" "default" {
     var.tags
   )
 }
-
-resource "aws_security_group_rule" "ingress_ssh" {
-  type              = "ingress"
-  from_port         = "22"
-  to_port           = "22"
-  protocol          = "tcp"
-  cidr_blocks       = var.ssh_cidr_blocks
-  security_group_id = aws_security_group.default.id
-}
+//
+//resource "aws_security_group_rule" "ingress_ssh" {
+//  type              = "ingress"
+//  from_port         = "22"
+//  to_port           = "22"
+//  protocol          = "tcp"
+//  cidr_blocks       = var.ssh_cidr_blocks
+//  security_group_id = aws_security_group.default.id
+//}
 
 resource "aws_security_group_rule" "default_ssh_egress" {
   type      = "egress"

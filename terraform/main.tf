@@ -23,7 +23,7 @@ module "vpc" {
   project     = local.project
   tags        = local.tags
   security_group_ids = [
-    module.security.default_security_group_id,
+    module.firewall.default_security_group_id,
   module.postgresql.security_group_id]
   keys = values(aws_key_pair.all)[*].public_key
 }
@@ -117,8 +117,8 @@ module "pipeline-test-bucket" {
   tags        = local.tags
 }
 
-module "security" {
-  source          = "./modules/security"
+module "firewall" {
+  source          = "./modules/firewall"
   project         = local.project
   ssh_cidr_blocks = ["216.70.220.184/32", "${var.tmaschler_ip}/32", "${var.jterry_ip}/32", "${var.dmannarino_ip}/32"]
   tags            = local.tags
@@ -126,10 +126,24 @@ module "security" {
   vpc_id          = module.vpc.id
 }
 
-module "secrets" {
+module "api_token_secret" {
   source  = "./modules/secrets"
   project = local.project
-  secrets = [{ name = "gfw-api/token", secret_string = jsonencode({ "token" = var.gfw_api_token, "email" = "gfw-sync@wri.org" }) },
-    { name = "slack/gfw-sync", secret_string = jsonencode({ "data-updates" = var.slack_data_updates_hook }) },
-  { name = "gcs/gfw-gee-export", secret_string = var.gfw-gee-export_key }]
+  name = "gfw-api/token"
+  secret_string = jsonencode({ "token" = var.gfw_api_token, "email" = "gfw-sync@wri.org" })
+}
+
+
+module "slack_secret" {
+  source  = "./modules/secrets"
+  project = local.project
+  name = "slack/gfw-sync"
+  secret_string = jsonencode({ "data-updates" = var.slack_data_updates_hook })
+}
+
+module "gcs_gfw_gee_export_secret" {
+  source  = "./modules/secrets"
+  project = local.project
+  name = "gcs/gfw-gee-export"
+  secret_string = var.gfw-gee-export_key
 }

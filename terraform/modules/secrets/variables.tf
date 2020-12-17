@@ -2,9 +2,10 @@ variable "project" {
   type = string
 }
 
-variable "secrets" {
-  type = list(object({
-    name          = string
-    secret_string = string
-  }))
+variable "name" {
+  type = string
+}
+
+variable "secret_string" {
+  type = string
 }

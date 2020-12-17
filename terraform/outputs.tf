@@ -15,10 +15,6 @@ output "tags" {
   value = local.tags
 }
 
-output "account_id" {
-  value = data.aws_caller_identity.current.account_id
-}
-
 output "vpc_id" {
   value = module.vpc.id
 }
@@ -44,7 +40,11 @@ output "cidr_block" {
 }
 
 output "default_security_group_id" {
-  value = module.security.default_security_group_id
+  value = module.firewall.default_security_group_id
+}
+
+output "webserver_security_group_id" {
+  value = module.firewall.webserver_security_group_id
 }
 
 output "key_pair_tmaschler_gfw" {
@@ -52,35 +52,27 @@ output "key_pair_tmaschler_gfw" {
 }
 
 output "secrets_read-gfw-api-token_policy_arn" {
-  value = module.secrets.secret_read_policy_arn[0]
+  value = module.api_token_secret.read_policy_arn
 }
 
 output "secrets_read-slack-gfw-sync_policy_arn" {
-  value = module.secrets.secret_read_policy_arn[1]
+  value = module.slack_secret.read_policy_arn
 }
 
 output "secrets_read-gfw-gee-export_policy_arn" {
-  value = module.secrets.secret_read_policy_arn[2]
+  value = module.gcs_gfw_gee_export_secret.read_policy_arn
 }
 
 output "secrets_read-gfw-api-token_arn" {
-  value = module.secrets.secret_arns[0]
+  value = module.api_token_secret.secret_arn
 }
 
 output "secrets_read-slack_gfw_sync_arn" {
-  value = module.secrets.secret_arns[1]
+  value = module.slack_secret.secret_arn
 }
 
 output "secrets_read-gfw-gee-export_arn" {
-  value = module.secrets.secret_arns[2]
-}
-
-output "emr_instance_profile_name" {
-  value = aws_iam_instance_profile.emr_profile.name
-}
-
-output "emr_service_role_name" {
-  value = aws_iam_role.iam_emr_service_role.name
+  value = module.gcs_gfw_gee_export_secret.secret_arn
 }
 
 output "iam_policy_s3_write_data-lake_arn" {

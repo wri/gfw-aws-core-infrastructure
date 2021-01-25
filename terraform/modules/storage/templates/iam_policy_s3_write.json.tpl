@@ -3,7 +3,7 @@
     "Statement": [
         {
             "Effect": "Allow",
-            "Action": "s3:ListBucket",
+            "Action": ["s3:ListBucket", "s3:PutBucketLifecycleConfiguration"],
             "Resource": "${bucket_arn}"
         },
         {

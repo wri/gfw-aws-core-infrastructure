@@ -51,6 +51,10 @@ output "key_pair_tmaschler_gfw" {
   value = aws_key_pair.all["tmaschler_gfw"].key_name
 }
 
+output "key_pair_jterry_gfw" {
+  value = aws_key_pair.all["jterry_gfw"].key_name
+}
+
 output "secrets_read-gfw-api-token_policy_arn" {
   value = aws_iam_policy.secrets_read_gfw-api-token.arn
 }

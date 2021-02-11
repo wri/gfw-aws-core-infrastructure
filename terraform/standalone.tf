@@ -11,7 +11,7 @@ resource "aws_acm_certificate" "globalforestwatch" {
   lifecycle {
     create_before_destroy = true
   }
-  count = var.environment == "dev" ? 0 : 1
+  count = 1
 }
 
 

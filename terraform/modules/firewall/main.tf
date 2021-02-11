@@ -13,11 +13,13 @@ resource "aws_security_group" "default" {
 }
 
 resource "aws_security_group_rule" "ingress_ssh" {
+  count             = length(var.ssh_cidr_blocks)
   type              = "ingress"
   from_port         = "22"
   to_port           = "22"
   protocol          = "tcp"
-  cidr_blocks       = var.ssh_cidr_blocks
+  cidr_blocks       = [var.ssh_cidr_blocks[count.index]]
+  description       = var.description[count.index]
   security_group_id = aws_security_group.default.id
 }
 

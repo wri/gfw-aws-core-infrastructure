@@ -6,6 +6,10 @@ variable "ssh_cidr_blocks" {
   type = list(string)
 }
 
+variable "description" {
+  type = list(string)
+}
+
 variable "tags" {
   type = map(string)
 }

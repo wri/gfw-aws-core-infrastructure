@@ -4,19 +4,15 @@ output "environment" {
 }
 
 output "pipelines_bucket" {
-  value = aws_s3_bucket.pipelines.id
+  value = module.pipeline_bucket.bucket_id
 }
 
 output "data-lake_bucket" {
-  value = aws_s3_bucket.data-lake.id
+  value = module.data-lake_bucket.bucket_id
 }
 
 output "tags" {
   value = local.tags
-}
-
-output "account_id" {
-  value = data.aws_caller_identity.current.account_id
 }
 
 output "vpc_id" {
@@ -44,7 +40,11 @@ output "cidr_block" {
 }
 
 output "default_security_group_id" {
-  value = aws_security_group.default.id
+  value = module.firewall.default_security_group_id
+}
+
+output "webserver_security_group_id" {
+  value = module.firewall.webserver_security_group_id
 }
 
 output "key_pair_tmaschler_gfw" {
@@ -56,47 +56,39 @@ output "key_pair_jterry_gfw" {
 }
 
 output "secrets_read-gfw-api-token_policy_arn" {
-  value = aws_iam_policy.secrets_read_gfw-api-token.arn
+  value = module.api_token_secret.read_policy_arn
 }
 
 output "secrets_read-slack-gfw-sync_policy_arn" {
-  value = aws_iam_policy.secrets_read_slack-gfw-sync.arn
-}
-
-output "secrets_read-gfw-api-token_arn" {
-  value = aws_secretsmanager_secret.gfw_api_token.arn
-}
-
-output "secrets_read-slack_gfw_sync_arn" {
-  value = aws_secretsmanager_secret.slack_gfw_sync.arn
+  value = module.slack_secret.read_policy_arn
 }
 
 output "secrets_read-gfw-gee-export_policy_arn" {
-  value = aws_iam_policy.secrets_read_gfw-gee-export_key.arn
+  value = module.gcs_gfw_gee_export_secret.read_policy_arn
+}
+
+output "secrets_read-gfw-api-token_arn" {
+  value = module.api_token_secret.secret_arn
+}
+
+output "secrets_read-slack_gfw_sync_arn" {
+  value = module.slack_secret.secret_arn
 }
 
 output "secrets_read-gfw-gee-export_arn" {
-  value = aws_secretsmanager_secret.gfw-gee-export.arn
-}
-
-output "emr_instance_profile_name" {
-  value = aws_iam_instance_profile.emr_profile.name
-}
-
-output "emr_service_role_name" {
-  value = aws_iam_role.iam_emr_service_role.name
+  value = module.gcs_gfw_gee_export_secret.secret_arn
 }
 
 output "iam_policy_s3_write_data-lake_arn" {
-  value = aws_iam_policy.s3_write_data-lake.arn
+  value = module.data-lake_bucket.write_policy_arns[0]
 }
 
 output "iam_policy_s3_write_raw_data-lake_arn" {
-  value = aws_iam_policy.s3_write_raw_data-lake.arn
+  value = module.data-lake_bucket.write_policy_arns[1]
 }
 
 output "iam_policy_s3_write_pipelines_arn" {
-  value = aws_iam_policy.s3_write_pipelines.arn
+  value = module.pipeline_bucket.write_policy_arns[0]
 }
 
 output "postgresql_security_group_id" {
@@ -134,4 +126,13 @@ output "acm_certificate" {
 
 output "aurora_cluster_instance_class" {
   value = module.postgresql.aurora_cluster_instance_class
+}
+
+output "emr_instance_profile_name" {
+  value = aws_iam_instance_profile.emr_profile.name
+}
+
+
+output "emr_service_role_name" {
+  value = aws_iam_role.iam_emr_service_role.name
 }

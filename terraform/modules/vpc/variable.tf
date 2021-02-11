@@ -13,14 +13,9 @@ variable "region" {
   description = "A valid AWS region to house VPC resources."
 }
 
-//variable "key_name" {
-//  type        = string
-//  description = "A key pair used to control login access to EC2 instances."
-//}
 
-variable "user_data" {
-  type        = string
-  description = "User data to bootstrap EC2 instance"
+variable "keys" {
+  type = list(string)
 }
 
 variable "cidr_block" {
@@ -55,11 +50,6 @@ variable "availability_zones" {
   type        = list(string)
   default     = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1e", "us-east-1f"]
   description = "A list of availability zones for subnet placement."
-}
-
-variable "bastion_ami" {
-  type        = string
-  description = "An AMI ID for the bastion."
 }
 
 variable "bastion_instance_type" {

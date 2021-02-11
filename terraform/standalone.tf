@@ -1,3 +1,21 @@
+# We generate certificates outside of AWS and manually registered it with the account.
+# We imported the existing certificate into TF state
+
+resource "aws_acm_certificate" "globalforestwatch" {
+  domain_name       = "*.globalforestwatch.org"
+  validation_method = "DNS"
+
+  tags = merge({ "Name" = "Global Forest Watch Wildcard" },
+  local.tags)
+
+  lifecycle {
+    create_before_destroy = true
+  }
+  count = 1
+}
+
+
+# Need to create new private keys outside of TF and AWS
 # Note: Adding new keys will destroy the Bastion host and recreate it with new user data
 resource "aws_key_pair" "all" {
   for_each = {
@@ -8,3 +26,13 @@ resource "aws_key_pair" "all" {
   key_name   = each.key
   public_key = each.value
 }
+
+
+#
+# There is no other place to specify the retention periode for batch log files
+#
+resource "aws_cloudwatch_log_group" "batch_job" {
+  name              = "/aws/batch/job"
+  retention_in_days = 30
+}
+

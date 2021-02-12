@@ -7,7 +7,7 @@ resource "aws_rds_cluster" "aurora_cluster" {
 
   cluster_identifier              = "gfw-aurora" # "${var.project}-aurora-cluster"
   engine                          = "aurora-postgresql"
-  engine_version                  = "11.6"
+  engine_version                  = "11.9"
   database_name                   = var.rds_db_name
   master_username                 = var.rds_user_name
   master_password                 = var.rds_password
@@ -83,7 +83,7 @@ resource "aws_iam_role_policy_attachment" "rds_enhanced_monitoring" {
 
 data template_file "rds_enhanced_monitoring" {
 
-  template = file("${path.root}/policies/trust_service.json.tpl")
+  template = file("${path.module}/templates/trust_service.json.tpl")
   vars = {
     service = "monitoring.rds"
   }
@@ -198,15 +198,10 @@ resource "aws_security_group_rule" "postgresql_egress" {
 #### Secret Manager
 ##########
 
-resource "aws_secretsmanager_secret" "postgresql-reader" {
-  description = "Connection string for Aurora PostgreSQL cluster"
-  name        = "${var.project}-postgresql-reader-secret"
-  tags        = var.tags
-}
-
-resource "aws_secretsmanager_secret_version" "postgresql-reader" {
-
-  secret_id = aws_secretsmanager_secret.postgresql-reader.id
+module "read_only_secret" {
+  source  = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=master"
+  project = var.project
+  name    = "postgresql/read-only"
   secret_string = jsonencode({
     "username"             = var.rds_user_name_ro,
     "engine"               = "postgresql",
@@ -216,30 +211,11 @@ resource "aws_secretsmanager_secret_version" "postgresql-reader" {
     "port"                 = var.rds_port,
     "dbInstanceIdentifier" = aws_rds_cluster.aurora_cluster.cluster_identifier
   })
-
 }
-
-data "template_file" "secrets_postgresql-reader" {
-  template = file("${path.root}/policies/iam_policy_secrets_read.json.tpl")
-  vars = {
-    secret_arn = aws_secretsmanager_secret.postgresql-reader.arn
-  }
-}
-
-resource "aws_iam_policy" "secrets_postgresql-reader" {
-  name   = "${var.project}-secrets_postgresql-reader"
-  policy = data.template_file.secrets_postgresql-reader.rendered
-}
-
-resource "aws_secretsmanager_secret" "postgresql-writer" {
-  description = "Connection string for Aurora PostgreSQL cluster"
-  name        = "${var.project}-postgresql-writer-secret"
-  tags        = var.tags
-}
-
-resource "aws_secretsmanager_secret_version" "postgresql-writer" {
-
-  secret_id = aws_secretsmanager_secret.postgresql-writer.id
+module "write_secret" {
+  source  = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=master"
+  project = var.project
+  name    = "postgresql/write"
   secret_string = jsonencode({
     "username"             = var.rds_user_name,
     "engine"               = "postgresql",
@@ -251,14 +227,4 @@ resource "aws_secretsmanager_secret_version" "postgresql-writer" {
   })
 }
 
-data "template_file" "secrets_postgresql-writer" {
-  template = file("${path.root}/policies/iam_policy_secrets_read.json.tpl")
-  vars = {
-    secret_arn = aws_secretsmanager_secret.postgresql-writer.arn
-  }
-}
 
-resource "aws_iam_policy" "secrets_postgresql-writer" {
-  name   = "${var.project}-secrets_postgresql-writer"
-  policy = data.template_file.secrets_postgresql-writer.rendered
-}

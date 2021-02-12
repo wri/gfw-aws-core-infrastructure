@@ -4,27 +4,27 @@ output "security_group_id" {
 }
 
 output "secrets_postgresql-reader_arn" {
-  value = aws_secretsmanager_secret.postgresql-reader.arn
+  value = module.read_only_secret.secret_arn
 }
 
 output "secrets_postgresql-reader_name" {
-  value = aws_secretsmanager_secret.postgresql-reader.name
+  value = module.read_only_secret.secret_name
 }
 
 output "secrets_postgresql-reader_policy_arn" {
-  value = aws_iam_policy.secrets_postgresql-reader.arn
+  value = module.read_only_secret.read_policy_arn
 }
 
 output "secrets_postgresql-writer_arn" {
-  value = aws_secretsmanager_secret.postgresql-writer.arn
+  value = module.write_secret.secret_arn
 }
 
 output "secrets_postgresql-writer_name" {
-  value = aws_secretsmanager_secret.postgresql-writer.name
+  value = module.write_secret.secret_name
 }
 
 output "secrets_postgresql-writer_policy_arn" {
-  value = aws_iam_policy.secrets_postgresql-writer.arn
+  value = module.write_secret.read_policy_arn
 }
 
 output "aurora_cluster_instance_class" {

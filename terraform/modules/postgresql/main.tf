@@ -199,7 +199,7 @@ resource "aws_security_group_rule" "postgresql_egress" {
 ##########
 
 module "read_only_secret" {
-  source  = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=master"
+  source  = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
   project = var.project
   name    = "postgresql/read-only"
   secret_string = jsonencode({
@@ -213,7 +213,7 @@ module "read_only_secret" {
   })
 }
 module "write_secret" {
-  source  = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=master"
+  source  = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
   project = var.project
   name    = "postgresql/write"
   secret_string = jsonencode({

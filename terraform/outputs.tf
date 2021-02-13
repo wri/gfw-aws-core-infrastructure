@@ -121,7 +121,7 @@ output "secrets_postgresql-writer_policy_arn" {
 }
 
 output "acm_certificate" {
-  value = var.environment == "dev" ? null : aws_acm_certificate.globalforestwatch[0].arn
+  value = aws_acm_certificate.globalforestwatch[0].arn
 }
 
 output "aurora_cluster_instance_class" {

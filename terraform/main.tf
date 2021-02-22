@@ -97,7 +97,7 @@ module "pipeline_bucket" {
       }
   }]
   tags           = local.tags
-  public_folders = ["geotrellis/jars/", "geotrellis/results/", "fires/"]
+  public_folders = ["geotrellis/jars/", "geotrellis/results/", "geotrellis/bootstrap/", "fires/"]
 }
 
 module "data-lake-test-bucket" {

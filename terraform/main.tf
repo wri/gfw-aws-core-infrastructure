@@ -48,6 +48,13 @@ module "postgresql" {
   rds_user_name_ro            = "gfw_read_only"
 }
 
+
+module "sns" {
+  source = "./modules/sns"
+  environment = "var.environment"
+}
+
+
 module "data-lake_bucket" {
   source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name    = "gfw-data-lake${local.bucket_suffix}"

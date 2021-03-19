@@ -1,3 +1,3 @@
-variable "environment" {
+variable "bucket_suffix" {
   type = string
 }

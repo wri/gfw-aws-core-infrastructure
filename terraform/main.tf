@@ -51,7 +51,7 @@ module "postgresql" {
 
 module "sns" {
   source = "./modules/sns"
-  environment = "var.environment"
+  bucket_suffix = local.bucket_suffix
 }
 
 

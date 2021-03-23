@@ -29,5 +29,4 @@ data "aws_iam_policy_document" "partner_sns_publish_policy_doc" {
 resource "aws_iam_group_policy_attachment" "attachment" {
   policy_arn = aws_iam_policy.policy.arn
   group = aws_iam_group.sns_publishers.name
-  tags = var.tags
 }

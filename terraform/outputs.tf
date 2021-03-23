@@ -125,9 +125,12 @@ output "secrets_planet_api_key_arn" {
   value = module.planet_api_key_secret.secret_arn
 }
 
+output "secrets_planet_api_key_name" {
+  value = module.planet_api_key_secret.secret_name
+}
 
 output "secrets_planet_api_key_policy_arn" {
-  value = module.planet_api_key_secret.policy_arn
+  value = module.planet_api_key_secret.read_policy_arn
 }
 
 output "acm_certificate" {

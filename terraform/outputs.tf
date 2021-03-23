@@ -132,7 +132,6 @@ output "emr_instance_profile_name" {
   value = aws_iam_instance_profile.emr_profile.name
 }
 
-
 output "emr_service_role_name" {
   value = aws_iam_role.iam_emr_service_role.name
 }

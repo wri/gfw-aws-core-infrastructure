@@ -212,6 +212,7 @@ module "read_only_secret" {
     "dbInstanceIdentifier" = aws_rds_cluster.aurora_cluster.cluster_identifier
   })
 }
+
 module "write_secret" {
   source  = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
   project = var.project

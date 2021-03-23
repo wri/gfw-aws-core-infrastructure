@@ -24,7 +24,6 @@ data "aws_iam_policy_document" "partner_sns_publish_policy_doc" {
    name        = "partner_sns_publish_policy"
    description = "Policy for partners/services to publish data update availability to"
    policy = data.aws_iam_policy_document.partner_sns_publish_policy_doc.json
-   tags = var.tags
 }
 
 resource "aws_iam_group_policy_attachment" "attachment" {

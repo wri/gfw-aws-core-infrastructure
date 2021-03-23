@@ -156,7 +156,6 @@ module "gcs_gfw_gee_export_secret" {
   secret_string = var.gfw-gee-export_key
 }
 
-
 module "planet_api_key_secret" {
   source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
   project       = local.project

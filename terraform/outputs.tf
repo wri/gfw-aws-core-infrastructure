@@ -120,6 +120,19 @@ output "secrets_postgresql-writer_policy_arn" {
   value = module.postgresql.secrets_postgresql-writer_policy_arn
 }
 
+
+output "secrets_planet_api_key_arn" {
+  value = module.planet_api_key_secret.secret_arn
+}
+
+output "secrets_planet_api_key_name" {
+  value = module.planet_api_key_secret.secret_name
+}
+
+output "secrets_planet_api_key_policy_arn" {
+  value = module.planet_api_key_secret.read_policy_arn
+}
+
 output "acm_certificate" {
   value = aws_acm_certificate.globalforestwatch[0].arn
 }

@@ -20,6 +20,7 @@ jobs:
         RDS_PASSWORD: ${{ secrets.rds_password_production }}
         RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_production }}
         GCS_GFW_GEE_EXPORT_KEY: ${{ secrets.gcs_gfw_gee_export_key }}
+        PLANET_API_KEY: ${{secrets.planet_api_key }}
         TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
@@ -29,6 +30,7 @@ jobs:
                               -var "rds_password=${RDS_PASSWORD}" \
                               -var "rds_password_ro=${RDS_PASSWORD_RO}" \
                               -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
+                              -var "planet_api_key=${PLANET_API_KEY}" \
                               -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}"
@@ -44,6 +46,7 @@ jobs:
         RDS_PASSWORD: ${{ secrets.rds_password_staging }}
         RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_staging }}
         GCS_GFW_GEE_EXPORT_KEY: ${{ secrets.gcs_gfw_gee_export_key }}
+        PLANET_API_KEY: ${{secrets.planet_api_key }}
         TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
@@ -53,6 +56,7 @@ jobs:
                               -var "rds_password=${RDS_PASSWORD}" \
                               -var "rds_password_ro=${RDS_PASSWORD_RO}" \
                               -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
+                              -var "planet_api_key=${PLANET_API_KEY}" \
                               -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}"
@@ -69,6 +73,7 @@ jobs:
         RDS_PASSWORD: ${{ secrets.rds_password_dev }}
         RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_dev }}
         GCS_GFW_GEE_EXPORT_KEY: ${{ secrets.gcs_gfw_gee_export_key }}
+        PLANET_API_KEY: ${{secrets.planet_api_key }}
         TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
@@ -78,6 +83,7 @@ jobs:
                               -var "rds_password=${RDS_PASSWORD}" \
                               -var "rds_password_ro=${RDS_PASSWORD_RO}" \
                               -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
+                              -var "planet_api_key=${PLANET_API_KEY}" \
                               -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}"

@@ -1,7 +1,3 @@
-variable "bucket_suffix" {
-  type = string
-}
-
 variable "project" {
   type        = string
   description = "Project name, used for naming resources"

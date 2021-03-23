@@ -50,7 +50,6 @@ module "postgresql" {
 
 module "sns" {
   source        = "./modules/sns"
-  bucket_suffix = local.bucket_suffix
   project       = local.project
   tags          = local.tags
 }

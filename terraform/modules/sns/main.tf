@@ -1,5 +1,5 @@
 resource "aws_sns_topic" "data_discovery_topic" {
-  name = "dataset-discovery${var.bucket_suffix}"
+  name = "dataset-discovery"
   tags = var.tags
 }
 

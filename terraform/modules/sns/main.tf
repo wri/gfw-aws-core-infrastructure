@@ -5,7 +5,6 @@ resource "aws_sns_topic" "data_discovery_topic" {
 
 resource "aws_iam_group" "sns_publishers" {
   name = "data_discovery_publishers"
-  tags = var.tags
 }
 
 data "aws_iam_policy_document" "partner_sns_publish_policy_doc" {
@@ -19,7 +18,6 @@ data "aws_iam_policy_document" "partner_sns_publish_policy_doc" {
     resources = [aws_sns_topic.data_discovery_topic.arn]
     effect = "Deny"
   }
-  tags = var.tags
 }
 
  resource "aws_iam_policy" "policy" {

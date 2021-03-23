@@ -32,6 +32,11 @@ variable "gfw_api_token" {
   description = "Access token for the GFW/RW API."
 }
 
+variable "planet_api_key" {
+  type = string
+  description = "Planet API Key"
+}
+
 variable "slack_data_updates_hook" {
   type        = string
   description = "Hook for Slack data-updates channel"

@@ -13,11 +13,6 @@ data "aws_iam_policy_document" "partner_sns_publish_policy_doc" {
     resources = [aws_sns_topic.data_discovery_topic.arn]
     effect = "Allow"
   }
-  statement {
-    actions   = ["arn:aws:sns:::*"]
-    resources = [aws_sns_topic.data_discovery_topic.arn]
-    effect = "Deny"
-  }
 }
 
  resource "aws_iam_policy" "policy" {

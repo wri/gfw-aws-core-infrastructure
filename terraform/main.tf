@@ -48,6 +48,12 @@ module "postgresql" {
   rds_user_name_ro            = "gfw_read_only"
 }
 
+module "sns" {
+  source        = "./modules/sns"
+  project       = local.project
+  tags          = local.tags
+}
+
 module "data-lake_bucket" {
   source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name    = "gfw-data-lake${local.bucket_suffix}"
@@ -148,7 +154,6 @@ module "gcs_gfw_gee_export_secret" {
   name          = "gcs/gfw-gee-export"
   secret_string = var.gfw-gee-export_key
 }
-
 
 module "planet_api_key_secret" {
   source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"

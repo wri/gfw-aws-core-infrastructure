@@ -145,7 +145,18 @@ output "emr_instance_profile_name" {
   value = aws_iam_instance_profile.emr_profile.name
 }
 
-
 output "emr_service_role_name" {
   value = aws_iam_role.iam_emr_service_role.name
+}
+
+output "sns_discovery_topic_arn" {
+  value = module.sns.data_discovery_topic_arn
+}
+
+output "sns_discovery_publishers_group_arn" {
+  value = module.sns.discovery_publishers_group_arn
+}
+
+output "sns_discovery_publishers_policy" {
+  value = module.sns.rendered_policy
 }

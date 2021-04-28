@@ -58,7 +58,7 @@ module "data-lake_bucket" {
   source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name    = "gfw-data-lake${local.bucket_suffix}"
   project        = local.project
-  requester_pays = false
+  requester_pays = true
   tags           = local.tags
   read_roles = [
     jsonencode(formatlist("arn:aws:iam::%s:root", values(var.wri_accounts))),
@@ -71,6 +71,7 @@ module "pipeline_bucket" {
   source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name = "gfw-pipelines${local.bucket_suffix}"
   project     = local.project
+  requester_pays = true
   lifecycle_rules = [
     {
       id      = "geotrellis_logs"
@@ -110,6 +111,7 @@ module "data-lake-test-bucket" {
   count       = var.environment == "dev" ? 1 : 0
   source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name = "gfw-data-lake-test"
+  requester_pays = true
   project     = local.project
   tags        = local.tags
 }
@@ -119,6 +121,7 @@ module "pipeline-test-bucket" {
   count       = var.environment == "dev" ? 1 : 0
   source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name = "gfw-pipelines-test"
+  requester_pays = true
   project     = local.project
   tags        = local.tags
 }

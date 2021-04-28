@@ -41,25 +41,31 @@ module "postgresql" {
   rds_instance_count          = var.rds_instance_count
   rds_password                = var.rds_password
   rds_user_name               = "gfw"
-  tags                        = local.tags
-  vpc_id                      = module.vpc.id
-  rds_password_ro             = var.rds_password_ro
-  rds_port                    = 5432
-  rds_user_name_ro            = "gfw_read_only"
+  tags = merge(
+    {
+      Job = "Geostore",
+  }, local.tags)
+  vpc_id           = module.vpc.id
+  rds_password_ro  = var.rds_password_ro
+  rds_port         = 5432
+  rds_user_name_ro = "gfw_read_only"
 }
 
 module "sns" {
-  source        = "./modules/sns"
-  project       = local.project
-  tags          = local.tags
+  source  = "./modules/sns"
+  project = local.project
+  tags = merge(
+    {
+      Job = "SNS Discovery Topic",
+  }, local.tags)
 }
 
 module "data-lake_bucket" {
   source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name    = "gfw-data-lake${local.bucket_suffix}"
   project        = local.project
-  requester_pays = false
-  tags           = local.tags
+  requester_pays = true
+  tags           = merge({ Job = "Data Lake" }, local.tags)
   read_roles = [
     jsonencode(formatlist("arn:aws:iam::%s:root", values(var.wri_accounts))),
     jsonencode(formatlist("arn:aws:iam::%s:role/core-emr_profile",
@@ -68,9 +74,10 @@ module "data-lake_bucket" {
 }
 
 module "pipeline_bucket" {
-  source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
-  bucket_name = "gfw-pipelines${local.bucket_suffix}"
-  project     = local.project
+  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
+  bucket_name    = "gfw-pipelines${local.bucket_suffix}"
+  project        = local.project
+  requester_pays = true
   lifecycle_rules = [
     {
       id      = "geotrellis_logs"
@@ -102,25 +109,27 @@ module "pipeline_bucket" {
         days = 90
       }
   }]
-  tags           = local.tags
+  tags           = merge({ Job = "Data Pipelines" }, local.tags)
   public_folders = ["geotrellis/jars/", "geotrellis/results/", "geotrellis/bootstrap/", "fires/"]
 }
 
 module "data-lake-test-bucket" {
-  count       = var.environment == "dev" ? 1 : 0
-  source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
-  bucket_name = "gfw-data-lake-test"
-  project     = local.project
-  tags        = local.tags
+  count          = var.environment == "dev" ? 1 : 0
+  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
+  bucket_name    = "gfw-data-lake-test"
+  requester_pays = true
+  project        = local.project
+  tags           = merge({ Job = "Data Lake" }, local.tags)
 }
 
 
 module "pipeline-test-bucket" {
-  count       = var.environment == "dev" ? 1 : 0
-  source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
-  bucket_name = "gfw-pipelines-test"
-  project     = local.project
-  tags        = local.tags
+  count          = var.environment == "dev" ? 1 : 0
+  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
+  bucket_name    = "gfw-pipelines-test"
+  requester_pays = true
+  project        = local.project
+  tags           = merge({ Job = "Data Pipelines" }, local.tags)
 }
 
 module "firewall" {
@@ -128,7 +137,7 @@ module "firewall" {
   project         = local.project
   ssh_cidr_blocks = ["216.70.220.184/32", "${var.tmaschler_ip}/32", "${var.jterry_ip}/32", "${var.dmannarino_ip}/32"]
   description     = ["Office", "Thomas", "Justin", "Daniel"]
-  tags            = local.tags
+  tags            = merge({ Job = "Firewall" }, local.tags)
   vpc_cidre_block = module.vpc.cidr_block
   vpc_id          = module.vpc.id
 }

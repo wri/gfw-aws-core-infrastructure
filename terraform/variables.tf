@@ -33,7 +33,7 @@ variable "gfw_api_token" {
 }
 
 variable "planet_api_key" {
-  type = string
+  type        = string
   description = "Planet API Key"
 }
 

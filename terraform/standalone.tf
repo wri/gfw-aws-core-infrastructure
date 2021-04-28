@@ -29,7 +29,7 @@ resource "aws_key_pair" "all" {
 
 
 #
-# There is no other place to specify the retention periode for batch log files
+# There is no other place to specify the retention period for batch log files
 #
 resource "aws_cloudwatch_log_group" "batch_job" {
   name              = "/aws/batch/job"

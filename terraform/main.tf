@@ -48,8 +48,14 @@ module "postgresql" {
   rds_user_name_ro            = "gfw_read_only"
 }
 
+module "sns" {
+  source        = "./modules/sns"
+  project       = local.project
+  tags          = local.tags
+}
+
 module "data-lake_bucket" {
-  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=master"
+  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name    = "gfw-data-lake${local.bucket_suffix}"
   project        = local.project
   requester_pays = false
@@ -62,7 +68,7 @@ module "data-lake_bucket" {
 }
 
 module "pipeline_bucket" {
-  source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=master"
+  source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name = "gfw-pipelines${local.bucket_suffix}"
   project     = local.project
   lifecycle_rules = [
@@ -102,7 +108,7 @@ module "pipeline_bucket" {
 
 module "data-lake-test-bucket" {
   count       = var.environment == "dev" ? 1 : 0
-  source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=master"
+  source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name = "gfw-data-lake-test"
   project     = local.project
   tags        = local.tags
@@ -111,7 +117,7 @@ module "data-lake-test-bucket" {
 
 module "pipeline-test-bucket" {
   count       = var.environment == "dev" ? 1 : 0
-  source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=master"
+  source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name = "gfw-pipelines-test"
   project     = local.project
   tags        = local.tags
@@ -128,7 +134,7 @@ module "firewall" {
 }
 
 module "api_token_secret" {
-  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=master"
+  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
   project       = local.project
   name          = "gfw-api/token"
   secret_string = jsonencode({ "token" = var.gfw_api_token, "email" = "gfw-sync@wri.org" })
@@ -136,15 +142,22 @@ module "api_token_secret" {
 
 
 module "slack_secret" {
-  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=master"
+  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
   project       = local.project
   name          = "slack/gfw-sync"
   secret_string = jsonencode({ "data-updates" = var.slack_data_updates_hook })
 }
 
 module "gcs_gfw_gee_export_secret" {
-  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=master"
+  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
   project       = local.project
   name          = "gcs/gfw-gee-export"
   secret_string = var.gfw-gee-export_key
+}
+
+module "planet_api_key_secret" {
+  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
+  project       = local.project
+  name          = "planet/api_key"
+  secret_string = var.planet_api_key
 }

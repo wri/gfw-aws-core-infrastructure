@@ -120,8 +120,21 @@ output "secrets_postgresql-writer_policy_arn" {
   value = module.postgresql.secrets_postgresql-writer_policy_arn
 }
 
+
+output "secrets_planet_api_key_arn" {
+  value = module.planet_api_key_secret.secret_arn
+}
+
+output "secrets_planet_api_key_name" {
+  value = module.planet_api_key_secret.secret_name
+}
+
+output "secrets_planet_api_key_policy_arn" {
+  value = module.planet_api_key_secret.read_policy_arn
+}
+
 output "acm_certificate" {
-  value = var.environment == "dev" ? null : aws_acm_certificate.globalforestwatch[0].arn
+  value = aws_acm_certificate.globalforestwatch[0].arn
 }
 
 output "aurora_cluster_instance_class" {
@@ -132,7 +145,18 @@ output "emr_instance_profile_name" {
   value = aws_iam_instance_profile.emr_profile.name
 }
 
-
 output "emr_service_role_name" {
   value = aws_iam_role.iam_emr_service_role.name
+}
+
+output "sns_discovery_topic_arn" {
+  value = module.sns.data_discovery_topic_arn
+}
+
+output "sns_discovery_publishers_group_arn" {
+  value = module.sns.discovery_publishers_group_arn
+}
+
+output "sns_discovery_publishers_policy" {
+  value = module.sns.rendered_policy
 }

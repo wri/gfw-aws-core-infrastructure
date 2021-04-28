@@ -3,7 +3,6 @@ output "id" {
   description = "ID of the VPC."
 }
 
-
 output "public_subnets" {
   value       = aws_subnet.public
   description = "A list of VPC public subnets."

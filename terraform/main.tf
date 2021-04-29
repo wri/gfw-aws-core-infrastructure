@@ -77,7 +77,7 @@ module "pipeline_bucket" {
   source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name    = "gfw-pipelines${local.bucket_suffix}"
   project        = local.project
-  requester_pays = true
+  requester_pays = false
   lifecycle_rules = [
     {
       id      = "geotrellis_logs"
@@ -127,7 +127,7 @@ module "pipeline-test-bucket" {
   count          = var.environment == "dev" ? 1 : 0
   source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name    = "gfw-pipelines-test"
-  requester_pays = true
+  requester_pays = false
   project        = local.project
   tags           = merge({ Job = "Data Pipelines" }, local.tags)
 }

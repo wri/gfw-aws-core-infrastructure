@@ -101,3 +101,7 @@ variable "dmannarino_ip" {
   type        = string
   description = "Daniel's home IP address"
 }
+variable "snegusse_ip" {
+  type        = string
+  description = "Solomon's home IP address"
+}

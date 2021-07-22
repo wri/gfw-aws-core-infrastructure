@@ -135,7 +135,7 @@ module "pipeline-test-bucket" {
 module "firewall" {
   source          = "./modules/firewall"
   project         = local.project
-  ssh_cidr_blocks = ["216.70.220.184/32", "${var.tmaschler_ip}/32", "${var.jterry_ip}/32", "${var.dmannarino_ip}/32"]
+  ssh_cidr_blocks = ["216.70.220.184/32", "${var.tmaschler_ip}/32", "${var.jterry_ip}/32", "${var.dmannarino_ip}/32", "${var.snegusse_ip}/32"]
   description     = ["Office", "Thomas", "Justin", "Daniel"]
   tags            = merge({ Job = "Firewall" }, local.tags)
   vpc_cidre_block = module.vpc.cidr_block

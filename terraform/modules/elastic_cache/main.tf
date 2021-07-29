@@ -14,7 +14,7 @@ resource "aws_elasticache_replication_group" "default" {
   snapshot_window          = "00:00-05:00"
 
   subnet_group_name          = aws_elasticache_subnet_group.default.name
-  automatic_failover_enabled = true
+  automatic_failover_enabled = var.num_replicas > 1 ? true : false
 
   cluster_mode {
     replicas_per_node_group = var.num_replicas

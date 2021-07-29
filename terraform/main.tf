@@ -25,7 +25,8 @@ module "vpc" {
   security_group_ids = [
     module.firewall.default_security_group_id,
     module.postgresql.security_group_id,
-  module.documentdb.security_group_id]
+    module.documentdb.security_group_id,
+  module.redis.security_group_id]
   keys = values(aws_key_pair.all)[*].public_key
 }
 

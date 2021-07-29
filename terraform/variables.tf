@@ -104,6 +104,18 @@ variable "db_logs_exports" {
   default = ["audit", "profiler"]
 }
 
+variable "redis_node_group_count" {
+  type = number
+}
+
+variable "redis_replica_count" {
+  type = number
+}
+
+variable "redis_node_type" {
+  type = string
+}
+
 
 variable "gfw-gee-export_key" {
   type        = string

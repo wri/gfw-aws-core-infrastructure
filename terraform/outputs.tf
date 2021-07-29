@@ -188,3 +188,38 @@ output "document_db_secrets_arn" {
 output "document_db_secrets_policy_arn" {
   value = module.documentdb.secrets_documentdb_policy_arn
 }
+
+output "redis_replication_group_id" {
+  value       = module.redis.replication_group_id
+  description = "The ID of the ElastiCache Replication Group."
+}
+
+output "redis_replication_group_primary_endpoint_address" {
+  value       = module.redis.replication_group_primary_endpoint_address
+  description = "The address of the endpoint for the primary node in the replication group."
+}
+
+output "redis_replication_group_member_clusters" {
+  value       = module.redis.replication_group_member_clusters
+  description = "The identifiers of all the nodes that are part of this replication group."
+}
+
+output "redis_replication_group_port" {
+  value       = module.redis.replication_group_port
+  description = "Port of the replication group."
+}
+
+output "redis_security_group_name_id" {
+  description = "ID of the Elastic Cache Redis cluster Security Group"
+  value       = module.redis.security_group_id
+}
+
+output "redis_security_group_arn" {
+  description = "ARN of the Elastic Cache Redis cluster Security Group"
+  value       = module.redis.security_group_arn
+}
+
+output "redis_security_group_name" {
+  description = "Name of the Elastic Cache Redis cluster Security Group"
+  value       = module.redis.security_group_name
+}

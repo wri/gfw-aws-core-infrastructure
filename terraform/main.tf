@@ -194,3 +194,17 @@ module "documentdb" {
       value        = "disabled"
   }]
 }
+
+
+module "redis" {
+  source                   = "./modules/elastic_cache"
+  project_prefix           = var.project_prefix
+  num_node_groups          = var.redis_node_group_count
+  num_replicas             = var.redis_replica_count
+  redis_node_type          = var.redis_node_type
+  vpc_cidr_block           = module.vpc.cidr_block
+  vpc_id                   = module.vpc.id
+  private_subnet_ids       = module.vpc.private_subnet_ids
+  snapshot_retention_limit = var.backup_retention_period
+  tags                     = local.tags
+}

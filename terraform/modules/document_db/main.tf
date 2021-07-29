@@ -110,7 +110,18 @@ resource "aws_security_group_rule" "documentdb_ingress" {
   from_port         = var.db_port
   to_port           = var.db_port
   protocol          = "tcp"
-  cidr_blocks       = [var.vpc_cidr_block]
+  self              = true
+  security_group_id = aws_security_group.documentdb.id
+}
+
+
+
+resource "aws_security_group_rule" "documentdb_egress" {
+  type              = "egress"
+  from_port         = var.db_port
+  to_port           = var.db_port
+  protocol          = "tcp"
+  self              = true
   security_group_id = aws_security_group.documentdb.id
 }
 

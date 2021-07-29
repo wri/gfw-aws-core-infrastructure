@@ -200,7 +200,7 @@ output "redis_replication_group_primary_endpoint_address" {
 }
 
 
-output "redis_replication_group_configuration_endpoint_address" {
+output "redis_replication_group_config_endpoint_address" {
   value       = module.redis.replication_group_configuration_endpoint_address
   description = "The address of the endpoint for the configuration node in the replication group."
 }

@@ -100,7 +100,7 @@ variable "db_instance_count" {
 }
 
 variable "db_logs_exports" {
-  type  = list(string)
+  type    = list(string)
   default = ["audit", "profiler"]
 }
 

@@ -24,7 +24,7 @@ module "vpc" {
   tags        = local.tags
   security_group_ids = [
     module.firewall.default_security_group_id,
-  module.postgresql.security_group_id,
+    module.postgresql.security_group_id,
   module.documentdb.security_group_id]
   keys = values(aws_key_pair.all)[*].public_key
 }
@@ -174,23 +174,23 @@ module "planet_api_key_secret" {
 
 
 module "documentdb" {
-  source = "./modules/document_db"
-  log_retention_period = var.log_retention_period
-  private_subnet_ids = module.vpc.private_subnet_ids
-  project = var.project_prefix
-  backup_retention_period = var.backup_retention_period
-  instance_class = var.db_instance_class
-  cluster_size = var.db_instance_count
-  master_username = "wri"  # superuser, create app specific users at project level
-  tags = local.tags
-  vpc_id = module.vpc.id
-  vpc_cidr_block = module.vpc.cidr_block
-  engine_version = "3.6.0"
+  source                          = "./modules/document_db"
+  log_retention_period            = var.log_retention_period
+  private_subnet_ids              = module.vpc.private_subnet_ids
+  project                         = var.project_prefix
+  backup_retention_period         = var.backup_retention_period
+  instance_class                  = var.db_instance_class
+  cluster_size                    = var.db_instance_count
+  master_username                 = "wri" # superuser, create app specific users at project level
+  tags                            = local.tags
+  vpc_id                          = module.vpc.id
+  vpc_cidr_block                  = module.vpc.cidr_block
+  engine_version                  = "3.6.0"
   enabled_cloudwatch_logs_exports = var.db_logs_exports
   cluster_parameters = [
     {
       apply_method = "pending-reboot"
-      name = "tls"
-      value = "disabled"
-    }]
+      name         = "tls"
+      value        = "disabled"
+  }]
 }

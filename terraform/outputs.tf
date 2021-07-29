@@ -160,3 +160,31 @@ output "sns_discovery_publishers_group_arn" {
 output "sns_discovery_publishers_policy" {
   value = module.sns.rendered_policy
 }
+
+output "document_db_endpoint" {
+  value = module.documentdb.endpoint
+}
+
+output "document_db_reader_endpoint" {
+  value = module.documentdb.reader_endpoint
+}
+
+output "document_db_port" {
+  value = module.documentdb.port
+}
+
+output "document_db_cluster_name" {
+  value = module.documentdb.cluster_name
+}
+
+output "document_db_security_group_id" {
+  value = module.documentdb.security_group_id
+}
+
+output "document_db_secrets_arn" {
+  value = module.documentdb.secrets_documentdb_arn
+}
+
+output "document_db_secrets_policy_arn" {
+  value = module.documentdb.secrets_documentdb_policy_arn
+}

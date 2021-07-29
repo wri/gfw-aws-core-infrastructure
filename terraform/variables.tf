@@ -4,6 +4,11 @@ variable "project" {
   description = "A project namespace for the infrastructure."
 }
 
+variable "project_prefix" {
+  type    = string
+  default = "core"
+}
+
 variable "environment" {
   type        = string
   description = "An environment namespace for the infrastructure."
@@ -57,7 +62,7 @@ variable "wri_accounts" {
 }
 
 
-variable "rds_backup_retention_period" {
+variable "backup_retention_period" {
   type        = number
   description = "Time in days to keep RDS backup files"
 }
@@ -85,6 +90,21 @@ variable "rds_password_ro" {
   type        = string
   description = "Read Only user password for RDS Aurora database"
 }
+
+variable "db_instance_class" {
+  type = string
+}
+
+variable "db_instance_count" {
+  type = number
+}
+
+variable "db_logs_exports" {
+  type  = list(string)
+  default = ["audit", "profiler"]
+}
+
+
 variable "gfw-gee-export_key" {
   type        = string
   description = "GCS key for service account"

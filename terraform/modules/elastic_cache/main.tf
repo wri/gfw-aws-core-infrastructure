@@ -8,7 +8,7 @@ resource "aws_elasticache_replication_group" "default" {
 
   node_type            = var.redis_node_type
   port                 = var.redis_port
-  parameter_group_name = "default.redis3.2.cluster.on"
+  parameter_group_name = aws_elasticache_parameter_group.default.name
 
   snapshot_retention_limit = var.snapshot_retention_limit
   snapshot_window          = "00:00-05:00"
@@ -22,6 +22,10 @@ resource "aws_elasticache_replication_group" "default" {
   }
 }
 
+resource "aws_elasticache_parameter_group" "default" {
+  name        = "${var.project_prefix}-redis-params"
+  family      = "redis5.0"
+}
 
 ###############
 # Subnet group

@@ -215,7 +215,7 @@ output "redis_replication_group_port" {
   description = "Port of the replication group."
 }
 
-output "redis_security_group_name_id" {
+output "redis_security_group_id" {
   description = "ID of the Elastic Cache Redis cluster Security Group"
   value       = module.redis.security_group_id
 }

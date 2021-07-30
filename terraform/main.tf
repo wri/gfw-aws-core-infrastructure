@@ -184,7 +184,7 @@ module "documentdb" {
   instance_class                  = var.db_instance_class
   cluster_size                    = var.db_instance_count
   master_username                 = "wri" # superuser, create app specific users at project level
-  tags                            = local.tags
+  tags                            = merge(local.tags, {Project = "Forest Watcher"}) # Only Forest Watcher is using Document DB and should cover the costs
   vpc_id                          = module.vpc.id
   vpc_cidr_block                  = module.vpc.cidr_block
   engine_version                  = "3.6.0"

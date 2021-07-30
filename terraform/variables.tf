@@ -137,3 +137,11 @@ variable "snegusse_ip" {
   type        = string
   description = "Solomon's home IP address"
 }
+
+variable "office_3sc_ip" {
+  type = string
+}
+
+variable "vpn_3sc_ip" {
+  type = string
+}

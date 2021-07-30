@@ -24,6 +24,9 @@ jobs:
         TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
+        SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
+        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
+        VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -33,7 +36,11 @@ jobs:
                               -var "planet_api_key=${PLANET_API_KEY}" \
                               -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
-                              -var "dmannarino_ip=${DMANNARINO_IP}"
+                              -var "dmannarino_ip=${DMANNARINO_IP}" \
+                              -var "snegusse_ip=${SNEGUSSE_IP}" \
+                              -var "office_3sc_ip=${OFFICE_3SC_IP}" \
+                              -var "vpn_3sc_ip=${VPN_3SC_IP}"
+
     - name: Plan staging
       if: github.base_ref == 'staging'
       env:
@@ -50,6 +57,9 @@ jobs:
         TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
+        SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
+        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
+        VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -59,7 +69,10 @@ jobs:
                               -var "planet_api_key=${PLANET_API_KEY}" \
                               -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
-                              -var "dmannarino_ip=${DMANNARINO_IP}"
+                              -var "dmannarino_ip=${DMANNARINO_IP}" \
+                              -var "snegusse_ip=${SNEGUSSE_IP}" \
+                              -var "office_3sc_ip=${OFFICE_3SC_IP}" \
+                              -var "vpn_3sc_ip=${VPN_3SC_IP}"
 
     - name: Plan dev
       if: github.base_ref == 'dev'
@@ -77,6 +90,9 @@ jobs:
         TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
+        SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
+        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
+        VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -86,5 +102,8 @@ jobs:
                               -var "planet_api_key=${PLANET_API_KEY}" \
                               -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
-                              -var "dmannarino_ip=${DMANNARINO_IP}"
+                              -var "dmannarino_ip=${DMANNARINO_IP}" \
+                              -var "snegusse_ip=${SNEGUSSE_IP}" \
+                              -var "office_3sc_ip=${OFFICE_3SC_IP}" \
+                              -var "vpn_3sc_ip=${VPN_3SC_IP}"
 

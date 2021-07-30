@@ -28,6 +28,7 @@ module "vpc" {
     module.documentdb.security_group_id,
   module.redis.security_group_id]
   keys = values(aws_key_pair.all)[*].public_key
+  //  keys = concat(values(aws_key_pair.all)[*].public_key, data.terraform_remote_state.fw_core.outputs.public_keys)
 }
 
 
@@ -137,8 +138,8 @@ module "pipeline-test-bucket" {
 module "firewall" {
   source          = "./modules/firewall"
   project         = var.project_prefix
-  ssh_cidr_blocks = ["216.70.220.184/32", "${var.tmaschler_ip}/32", "${var.jterry_ip}/32", "${var.dmannarino_ip}/32", "${var.snegusse_ip}/32"]
-  description     = ["Office", "Thomas", "Justin", "Daniel", "Solomon"]
+  ssh_cidr_blocks = ["216.70.220.184/32", "${var.tmaschler_ip}/32", "${var.jterry_ip}/32", "${var.dmannarino_ip}/32", "${var.snegusse_ip}/32", "${var.office_3sc_ip}/32", "${var.vpn_3sc_ip}/32"]
+  description     = ["Office", "Thomas", "Justin", "Daniel", "Solomon", "3SC Office", "3SC VPN"]
   tags            = merge({ Job = "Firewall" }, local.tags)
   vpc_cidre_block = module.vpc.cidr_block
   vpc_id          = module.vpc.id
@@ -183,7 +184,7 @@ module "documentdb" {
   instance_class                  = var.db_instance_class
   cluster_size                    = var.db_instance_count
   master_username                 = "wri" # superuser, create app specific users at project level
-  tags                            = local.tags
+  tags                            = merge(local.tags, {Project = "Forest Watcher"}) # Only Forest Watcher is using Document DB and should cover the costs
   vpc_id                          = module.vpc.id
   vpc_cidr_block                  = module.vpc.cidr_block
   engine_version                  = "3.6.0"

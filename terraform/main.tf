@@ -27,7 +27,7 @@ module "vpc" {
     module.postgresql.security_group_id,
     module.documentdb.security_group_id,
   module.redis.security_group_id]
-  keys = values(aws_key_pair.all)[*].public_key
+  keys = concat(values(aws_key_pair.all)[*].public_key, data.terraform_remote_state.fw_core.outputs.public_keys)
 }
 
 

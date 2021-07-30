@@ -23,8 +23,8 @@ resource "aws_elasticache_replication_group" "default" {
 }
 
 resource "aws_elasticache_parameter_group" "default" {
-  name        = "${var.project_prefix}-redis-params"
-  family      = "redis6.x"
+  name   = "${var.project_prefix}-redis-params"
+  family = "redis6.x"
 }
 
 ###############

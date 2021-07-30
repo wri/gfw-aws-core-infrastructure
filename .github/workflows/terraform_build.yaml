@@ -29,6 +29,8 @@ jobs:
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
+        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
+        VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -39,7 +41,9 @@ jobs:
                               -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}" \
-                              -var "snegusse_ip=${SNEGUSSE_IP}"
+                              -var "snegusse_ip=${SNEGUSSE_IP}" \
+                              -var "office_3sc_ip=${OFFICE_3SC_IP}" \
+                              -var "vpn_3sc_ip=${VPN_3SC_IP}"
         ./scripts/infra apply
     - name: Deploy staging
       if: success() && github.ref == 'refs/heads/staging'
@@ -58,6 +62,8 @@ jobs:
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
+        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
+        VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -68,7 +74,9 @@ jobs:
                               -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}" \
-                              -var "snegusse_ip=${SNEGUSSE_IP}"
+                              -var "snegusse_ip=${SNEGUSSE_IP}" \
+                              -var "office_3sc_ip=${OFFICE_3SC_IP}" \
+                              -var "vpn_3sc_ip=${VPN_3SC_IP}"
 
         ./scripts/infra apply
     - name: Deploy dev
@@ -88,6 +96,8 @@ jobs:
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
+        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
+        VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -98,5 +108,8 @@ jobs:
                               -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}" \
-                              -var "snegusse_ip=${SNEGUSSE_IP}"
+                              -var "snegusse_ip=${SNEGUSSE_IP}" \
+                              -var "office_3sc_ip=${OFFICE_3SC_IP}" \
+                              -var "vpn_3sc_ip=${VPN_3SC_IP}"
+
         ./scripts/infra apply

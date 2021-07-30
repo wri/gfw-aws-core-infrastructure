@@ -28,6 +28,7 @@ jobs:
         TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
+        SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -37,7 +38,8 @@ jobs:
                               -var "planet_api_key=${PLANET_API_KEY}" \
                               -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
-                              -var "dmannarino_ip=${DMANNARINO_IP}"
+                              -var "dmannarino_ip=${DMANNARINO_IP}" \
+                              -var "snegusse_ip=${SNEGUSSE_IP}"
         ./scripts/infra apply
     - name: Deploy staging
       if: success() && github.ref == 'refs/heads/staging'
@@ -55,6 +57,7 @@ jobs:
         TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
+        SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -64,7 +67,8 @@ jobs:
                               -var "planet_api_key=${PLANET_API_KEY}" \
                               -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
-                              -var "dmannarino_ip=${DMANNARINO_IP}"
+                              -var "dmannarino_ip=${DMANNARINO_IP}" \
+                              -var "snegusse_ip=${SNEGUSSE_IP}"
 
         ./scripts/infra apply
     - name: Deploy dev
@@ -83,6 +87,7 @@ jobs:
         TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
+        SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -92,5 +97,6 @@ jobs:
                               -var "planet_api_key=${PLANET_API_KEY}" \
                               -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
-                              -var "dmannarino_ip=${DMANNARINO_IP}"
+                              -var "dmannarino_ip=${DMANNARINO_IP}" \
+                              -var "snegusse_ip=${SNEGUSSE_IP}"
         ./scripts/infra apply

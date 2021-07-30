@@ -20,11 +20,13 @@ module "vpc" {
   source      = "./modules/vpc"
   environment = var.environment
   region      = var.aws_region
-  project     = local.project
+  project     = var.project_prefix
   tags        = local.tags
   security_group_ids = [
     module.firewall.default_security_group_id,
-  module.postgresql.security_group_id]
+    module.postgresql.security_group_id,
+    module.documentdb.security_group_id,
+  module.redis.security_group_id]
   keys = values(aws_key_pair.all)[*].public_key
 }
 
@@ -32,10 +34,10 @@ module "vpc" {
 module "postgresql" {
   source                      = "./modules/postgresql"
   availability_zone_names     = [module.vpc.private_subnets[0].availability_zone, module.vpc.private_subnets[1].availability_zone, module.vpc.private_subnets[3].availability_zone]
-  log_retention_period        = 30
+  log_retention_period        = var.log_retention_period
   private_subnet_ids          = [module.vpc.private_subnets[0].id, module.vpc.private_subnets[1].id, module.vpc.private_subnets[3].id]
-  project                     = local.project
-  rds_backup_retention_period = var.rds_backup_retention_period
+  project                     = var.project_prefix
+  rds_backup_retention_period = var.backup_retention_period
   rds_db_name                 = "geostore"
   rds_instance_class          = var.rds_instance_class
   rds_instance_count          = var.rds_instance_count
@@ -53,7 +55,7 @@ module "postgresql" {
 
 module "sns" {
   source  = "./modules/sns"
-  project = local.project
+  project = var.project_prefix
   tags = merge(
     {
       Job = "SNS Discovery Topic",
@@ -63,7 +65,7 @@ module "sns" {
 module "data-lake_bucket" {
   source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name    = "gfw-data-lake${local.bucket_suffix}"
-  project        = local.project
+  project        = var.project_prefix
   requester_pays = true
   tags           = merge({ Job = "Data Lake" }, local.tags)
   read_roles = [
@@ -76,7 +78,7 @@ module "data-lake_bucket" {
 module "pipeline_bucket" {
   source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name    = "gfw-pipelines${local.bucket_suffix}"
-  project        = local.project
+  project        = var.project_prefix
   requester_pays = false
   lifecycle_rules = [
     {
@@ -118,7 +120,7 @@ module "data-lake-test-bucket" {
   source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name    = "gfw-data-lake-test"
   requester_pays = true
-  project        = local.project
+  project        = var.project_prefix
   tags           = merge({ Job = "Data Lake" }, local.tags)
 }
 
@@ -128,15 +130,15 @@ module "pipeline-test-bucket" {
   source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
   bucket_name    = "gfw-pipelines-test"
   requester_pays = false
-  project        = local.project
+  project        = var.project_prefix
   tags           = merge({ Job = "Data Pipelines" }, local.tags)
 }
 
 module "firewall" {
   source          = "./modules/firewall"
-  project         = local.project
-  ssh_cidr_blocks = ["216.70.220.184/32", "${var.tmaschler_ip}/32", "${var.jterry_ip}/32", "${var.dmannarino_ip}/32"]
-  description     = ["Office", "Thomas", "Justin", "Daniel"]
+  project         = var.project_prefix
+  ssh_cidr_blocks = ["216.70.220.184/32", "${var.tmaschler_ip}/32", "${var.jterry_ip}/32", "${var.dmannarino_ip}/32", "${var.snegusse_ip}/32"]
+  description     = ["Office", "Thomas", "Justin", "Daniel", "Solomon"]
   tags            = merge({ Job = "Firewall" }, local.tags)
   vpc_cidre_block = module.vpc.cidr_block
   vpc_id          = module.vpc.id
@@ -144,7 +146,7 @@ module "firewall" {
 
 module "api_token_secret" {
   source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
-  project       = local.project
+  project       = var.project_prefix
   name          = "gfw-api/token"
   secret_string = jsonencode({ "token" = var.gfw_api_token, "email" = "gfw-sync@wri.org" })
 }
@@ -152,21 +154,58 @@ module "api_token_secret" {
 
 module "slack_secret" {
   source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
-  project       = local.project
+  project       = var.project_prefix
   name          = "slack/gfw-sync"
   secret_string = jsonencode({ "data-updates" = var.slack_data_updates_hook })
 }
 
 module "gcs_gfw_gee_export_secret" {
   source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
-  project       = local.project
+  project       = var.project_prefix
   name          = "gcs/gfw-gee-export"
   secret_string = var.gfw-gee-export_key
 }
 
 module "planet_api_key_secret" {
   source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
-  project       = local.project
+  project       = var.project_prefix
   name          = "planet/api_key"
   secret_string = var.planet_api_key
+}
+
+
+module "documentdb" {
+  source                          = "./modules/document_db"
+  log_retention_period            = var.log_retention_period
+  private_subnet_ids              = module.vpc.private_subnet_ids
+  project                         = var.project_prefix
+  backup_retention_period         = var.backup_retention_period
+  instance_class                  = var.db_instance_class
+  cluster_size                    = var.db_instance_count
+  master_username                 = "wri" # superuser, create app specific users at project level
+  tags                            = local.tags
+  vpc_id                          = module.vpc.id
+  vpc_cidr_block                  = module.vpc.cidr_block
+  engine_version                  = "3.6.0"
+  enabled_cloudwatch_logs_exports = var.db_logs_exports
+  cluster_parameters = [
+    {
+      apply_method = "pending-reboot"
+      name         = "tls"
+      value        = "disabled"
+  }]
+}
+
+
+module "redis" {
+  source                   = "./modules/elastic_cache"
+  project_prefix           = var.project_prefix
+  num_node_groups          = var.redis_node_group_count
+  num_replicas             = var.redis_replica_count
+  redis_node_type          = var.redis_node_type
+  vpc_cidr_block           = module.vpc.cidr_block
+  vpc_id                   = module.vpc.id
+  private_subnet_ids       = module.vpc.private_subnet_ids
+  snapshot_retention_limit = var.backup_retention_period
+  tags                     = local.tags
 }

@@ -211,3 +211,12 @@ ${row}
 EOT
   }
 }
+
+resource "aws_eip" "bastion" {
+  vpc = true
+}
+
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = aws_instance.bastion.id
+  allocation_id = aws_eip.bastion.id
+}

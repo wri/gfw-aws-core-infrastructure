@@ -138,10 +138,10 @@ variable "snegusse_ip" {
   description = "Solomon's home IP address"
 }
 
-variable "office_s3c_ip" {
+variable "office_3sc_ip" {
   type = string
 }
 
-variable "vpn_s3c_ip" {
+variable "vpn_3sc_ip" {
   type = string
 }

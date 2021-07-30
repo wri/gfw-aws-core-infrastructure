@@ -25,7 +25,7 @@ jobs:
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
-        OFFICE_3SC_IP: ${{ secrets.office_s3c_ip }}
+        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
         VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
@@ -58,7 +58,7 @@ jobs:
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
-        OFFICE_3SC_IP: ${{ secrets.office_s3c_ip }}
+        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
         VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
@@ -91,7 +91,7 @@ jobs:
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
-        OFFICE_3SC_IP: ${{ secrets.office_s3c_ip }}
+        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
         VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \

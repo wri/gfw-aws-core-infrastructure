@@ -1,4 +1,4 @@
-# GFW AWS Core Infrastructure
+# GFW AWS Core Infrastructure 
 
 This repo describes GFW's core infrastructure on AWS using Terraform framework.
 

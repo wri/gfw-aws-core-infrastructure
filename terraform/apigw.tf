@@ -91,3 +91,6 @@ output "api_gw_hostname" {
 output "api_gw_public_ip" {
     value = aws_instance.apigw.public_ip
 }
+output "api_gw_instance_arn" {
+    value = aws_instance.apigw.arn
+}

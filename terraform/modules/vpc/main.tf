@@ -176,11 +176,13 @@ data "aws_ami" "amazon_linux_ami" {
 }
 
 resource "aws_instance" "bastion" {
-  ami                         = data.aws_ami.amazon_linux_ami.id
-  availability_zone           = var.availability_zones[0]
-  ebs_optimized               = true
-  instance_type               = var.bastion_instance_type
-  monitoring                  = true
+  ami                  = data.aws_ami.amazon_linux_ami.id
+  availability_zone    = var.availability_zones[0]
+  ebs_optimized        = true
+  instance_type        = var.bastion_instance_type
+  monitoring           = true
+  iam_instance_profile = "${aws_iam_instance_profile.bastion_profile.name}"
+
   subnet_id                   = aws_subnet.public[0].id
   vpc_security_group_ids      = var.security_group_ids
   associate_public_ip_address = true
@@ -196,6 +198,53 @@ resource "aws_instance" "bastion" {
     },
     var.tags
   )
+}
+
+
+resource "aws_iam_instance_profile" "bastion_profile" {
+  name = "bastion_profile"
+  role = "${aws_iam_role.bastion_role.name}"
+}
+resource "aws_iam_role" "bastion_role" {
+  name = "bastion_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+resource "aws_iam_role_policy" "test_policy" {
+  name = "test_policy"
+  role = "${aws_iam_role.bastion_role.id}"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+       "ecs:Describe*"
+       "ecs:List*"
+       "ecs:UpdateService",
+       "ecs:StopTask"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
 }
 
 

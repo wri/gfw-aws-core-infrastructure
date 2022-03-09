@@ -234,8 +234,8 @@ resource "aws_iam_role_policy" "test_policy" {
   "Statement": [
     {
       "Action": [
-       "ecs:Describe*"
-       "ecs:List*"
+       "ecs:Describe*",
+       "ecs:List*",
        "ecs:UpdateService",
        "ecs:StopTask"
       ],

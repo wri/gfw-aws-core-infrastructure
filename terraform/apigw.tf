@@ -26,7 +26,7 @@ resource "aws_security_group_rule" "apigw_http_ingress" {
   from_port   = "80"
   to_port     = "80"
   protocol    = "tcp"
-  cidr_blocks = module.vpc.cidr_block
+  cidr_blocks = [module.vpc.cidr_block]
 
   security_group_id = aws_security_group.apigw.id
 }
@@ -35,7 +35,7 @@ resource "aws_security_group_rule" "apigw_https_ingress" {
   from_port   = "443"
   to_port     = "443"
   protocol    = "tcp"
-  cidr_blocks = module.vpc.cidr_block
+  cidr_blocks = [module.vpc.cidr_block]
 
   security_group_id = aws_security_group.apigw.id
 }

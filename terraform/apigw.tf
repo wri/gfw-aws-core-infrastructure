@@ -1,12 +1,3 @@
-locals {
-  public_subnet_cidr_blocks = ["10.0.0.0/20", # Copied from default value of modules/vpc/variables.tf 
-    "10.0.16.0/20",
-    "10.0.32.0/20",
-    "10.0.48.0/20",
-    "10.0.64.0/20",
-  "10.0.80.0/20"]
-}
-
 data "aws_ami" "amazon_linux_ami" {
   most_recent = true
   owners = [
@@ -35,7 +26,7 @@ resource "aws_security_group_rule" "apigw_http_ingress" {
   from_port   = "80"
   to_port     = "80"
   protocol    = "tcp"
-  cidr_blocks = local.public_subnet_cidr_blocks
+  cidr_blocks = module.vpc.cidr_block
 
   security_group_id = aws_security_group.apigw.id
 }
@@ -44,7 +35,7 @@ resource "aws_security_group_rule" "apigw_https_ingress" {
   from_port   = "443"
   to_port     = "443"
   protocol    = "tcp"
-  cidr_blocks = local.public_subnet_cidr_blocks
+  cidr_blocks = module.vpc.cidr_block
 
   security_group_id = aws_security_group.apigw.id
 }
@@ -64,7 +55,7 @@ EOT
 
 resource "aws_instance" "apigw" {
   ami                         = data.aws_ami.amazon_linux_ami.id
-  availability_zone           = "us-east-1a"
+  availability_zone           = module.vpc.public_subnet_az[0]
   ebs_optimized               = true
   instance_type               = "t3.large"
   monitoring                  = true
@@ -92,4 +83,11 @@ resource "aws_eip" "apigw" {
 resource "aws_eip_association" "eip_assoc" {
   instance_id   = aws_instance.apigw.id
   allocation_id = aws_eip.apigw.id
+}
+
+output "api_gw_hostname" {
+    value = aws_instance.apigw.public_dns
+}
+output "api_gw_public_ip" {
+    value = aws_instance.apigw.public_ip
 }

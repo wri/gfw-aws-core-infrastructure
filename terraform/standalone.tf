@@ -1,7 +1,23 @@
 # We generate certificates outside of AWS and manually registered it with the account.
 # We imported the existing certificate into TF state
+# I suspect ^ is only true of staging/prod, not dev - Daniel
 
 resource "aws_acm_certificate" "globalforestwatch" {
+  domain_name       = "*.globalforestwatch.org"
+  validation_method = "DNS"
+
+  tags = merge({
+    "Name" = "Global Forest Watch Wildcard"
+    },
+  local.tags)
+
+  lifecycle {
+    create_before_destroy = true
+  }
+  count = 1
+}
+
+resource "aws_acm_certificate" "globalforestwatch_new" {
   domain_name       = "*.globalforestwatch.org"
   validation_method = "DNS"
 
@@ -44,4 +60,3 @@ resource "aws_cloudwatch_log_group" "batch_job" {
   name              = "/aws/batch/job"
   retention_in_days = 30
 }
-

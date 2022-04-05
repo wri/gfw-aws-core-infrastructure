@@ -40,6 +40,7 @@ module "postgresql" {
   project                     = var.project_prefix
   rds_backup_retention_period = var.backup_retention_period
   rds_db_name                 = "geostore"
+  rds_version  =              = "12.8"
   rds_instance_class          = var.rds_instance_class
   rds_instance_count          = var.rds_instance_count
   rds_password                = var.rds_password

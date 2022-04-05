@@ -42,6 +42,11 @@ variable "rds_password_ro" {
   type        = string
   description = "RDS read_only password"
 }
+variable "rds_version" {
+  type        = string
+  description = "RDS Aurora database engine version. eg. 12.4"
+  default     = "12.4"
+}
 
 variable "rds_backup_retention_period" {
   type        = number

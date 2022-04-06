@@ -6,5 +6,5 @@ rds_instance_count      = 2
 db_instance_class       = "db.t3.medium"
 db_instance_count       = 1
 redis_node_group_count  = 1
-redis_replica_count     = 0
+redis_replica_count     = 1
 redis_node_type         = "cache.t2.micro"

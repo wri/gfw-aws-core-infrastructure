@@ -138,7 +138,7 @@ module "pipeline-test-bucket" {
 module "firewall" {
   source          = "./modules/firewall"
   project         = var.project_prefix
-  ssh_cidr_blocks = ["54.173.196.8/32", "216.70.220.184/32", "${var.tmaschler_ip}/32", "${var.jterry_ip}/32", "${var.dmannarino_ip}/32", "${var.vpn_3sc_ip}/32", "86.143.108.56/32", "92.234.149.30/32", "212.35.238.28/32", "90.206.63.59/32"]
+  ssh_cidr_blocks = ["54.173.196.8/32", "216.70.220.184/32", "${var.tmaschler_ip}/32", "${var.jterry_ip}/32", "${var.dmannarino_ip}/32", "${var.snegusse_ip}/32", "86.143.108.56/32", "92.234.149.30/32", "212.35.238.28/32", "90.206.63.59/32"]
   description     = ["3SC Office VPN", "Office", "Thomas", "Justin", "Daniel", "Solomon", "Dockerised", "Dockerised2", "Owen", "Edward"]
   tags            = merge({ Job = "Firewall" }, local.tags)
   vpc_cidre_block = module.vpc.cidr_block

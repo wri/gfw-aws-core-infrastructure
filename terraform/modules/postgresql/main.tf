@@ -7,7 +7,7 @@ resource "aws_rds_cluster" "aurora_cluster" {
 
   cluster_identifier              = "gfw-aurora" # "${var.project}-aurora-cluster"
   engine                          = "aurora-postgresql"
-  engine_version                  = "12.4"
+  engine_version                  = "12.8"
   database_name                   = var.rds_db_name
   master_username                 = var.rds_user_name
   master_password                 = var.rds_password

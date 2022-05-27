@@ -47,6 +47,10 @@ output "webserver_security_group_id" {
   value = module.firewall.webserver_security_group_id
 }
 
+output "key_pairs" {
+  value = aws_key_pair.all
+}
+
 output "key_pair_tmaschler_gfw" {
   value = aws_key_pair.all["tmaschler_gfw"].key_name
 }

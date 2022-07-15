@@ -121,10 +121,6 @@ variable "gfw-gee-export_key" {
   type        = string
   description = "GCS key for service account"
 }
-variable "tmaschler_ip" {
-  type        = string
-  description = "Thomas' home IP address"
-}
 variable "jterry_ip" {
   type        = string
   description = "Justin's home IP address"
@@ -137,7 +133,10 @@ variable "snegusse_ip" {
   type        = string
   description = "Solomon's home IP address"
 }
-
+variable "gtempus_ip" {
+  type        = string
+  description = "Gary's home IP address"
+}
 variable "office_3sc_ip" {
   type = string
 }

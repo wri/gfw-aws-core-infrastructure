@@ -25,10 +25,10 @@ jobs:
         RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_production }}
         GCS_GFW_GEE_EXPORT_KEY: ${{ secrets.gcs_gfw_gee_export_key }}
         PLANET_API_KEY: ${{secrets.planet_api_key }}
-        TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
+        GTEMPUS_IP: ${{ secrets.gtempus_ip }}
         OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
         VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
@@ -38,10 +38,10 @@ jobs:
                               -var "rds_password_ro=${RDS_PASSWORD_RO}" \
                               -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
                               -var "planet_api_key=${PLANET_API_KEY}" \
-                              -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}" \
                               -var "snegusse_ip=${SNEGUSSE_IP}" \
+                              -var "gtempus_ip=${GTEMPUS_IP}" \
                               -var "office_3sc_ip=${OFFICE_3SC_IP}" \
                               -var "vpn_3sc_ip=${VPN_3SC_IP}"
         ./scripts/infra apply
@@ -58,10 +58,10 @@ jobs:
         RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_staging }}
         GCS_GFW_GEE_EXPORT_KEY: ${{ secrets.gcs_gfw_gee_export_key }}
         PLANET_API_KEY: ${{secrets.planet_api_key }}
-        TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
+        GTEMPUS_IP: ${{ secrets.gtempus_ip }}
         OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
         VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
@@ -71,10 +71,10 @@ jobs:
                               -var "rds_password_ro=${RDS_PASSWORD_RO}" \
                               -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
                               -var "planet_api_key=${PLANET_API_KEY}" \
-                              -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}" \
                               -var "snegusse_ip=${SNEGUSSE_IP}" \
+                              -var "gtempus_ip=${GTEMPUS_IP}" \
                               -var "office_3sc_ip=${OFFICE_3SC_IP}" \
                               -var "vpn_3sc_ip=${VPN_3SC_IP}"
 
@@ -92,10 +92,10 @@ jobs:
         RDS_PASSWORD_RO: ${{ secrets.rds_password_ro_dev }}
         GCS_GFW_GEE_EXPORT_KEY: ${{ secrets.gcs_gfw_gee_export_key }}
         PLANET_API_KEY: ${{secrets.planet_api_key }}
-        TMASCHLER_IP: ${{ secrets.tmaschler_ip }}
         JTERRY_IP: ${{ secrets.jterry_ip }}
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
+        GTEMPUS_IP: ${{ secrets.gtempus_ip }}
         OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
         VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
@@ -105,10 +105,10 @@ jobs:
                               -var "rds_password_ro=${RDS_PASSWORD_RO}" \
                               -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
                               -var "planet_api_key=${PLANET_API_KEY}" \
-                              -var "tmaschler_ip=${TMASCHLER_IP}" \
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}" \
                               -var "snegusse_ip=${SNEGUSSE_IP}" \
+                              -var "gtempus_ip=${GTEMPUS_IP}" \
                               -var "office_3sc_ip=${OFFICE_3SC_IP}" \
                               -var "vpn_3sc_ip=${VPN_3SC_IP}"
 

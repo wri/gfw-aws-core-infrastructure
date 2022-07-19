@@ -91,6 +91,11 @@ variable "rds_password_ro" {
   description = "Read Only user password for RDS Aurora database"
 }
 
+variable "rds_version" {
+  type        = string
+  description = "RDS engine version"
+}
+
 variable "db_instance_class" {
   type = string
 }

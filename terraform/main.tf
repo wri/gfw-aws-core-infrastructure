@@ -31,7 +31,6 @@ module "vpc" {
   //  keys = concat(values(aws_key_pair.all)[*].public_key, data.terraform_remote_state.fw_core.outputs.public_keys)
 }
 
-
 module "postgresql" {
   source                      = "./modules/postgresql"
   availability_zone_names     = [module.vpc.private_subnets[0].availability_zone, module.vpc.private_subnets[1].availability_zone, module.vpc.private_subnets[3].availability_zone]
@@ -40,7 +39,7 @@ module "postgresql" {
   project                     = var.project_prefix
   rds_backup_retention_period = var.backup_retention_period
   rds_db_name                 = "geostore"
-  rds_version                 = "12.8"
+  rds_version                 = var.rds_version
   rds_instance_class          = var.rds_instance_class
   rds_instance_count          = var.rds_instance_count
   rds_password                = var.rds_password

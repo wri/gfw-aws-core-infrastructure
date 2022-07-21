@@ -37,3 +37,6 @@ override.tf.json
 # example: *tfplan*
 
 venv/*
+
+# IDE configurations
+.idea

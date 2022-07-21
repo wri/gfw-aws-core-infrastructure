@@ -31,7 +31,6 @@ module "vpc" {
   //  keys = concat(values(aws_key_pair.all)[*].public_key, data.terraform_remote_state.fw_core.outputs.public_keys)
 }
 
-
 module "postgresql" {
   source                      = "./modules/postgresql"
   availability_zone_names     = [module.vpc.private_subnets[0].availability_zone, module.vpc.private_subnets[1].availability_zone, module.vpc.private_subnets[3].availability_zone]
@@ -40,6 +39,7 @@ module "postgresql" {
   project                     = var.project_prefix
   rds_backup_retention_period = var.backup_retention_period
   rds_db_name                 = "geostore"
+  rds_version                 = var.rds_version
   rds_instance_class          = var.rds_instance_class
   rds_instance_count          = var.rds_instance_count
   rds_password                = var.rds_password
@@ -138,8 +138,8 @@ module "pipeline-test-bucket" {
 module "firewall" {
   source          = "./modules/firewall"
   project         = var.project_prefix
-  ssh_cidr_blocks = ["54.173.196.8/32", "216.70.220.184/32", "${var.tmaschler_ip}/32", "${var.jterry_ip}/32", "${var.dmannarino_ip}/32", "${var.snegusse_ip}/32", "86.143.108.56/32", "92.234.149.30/32", "212.35.238.28/32", "90.206.63.59/32"]
-  description     = ["3SC Office VPN", "Office", "Thomas", "Justin", "Daniel", "Solomon", "Dockerised", "Dockerised2", "Owen", "Edward"]
+  ssh_cidr_blocks = ["54.173.196.8/32", "216.70.220.184/32", "${var.jterry_ip}/32", "${var.dmannarino_ip}/32", "${var.snegusse_ip}/32", "${var.gtempus_ip}/32", "86.143.108.56/32", "92.234.149.30/32", "212.35.238.28/32", "90.206.63.59/32"]
+  description     = ["3SC Office VPN", "Office", "Justin", "Daniel", "Solomon", "Gary", "Dockerised", "Dockerised2", "Owen", "Edward"]
   tags            = merge({ Job = "Firewall" }, local.tags)
   vpc_cidre_block = module.vpc.cidr_block
   vpc_id          = module.vpc.id

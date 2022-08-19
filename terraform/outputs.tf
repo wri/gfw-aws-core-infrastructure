@@ -51,10 +51,6 @@ output "key_pairs" {
   value = aws_key_pair.all
 }
 
-output "key_pair_tmaschler_gfw" {
-  value = aws_key_pair.all["tmaschler_gfw"].key_name
-}
-
 output "key_pair_jterry_gfw" {
   value = aws_key_pair.all["jterry_gfw"].key_name
 }
@@ -138,7 +134,7 @@ output "secrets_planet_api_key_policy_arn" {
 }
 
 output "acm_certificate" {
-  value = aws_acm_certificate.globalforestwatch[0].arn
+  value = aws_acm_certificate.globalforestwatch_new[0].arn
 }
 
 output "aurora_cluster_instance_class" {

@@ -143,7 +143,7 @@ module "firewall" {
   tags            = merge({ Job = "Firewall" }, local.tags)
   vpc_cidre_block = module.vpc.cidr_block
   vpc_id          = module.vpc.id
-}
+} 
 
 module "api_token_secret" {
   source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"

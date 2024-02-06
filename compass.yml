@@ -1,0 +1,18 @@
+name: gfw-aws-core-infrastructure
+id: ari:cloud:compass:9e6ae18b-aaf1-4b81-b8dc-143cae66ae09:component/2466cdc0-d697-40cb-9612-93c0370df8ee/b4d67d20-0572-432d-9b09-0134e3dd4b50
+description: Terraform module for GFW Core infrastructure on AWS
+configVersion: 1
+typeId: CLOUD_RESOURCE
+ownerId: ari:cloud:identity::team/e1395033-4c36-4ef0-9865-d4a1a95986e4
+fields:
+  tier: 4
+links:
+  - name: null
+    type: REPOSITORY
+    url: https://github.com/wri/gfw-aws-core-infrastructure
+relationships:
+  DEPENDS_ON: []
+labels:
+  - language:hcl
+  - source:github
+customFields: null

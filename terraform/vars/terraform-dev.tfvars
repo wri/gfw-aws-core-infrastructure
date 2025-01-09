@@ -1,7 +1,7 @@
 environment             = "dev"
 backup_retention_period = 1
 log_retention_period    = 7
-rds_version             = "12.16"
+rds_version             = "14.15"
 rds_instance_class      = "db.r6g.xlarge"
 rds_instance_count      = 1
 db_instance_class       = "db.t3.medium"

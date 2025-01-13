@@ -65,7 +65,7 @@ module "sns" {
 }
 
 module "data-lake_bucket" {
-  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
+  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=gtc-2082/fix_s3_policy_counts"
   bucket_name    = "gfw-data-lake${local.bucket_suffix}"
   project        = var.project_prefix
   requester_pays = true

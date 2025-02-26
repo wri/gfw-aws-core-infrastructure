@@ -56,6 +56,18 @@ resource "aws_security_group_rule" "default_https_egress" {
   security_group_id = aws_security_group.default.id
 }
 
+// Access from AWS Batch to Data API dev instances that run on random ports in this range
+resource "aws_security_group_rule" "dev_data_api_egress" {
+  count            = var.environment == "dev" ? 1 : 0
+  type             = "egress"
+  from_port        = "30000"
+  to_port          = "31000"
+  protocol         = "tcp"
+  cidr_blocks      = ["0.0.0.0/0"]
+
+  security_group_id = aws_security_group.default.id
+}
+
 // Webserver Security Group
 // Ingress for port 80 and 443
 

@@ -21,3 +21,8 @@ variable "vpc_id" {
 variable "vpc_cidre_block" {
   type = string
 }
+
+variable "environment" {
+  type        = string
+  description = "Name of the environment"
+}

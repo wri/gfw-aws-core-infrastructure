@@ -144,6 +144,7 @@ module "firewall" {
   tags            = merge({ Job = "Firewall" }, local.tags)
   vpc_cidre_block = module.vpc.cidr_block
   vpc_id          = module.vpc.id
+  environment     =  var.environment
 }
 
 module "api_token_secret" {

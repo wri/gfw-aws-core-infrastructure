@@ -106,4 +106,3 @@ jobs:
                               -var "gtempus_ip=${GTEMPUS_IP}" \
                               -var "office_3sc_ip=${OFFICE_3SC_IP}" \
                               -var "vpn_3sc_ip=${VPN_3SC_IP}"
-

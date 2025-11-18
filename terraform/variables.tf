@@ -47,6 +47,7 @@ variable "slack_data_updates_hook" {
   description = "Hook for Slack data-updates channel"
 }
 
+
 variable "wri_accounts" {
   default = {
     "gfw_production" : "401951483516"
@@ -59,6 +60,7 @@ variable "wri_accounts" {
     "wri" : "838255262149"
   }
 }
+
 
 variable "backup_retention_period" {
   type        = number
@@ -119,6 +121,7 @@ variable "redis_node_type" {
   type = string
 }
 
+
 variable "gfw-gee-export_key" {
   type        = string
   description = "GCS key for service account"
@@ -138,4 +141,11 @@ variable "snegusse_ip" {
 variable "gtempus_ip" {
   type        = string
   description = "Gary's home IP address"
+}
+variable "office_3sc_ip" {
+  type = string
+}
+
+variable "vpn_3sc_ip" {
+  type = string
 }

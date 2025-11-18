@@ -4,11 +4,10 @@ on: [pull_request]
 
 jobs:
   plan:
-    runs-on: 'ubuntu-24.04'
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v5
-
+    - uses: actions/checkout@v1
     - name: Plan production
       if: github.base_ref == 'production'
       env:
@@ -26,6 +25,8 @@ jobs:
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
         GTEMPUS_IP: ${{ secrets.gtempus_ip }}
+        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
+        VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -36,7 +37,9 @@ jobs:
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}" \
                               -var "snegusse_ip=${SNEGUSSE_IP}" \
-                              -var "gtempus_ip=${GTEMPUS_IP}"
+                              -var "gtempus_ip=${GTEMPUS_IP}" \
+                              -var "office_3sc_ip=${OFFICE_3SC_IP}" \
+                              -var "vpn_3sc_ip=${VPN_3SC_IP}"
 
     - name: Plan staging
       if: github.base_ref == 'staging'
@@ -55,6 +58,8 @@ jobs:
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
         GTEMPUS_IP: ${{ secrets.gtempus_ip }}
+        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
+        VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -65,7 +70,9 @@ jobs:
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}" \
                               -var "snegusse_ip=${SNEGUSSE_IP}" \
-                              -var "gtempus_ip=${GTEMPUS_IP}"
+                              -var "gtempus_ip=${GTEMPUS_IP}" \
+                              -var "office_3sc_ip=${OFFICE_3SC_IP}" \
+                              -var "vpn_3sc_ip=${VPN_3SC_IP}"
 
     - name: Plan dev
       if: github.base_ref == 'dev'
@@ -84,6 +91,8 @@ jobs:
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
         GTEMPUS_IP: ${{ secrets.gtempus_ip }}
+        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
+        VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -94,4 +103,7 @@ jobs:
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}" \
                               -var "snegusse_ip=${SNEGUSSE_IP}" \
-                              -var "gtempus_ip=${GTEMPUS_IP}"
+                              -var "gtempus_ip=${GTEMPUS_IP}" \
+                              -var "office_3sc_ip=${OFFICE_3SC_IP}" \
+                              -var "vpn_3sc_ip=${VPN_3SC_IP}"
+

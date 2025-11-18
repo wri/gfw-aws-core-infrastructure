@@ -1,4 +1,5 @@
-# We don't need the same level of redundancies in staging and dev as in production.
+# We don't need redundancies the same level of redundancies in staging and dev as in production.
+
 
 locals {
   # saving costs for now, might want to scale nb of NAT gateways up at in production at a later point
@@ -180,7 +181,7 @@ resource "aws_instance" "bastion" {
   ebs_optimized        = true
   instance_type        = var.bastion_instance_type
   monitoring           = true
-  iam_instance_profile = aws_iam_instance_profile.bastion_profile.name
+  iam_instance_profile = "${aws_iam_instance_profile.bastion_profile.name}"
 
   subnet_id                   = aws_subnet.public[0].id
   vpc_security_group_ids      = var.security_group_ids
@@ -202,7 +203,7 @@ resource "aws_instance" "bastion" {
 
 resource "aws_iam_instance_profile" "bastion_profile" {
   name = "bastion_profile"
-  role = aws_iam_role.bastion_role.name
+  role = "${aws_iam_role.bastion_role.name}"
 }
 resource "aws_iam_role" "bastion_role" {
   name = "bastion_role"
@@ -225,7 +226,7 @@ EOF
 }
 resource "aws_iam_role_policy" "test_policy" {
   name = "test_policy"
-  role = aws_iam_role.bastion_role.id
+  role = "${aws_iam_role.bastion_role.id}"
 
   policy = <<EOF
 {

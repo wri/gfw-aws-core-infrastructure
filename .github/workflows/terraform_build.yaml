@@ -91,7 +91,7 @@ jobs:
         GTEMPUS_IP: ${{ secrets.gtempus_ip }}
       run: |
         ./scripts/infra init
-        ./scripts/terraform import 'module.pipeline_bucket.aws_iam_policy.s3_write_legacy[0]' arn:aws:iam::563860007740:policy/core-s3_write_gfw-pipelines-dev_0 \
+        ./scripts/terraform import 'module.pipeline_bucket.aws_iam_policy.s3_write_legacy[0]' 'arn:aws:iam::563860007740:policy/core-s3_write_gfw-pipelines-dev_0' \
           -var "gfw_api_token=${GFW_API_TOKEN}" \
           -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
           -var "rds_password=${RDS_PASSWORD}" \
@@ -102,36 +102,36 @@ jobs:
           -var "dmannarino_ip=${DMANNARINO_IP}" \
           -var "snegusse_ip=${SNEGUSSE_IP}" \
           -var "gtempus_ip=${GTEMPUS_IP}"
-        ./scripts/terraform import 'module.pipeline_bucket.aws_iam_policy.s3_write_legacy[1]' arn:aws:iam::563860007740:policy/core-s3_write_gfw-pipelines-dev_1 \
-          -var "gfw_api_token=${GFW_API_TOKEN}" \
-          -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
-          -var "rds_password=${RDS_PASSWORD}" \
-          -var "rds_password_ro=${RDS_PASSWORD_RO}" \
-          -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
-          -var "planet_api_key=${PLANET_API_KEY}" \
-          -var "jterry_ip=${JTERRY_IP}" \
-          -var "dmannarino_ip=${DMANNARINO_IP}" \
-          -var "snegusse_ip=${SNEGUSSE_IP}" \
-          -var "gtempus_ip=${GTEMPUS_IP}"
-        ./scripts/terraform import 'module.pipeline_bucket.aws_iam_policy.s3_read_legacy' arn:aws:iam::563860007740:policy/core-s3_read_gfw-pipelines-dev \
-          -var "gfw_api_token=${GFW_API_TOKEN}" \
-          -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
-          -var "rds_password=${RDS_PASSWORD}" \
-          -var "rds_password_ro=${RDS_PASSWORD_RO}" \
-          -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
-          -var "planet_api_key=${PLANET_API_KEY}" \
-          -var "jterry_ip=${JTERRY_IP}" \
-          -var "dmannarino_ip=${DMANNARINO_IP}" \
-          -var "snegusse_ip=${SNEGUSSE_IP}" \
-          -var "gtempus_ip=${GTEMPUS_IP}"
-        ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
-                              -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
-                              -var "rds_password=${RDS_PASSWORD}" \
-                              -var "rds_password_ro=${RDS_PASSWORD_RO}" \
-                              -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
-                              -var "planet_api_key=${PLANET_API_KEY}" \
-                              -var "jterry_ip=${JTERRY_IP}" \
-                              -var "dmannarino_ip=${DMANNARINO_IP}" \
-                              -var "snegusse_ip=${SNEGUSSE_IP}" \
-                              -var "gtempus_ip=${GTEMPUS_IP}"
-        ./scripts/infra apply
+#        ./scripts/terraform import 'module.pipeline_bucket.aws_iam_policy.s3_write_legacy[1]' arn:aws:iam::563860007740:policy/core-s3_write_gfw-pipelines-dev_1 \
+#          -var "gfw_api_token=${GFW_API_TOKEN}" \
+#          -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
+#          -var "rds_password=${RDS_PASSWORD}" \
+#          -var "rds_password_ro=${RDS_PASSWORD_RO}" \
+#          -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
+#          -var "planet_api_key=${PLANET_API_KEY}" \
+#          -var "jterry_ip=${JTERRY_IP}" \
+#          -var "dmannarino_ip=${DMANNARINO_IP}" \
+#          -var "snegusse_ip=${SNEGUSSE_IP}" \
+#          -var "gtempus_ip=${GTEMPUS_IP}"
+#        ./scripts/terraform import 'module.pipeline_bucket.aws_iam_policy.s3_read_legacy' arn:aws:iam::563860007740:policy/core-s3_read_gfw-pipelines-dev \
+#          -var "gfw_api_token=${GFW_API_TOKEN}" \
+#          -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
+#          -var "rds_password=${RDS_PASSWORD}" \
+#          -var "rds_password_ro=${RDS_PASSWORD_RO}" \
+#          -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
+#          -var "planet_api_key=${PLANET_API_KEY}" \
+#          -var "jterry_ip=${JTERRY_IP}" \
+#          -var "dmannarino_ip=${DMANNARINO_IP}" \
+#          -var "snegusse_ip=${SNEGUSSE_IP}" \
+#          -var "gtempus_ip=${GTEMPUS_IP}"
+#        ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
+#                              -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
+#                              -var "rds_password=${RDS_PASSWORD}" \
+#                              -var "rds_password_ro=${RDS_PASSWORD_RO}" \
+#                              -var "gfw-gee-export_key=${GCS_GFW_GEE_EXPORT_KEY}" \
+#                              -var "planet_api_key=${PLANET_API_KEY}" \
+#                              -var "jterry_ip=${JTERRY_IP}" \
+#                              -var "dmannarino_ip=${DMANNARINO_IP}" \
+#                              -var "snegusse_ip=${SNEGUSSE_IP}" \
+#                              -var "gtempus_ip=${GTEMPUS_IP}"
+#        ./scripts/infra apply

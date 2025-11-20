@@ -33,7 +33,11 @@ module "vpc" {
 
 module "postgresql" {
   source                      = "./modules/postgresql"
-  availability_zone_names     = [module.vpc.private_subnets[0].availability_zone, module.vpc.private_subnets[1].availability_zone, module.vpc.private_subnets[3].availability_zone]
+  availability_zone_names     = [
+    module.vpc.private_subnets[0].availability_zone,
+    module.vpc.private_subnets[1].availability_zone,
+    module.vpc.private_subnets[3].availability_zone
+  ]
   log_retention_period        = var.log_retention_period
   private_subnet_ids          = [module.vpc.private_subnets[0].id, module.vpc.private_subnets[1].id, module.vpc.private_subnets[3].id]
   project                     = var.project_prefix
@@ -210,7 +214,7 @@ module "redis" {
 }
 
 module "ssm" {
-  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/ssm?ref=v0.4.2.8"
+  source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/ssm?ref=v0.4.2.8"
   environment = var.environment
   namespace   = "gfw-aws-core-infra"
   contract = {

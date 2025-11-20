@@ -76,7 +76,6 @@ jobs:
       if: success() && github.ref == 'refs/heads/dev'
       env:
         ENV: dev
-        ENVIRONMENT: dev
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_key_dev }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_dev }}
         AWS_REGION: ${{ secrets.aws_region_dev }}
@@ -91,43 +90,6 @@ jobs:
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
         GTEMPUS_IP: ${{ secrets.gtempus_ip }}
       run: |
-        ./scripts/infra init
-        cat > terraform/terraform.tfvars <<EOF
-          environment             = "dev"
-          backup_retention_period = 1
-          log_retention_period    = 7
-          rds_version             = "14.17"
-          rds_instance_class      = "db.t3.medium"
-          rds_instance_count      = 1
-          db_instance_class       = "db.t3.medium"
-          db_instance_count       = 1
-          redis_node_group_count  = 1
-          redis_replica_count     = 0
-          redis_node_type         = "cache.t2.micro"
-
-          gfw_api_token           = "${GFW_API_TOKEN}"
-          slack_data_updates_hook = "${SLACK_DATA_UPDATES_HOOK}"
-          gfw-gee-export_key      = "${GCS_GFW_GEE_EXPORT_KEY}"
-          planet_api_key          = "${PLANET_API_KEY}"
-  
-          jterry_ip               = "${JTERRY_IP}"
-          dmannarino_ip           = "${DMANNARINO_IP}"
-          snegusse_ip             = "${SNEGUSSE_IP}"
-          gtempus_ip              = "${GTEMPUS_IP}"
-          EOF
-
-        ./scripts/terraform import \
-          'module.pipeline_bucket.aws_iam_policy.s3_write_legacy[0]' \
-          'arn:aws:iam::563860007740:policy/core-s3_write_gfw-pipelines-dev_0'
-
-        ./scripts/terraform import \
-          'module.pipeline_bucket.aws_iam_policy.s3_write_legacy[1]' \
-          'arn:aws:iam::563860007740:policy/core-s3_write_gfw-pipelines-dev_1'
-
-        ./scripts/terraform import \
-          'module.pipeline_bucket.aws_iam_policy.s3_read_legacy' \
-          arn:aws:iam::563860007740:policy/core-s3_read_gfw-pipelines-dev
-
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
                               -var "rds_password=${RDS_PASSWORD}" \

@@ -224,7 +224,9 @@ module "ssm" {
     gfw_data_api_token_arn             = module.api_token_secret.secret_arn
     gfw_data_api_token_read_policy_arn = module.api_token_secret.read_policy_arn
     planet_secret_arn                  = module.planet_api_key_secret.secret_arn
+    planet_secret_policy_arn           = module.planet_api_key_secret.read_policy_arn
     postgresql_reader_secret_arn       = module.postgresql.secrets_postgresql-reader_arn
+    postgresql_reader_secret_policy_arn = module.postgresql.secrets_postgresql-reader_policy_arn
     postgresql_security_group_id       = module.postgresql.security_group_id
     private_subnet_ids                 = module.vpc.private_subnet_ids
     public_subnet_ids                  = module.vpc.public_subnet_ids

@@ -76,6 +76,7 @@ jobs:
       if: success() && github.ref == 'refs/heads/dev'
       env:
         ENV: dev
+        ENVIRONMENT: dev
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_key_dev }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_dev }}
         AWS_REGION: ${{ secrets.aws_region_dev }}
@@ -92,6 +93,7 @@ jobs:
       run: |
         ./scripts/infra init
         ./scripts/terraform import \
+          -var "ENVIRONMENT=${ENVIRONMENT}" \        
           -var "gfw_api_token=${GFW_API_TOKEN}" \
           -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
           -var "rds_password=${RDS_PASSWORD}" \

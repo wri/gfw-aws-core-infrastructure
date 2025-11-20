@@ -76,7 +76,6 @@ jobs:
       if: success() && github.ref == 'refs/heads/dev'
       env:
         ENV: dev
-        ENVIRONMENT: dev
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_key_dev }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_dev }}
         AWS_REGION: ${{ secrets.aws_region_dev }}
@@ -105,10 +104,10 @@ jobs:
         redis_replica_count     = 0
         redis_node_type         = "cache.t2.micro"
         
-        gfw_api_token           = "${GFW_API_TOKEN}"
-        slack_data_updates_hook = "${SLACK_DATA_UPDATES_HOOK}"
-        gfw-gee-export_key      = "${GCS_GFW_GEE_EXPORT_KEY}"
-        planet_api_key          = "${PLANET_API_KEY}"
+        gfw_api_token           = "foo"
+        slack_data_updates_hook = "foo"
+        gfw-gee-export_key      = "foo"
+        planet_api_key          = "foo"
         
         jterry_ip               = "${JTERRY_IP}"
         dmannarino_ip           = "${DMANNARINO_IP}"

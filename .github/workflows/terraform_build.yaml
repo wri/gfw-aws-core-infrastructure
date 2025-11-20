@@ -116,10 +116,6 @@ jobs:
         EOF
 
         ./scripts/terraform import \
-          'module.pipeline_bucket.aws_iam_policy.s3_write_legacy[0]' \
-          'arn:aws:iam::563860007740:policy/core-s3_write_gfw-pipelines-dev_0'
-
-        ./scripts/terraform import \
           'module.pipeline_bucket.aws_iam_policy.s3_write_legacy[1]' \
           'arn:aws:iam::563860007740:policy/core-s3_write_gfw-pipelines-dev_1'
 

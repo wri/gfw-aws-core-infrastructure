@@ -23,6 +23,7 @@ resource "aws_rds_cluster" "aurora_cluster" {
   port                            = var.rds_port
   storage_encrypted               = true
   enabled_cloudwatch_logs_exports = ["postgresql"]
+  storage_type                    = "aurora-iopt1"
   tags = merge(
     {
       Name = "${var.project}-Aurora-DB-Cluster"

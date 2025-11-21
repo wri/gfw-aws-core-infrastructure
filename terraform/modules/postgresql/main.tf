@@ -36,9 +36,6 @@ resource "aws_rds_cluster" "aurora_cluster" {
 
   lifecycle {
     create_before_destroy = true
-    ignore_changes = [
-      storage_type
-    ]
   }
 
 }

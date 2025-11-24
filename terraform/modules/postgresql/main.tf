@@ -38,7 +38,6 @@ resource "aws_rds_cluster" "aurora_cluster" {
   lifecycle {
     create_before_destroy = true
   }
-
 }
 
 # Only define one instance, other instances are defined using appautoscaling

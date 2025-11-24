@@ -24,8 +24,9 @@ resource "aws_rds_cluster" "aurora_cluster" {
   storage_encrypted               = true
   enabled_cloudwatch_logs_exports = ["postgresql"]
 
-  # NOTE: storage_type = "aurora-iopt1" set manually via aws console
-  # TODO: Add to Terraform config after upgrading AWS provider to 5.x
+  # TODO: Add this when upgrading AWS provider to 5.x to prevent switching back
+  # from manually set I/O optimized to standard (default) storage type.
+  # storage_type = "aurora-iopt1"
 
   tags = merge(
     {

@@ -3,7 +3,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.76.1"
+      version = "~> 3.76.1" # when upgrading to 5.x, add storage_type=aurora-iopt1 to rds cluster in postgresql module (main.tf)
       region  = "us-east-1"
     }
     random = {

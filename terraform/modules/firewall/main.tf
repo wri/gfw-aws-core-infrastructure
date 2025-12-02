@@ -1,4 +1,4 @@
-// DEFAUlT Security Group
+// DEFAULT Security Group
 // SSH in From WRI office and Developers home, 80 and 443 out
 
 resource "aws_security_group" "default" {

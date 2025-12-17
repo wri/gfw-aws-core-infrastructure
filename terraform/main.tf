@@ -1,4 +1,3 @@
-# Require TF version to be same as or greater than 0.12.13
 terraform {
   backend "s3" {
     region         = "us-east-1"
@@ -26,15 +25,19 @@ module "vpc" {
     module.firewall.default_security_group_id,
     module.postgresql.security_group_id,
     module.documentdb.security_group_id,
-  module.redis.security_group_id]
+    module.redis.security_group_id
+  ]
   keys = values(aws_key_pair.all)[*].public_key
   //  keys = concat(values(aws_key_pair.all)[*].public_key, data.terraform_remote_state.fw_core.outputs.public_keys)
 }
 
-
 module "postgresql" {
   source                      = "./modules/postgresql"
-  availability_zone_names     = [module.vpc.private_subnets[0].availability_zone, module.vpc.private_subnets[1].availability_zone, module.vpc.private_subnets[3].availability_zone]
+  availability_zone_names     = [
+    module.vpc.private_subnets[0].availability_zone,
+    module.vpc.private_subnets[1].availability_zone,
+    module.vpc.private_subnets[3].availability_zone
+  ]
   log_retention_period        = var.log_retention_period
   private_subnet_ids          = [module.vpc.private_subnets[0].id, module.vpc.private_subnets[1].id, module.vpc.private_subnets[3].id]
   project                     = var.project_prefix
@@ -65,7 +68,7 @@ module "sns" {
 }
 
 module "data-lake_bucket" {
-  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
+  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.2.11"
   bucket_name    = "gfw-data-lake${local.bucket_suffix}"
   project        = var.project_prefix
   requester_pays = true
@@ -73,12 +76,14 @@ module "data-lake_bucket" {
   read_roles = [
     jsonencode(formatlist("arn:aws:iam::%s:root", values(var.wri_accounts))),
     jsonencode(formatlist("arn:aws:iam::%s:role/core-emr_profile",
-  matchkeys(values(var.wri_accounts), keys(var.wri_accounts), ["gfw_production", "gfw_staging", "gfw_dev"])))]
+    matchkeys(values(var.wri_accounts), keys(var.wri_accounts), ["gfw_production", "gfw_staging", "gfw_dev"])))
+  ]
   write_policy_prefix = ["", "*/raw/"]
+  enable_s3_logging_putobject_policy = false
 }
 
 module "pipeline_bucket" {
-  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
+  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.2.11"
   bucket_name    = "gfw-pipelines${local.bucket_suffix}"
   project        = var.project_prefix
   requester_pays = false
@@ -115,25 +120,27 @@ module "pipeline_bucket" {
   }]
   tags           = merge({ Job = "Data Pipelines" }, local.tags)
   public_folders = ["geotrellis/jars/", "geotrellis/results/", "geotrellis/bootstrap/", "fires/"]
+  enable_s3_logging_putobject_policy = true
 }
 
 module "data-lake-test-bucket" {
   count          = var.environment == "dev" ? 1 : 0
-  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
+  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.2.11"
   bucket_name    = "gfw-data-lake-test"
   requester_pays = true
   project        = var.project_prefix
   tags           = merge({ Job = "Data Lake" }, local.tags)
+  enable_s3_logging_putobject_policy = false
 }
-
 
 module "pipeline-test-bucket" {
   count          = var.environment == "dev" ? 1 : 0
-  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.0"
+  source         = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/storage?ref=v0.4.2.11"
   bucket_name    = "gfw-pipelines-test"
   requester_pays = false
   project        = var.project_prefix
   tags           = merge({ Job = "Data Pipelines" }, local.tags)
+  enable_s3_logging_putobject_policy = false
 }
 
 module "firewall" {
@@ -144,37 +151,36 @@ module "firewall" {
   tags            = merge({ Job = "Firewall" }, local.tags)
   vpc_cidre_block = module.vpc.cidr_block
   vpc_id          = module.vpc.id
+  environment     = var.environment
 }
 
 module "api_token_secret" {
-  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
+  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.2.11"
   project       = var.project_prefix
   name          = "gfw-api/token"
   secret_string = jsonencode({ "token" = var.gfw_api_token, "email" = "gfw-sync@wri.org" })
 }
 
-
 module "slack_secret" {
-  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
+  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.2.11"
   project       = var.project_prefix
   name          = "slack/gfw-sync"
   secret_string = jsonencode({ "data-updates" = var.slack_data_updates_hook })
 }
 
 module "gcs_gfw_gee_export_secret" {
-  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
+  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.2.11"
   project       = var.project_prefix
   name          = "gcs/gfw-gee-export"
   secret_string = var.gfw-gee-export_key
 }
 
 module "planet_api_key_secret" {
-  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.0"
+  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.4.2.11"
   project       = var.project_prefix
   name          = "planet/api_key"
   secret_string = var.planet_api_key
 }
-
 
 module "documentdb" {
   source                          = "./modules/document_db"
@@ -198,7 +204,6 @@ module "documentdb" {
   }]
 }
 
-
 module "redis" {
   source                   = "./modules/elastic_cache"
   project_prefix           = var.project_prefix
@@ -210,4 +215,29 @@ module "redis" {
   private_subnet_ids       = module.vpc.private_subnet_ids
   snapshot_retention_limit = var.backup_retention_period
   tags                     = local.tags
+}
+
+module "ssm" {
+  source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/ssm?ref=v0.4.2.11"
+  environment = var.environment
+  namespace   = "gfw-aws-core-infra"
+  contract = {
+    acm_certificate_arn                = aws_acm_certificate.globalforestwatch_new[0].arn
+    data_lake_bucket_name              = module.data-lake_bucket.bucket_id
+    gfw_pipelines_bucket_name          = module.pipeline_bucket.bucket_id
+    gfw_data_api_token_arn             = module.api_token_secret.secret_arn
+    gfw_data_api_token_read_policy_arn = module.api_token_secret.read_policy_arn
+    planet_secret_arn                  = module.planet_api_key_secret.secret_arn
+    planet_secret_policy_arn           = module.planet_api_key_secret.read_policy_arn
+    postgresql_reader_secret_arn       = module.postgresql.secrets_postgresql-reader_arn
+    postgresql_reader_secret_policy_arn = module.postgresql.secrets_postgresql-reader_policy_arn
+    postgresql_security_group_id       = module.postgresql.security_group_id
+    private_subnet_ids                 = module.vpc.private_subnet_ids
+    public_subnet_ids                  = module.vpc.public_subnet_ids
+    tags                               = local.tags
+    vpc_id                             = module.vpc.id
+  }
+  lists = {}
+  strings = {}
+  secure_strings = {}
 }

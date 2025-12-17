@@ -23,6 +23,11 @@ resource "aws_rds_cluster" "aurora_cluster" {
   port                            = var.rds_port
   storage_encrypted               = true
   enabled_cloudwatch_logs_exports = ["postgresql"]
+
+  # TODO: Add this when upgrading AWS provider to 5.x to prevent switching back
+  # from manually set I/O optimized to standard (default) storage type.
+  # storage_type = "aurora-iopt1"
+
   tags = merge(
     {
       Name = "${var.project}-Aurora-DB-Cluster"
@@ -33,7 +38,6 @@ resource "aws_rds_cluster" "aurora_cluster" {
   lifecycle {
     create_before_destroy = true
   }
-
 }
 
 # Only define one instance, other instances are defined using appautoscaling

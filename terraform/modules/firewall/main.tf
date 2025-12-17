@@ -1,4 +1,4 @@
-// DEFAUlT Security Group
+// DEFAULT Security Group
 // SSH in From WRI office and Developers home, 80 and 443 out
 
 resource "aws_security_group" "default" {
@@ -52,6 +52,18 @@ resource "aws_security_group_rule" "default_https_egress" {
   protocol         = "tcp"
   cidr_blocks      = ["0.0.0.0/0"]
   ipv6_cidr_blocks = ["::/0"]
+
+  security_group_id = aws_security_group.default.id
+}
+
+// Access from AWS Batch to Data API dev instances that run on random ports in this range
+resource "aws_security_group_rule" "dev_data_api_egress" {
+  count            = var.environment == "dev" ? 1 : 0
+  type             = "egress"
+  from_port        = "30000"
+  to_port          = "31000"
+  protocol         = "tcp"
+  cidr_blocks      = ["0.0.0.0/0"]
 
   security_group_id = aws_security_group.default.id
 }

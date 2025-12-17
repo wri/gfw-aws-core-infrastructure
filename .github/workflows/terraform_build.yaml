@@ -4,14 +4,14 @@ on: [push]
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: 'ubuntu-24.04'
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v5
+
     - name: Install dependencies
       run: |
         ./scripts/setup
+
     - name: Deploy production
       if: success() && github.ref == 'refs/heads/production'
       env:
@@ -29,8 +29,6 @@ jobs:
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
         GTEMPUS_IP: ${{ secrets.gtempus_ip }}
-        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
-        VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -41,10 +39,9 @@ jobs:
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}" \
                               -var "snegusse_ip=${SNEGUSSE_IP}" \
-                              -var "gtempus_ip=${GTEMPUS_IP}" \
-                              -var "office_3sc_ip=${OFFICE_3SC_IP}" \
-                              -var "vpn_3sc_ip=${VPN_3SC_IP}"
+                              -var "gtempus_ip=${GTEMPUS_IP}"
         ./scripts/infra apply
+
     - name: Deploy staging
       if: success() && github.ref == 'refs/heads/staging'
       env:
@@ -62,8 +59,6 @@ jobs:
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
         GTEMPUS_IP: ${{ secrets.gtempus_ip }}
-        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
-        VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -74,11 +69,9 @@ jobs:
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}" \
                               -var "snegusse_ip=${SNEGUSSE_IP}" \
-                              -var "gtempus_ip=${GTEMPUS_IP}" \
-                              -var "office_3sc_ip=${OFFICE_3SC_IP}" \
-                              -var "vpn_3sc_ip=${VPN_3SC_IP}"
-
+                              -var "gtempus_ip=${GTEMPUS_IP}"
         ./scripts/infra apply
+
     - name: Deploy dev
       if: success() && github.ref == 'refs/heads/dev'
       env:
@@ -96,8 +89,6 @@ jobs:
         DMANNARINO_IP: ${{ secrets.dmannarino_ip }}
         SNEGUSSE_IP: ${{ secrets.snegusse_ip }}
         GTEMPUS_IP: ${{ secrets.gtempus_ip }}
-        OFFICE_3SC_IP: ${{ secrets.office_3sc_ip }}
-        VPN_3SC_IP: ${{ secrets.vpn_3sc_ip }}
       run: |
         ./scripts/infra plan  -var "gfw_api_token=${GFW_API_TOKEN}" \
                               -var "slack_data_updates_hook=${SLACK_DATA_UPDATES_HOOK}" \
@@ -108,8 +99,5 @@ jobs:
                               -var "jterry_ip=${JTERRY_IP}" \
                               -var "dmannarino_ip=${DMANNARINO_IP}" \
                               -var "snegusse_ip=${SNEGUSSE_IP}" \
-                              -var "gtempus_ip=${GTEMPUS_IP}" \
-                              -var "office_3sc_ip=${OFFICE_3SC_IP}" \
-                              -var "vpn_3sc_ip=${VPN_3SC_IP}"
-
+                              -var "gtempus_ip=${GTEMPUS_IP}"
         ./scripts/infra apply

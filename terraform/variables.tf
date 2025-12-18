@@ -53,6 +53,7 @@ variable "wri_accounts" {
     "gfw_staging" : "274931322839"
     "gfw_dev" : "563860007740"
     "gfw_pro" : "617001639586"
+    "gnw": "084375562450"
     "rw_api_production" : "534760749991"
     "rw_api_staging" : "843801476059"
     "rw_api_dev" : "842534099497"

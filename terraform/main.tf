@@ -79,6 +79,22 @@ module "data-lake_bucket" {
     matchkeys(values(var.wri_accounts), keys(var.wri_accounts), ["gfw_production", "gfw_staging", "gfw_dev"])))
   ]
   write_policy_prefix = ["", "*/raw/"]
+
+  # Add Intelligent-Tiering lifecycle rule
+  lifecycle_rules = [
+    {
+      id      = "intelligent_tiering_transition"
+      enabled = true
+      prefix  = ""  # Apply to all objects
+      transition = [{
+        days          = 0  # Transition immediately
+        storage_class = "INTELLIGENT_TIERING"
+      }]
+      expiration = {
+        days = 36500  # ~100 years (module requires this field)
+      }
+    }
+  ]
   enable_s3_logging_putobject_policy = false
 }
 

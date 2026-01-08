@@ -239,11 +239,9 @@ module "ssm" {
   namespace   = "gfw-aws-core-infra"
   contract = {
     acm_certificate_arn                 = aws_acm_certificate.globalforestwatch_new[0].arn
-    data_lake_bucket_id                 = module.data-lake_bucket.bucket_id
-    data_lake_bucket_name               = module.data-lake_bucket.bucket
+    data_lake_bucket_name               = module.data-lake_bucket.bucket_id
     gfw_gee_export_secret_arn           = module.gcs_gfw_gee_export_secret.secret_arn
-    gfw_pipelines_bucket_id             = module.pipeline_bucket.bucket_id
-    gfw_pipelines_bucket_name           = module.pipeline_bucket.bucket_name
+    gfw_pipelines_bucket_name           = module.pipeline_bucket.bucket_id
     gfw_data_api_token_arn              = module.api_token_secret.secret_arn
     gfw_data_api_token_read_policy_arn  = module.api_token_secret.read_policy_arn
     planet_secret_arn                   = module.planet_api_key_secret.secret_arn

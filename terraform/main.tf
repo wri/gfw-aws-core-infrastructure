@@ -247,7 +247,7 @@ module "ssm" {
     gfw_pipelines_bucket_name           = module.pipeline_bucket.bucket_id
     gfw_data_api_token_arn              = module.api_token_secret.secret_arn
     gfw_data_api_token_read_policy_arn  = module.api_token_secret.read_policy_arn
-    iam_policy_s3_write_data-lake_arn   = module.data-lake_bucket.write_policy_arns[0]
+    iam_policy_s3_write_data_lake_arn   = module.data-lake_bucket.write_policy_arns[0]
     planet_secret_arn                   = module.planet_api_key_secret.secret_arn
     planet_secret_policy_arn            = module.planet_api_key_secret.read_policy_arn
     postgresql_reader_policy_arn        = module.postgresql.secrets_postgresql-reader_policy_arn

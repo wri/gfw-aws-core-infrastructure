@@ -242,7 +242,7 @@ module "ssm" {
     aurora_cluster_instance_class       = module.postgresql.aurora_cluster_instance_class
     data_lake_bucket_name               = module.data-lake_bucket.bucket_id
     default_security_group_id           = module.firewall.default_security_group_id
-    gfw-gee-export_read_policy_arn      = module.gcs_gfw_gee_export_secret.read_policy_arn
+    gfw_gee_export_read_policy_arn      = module.gcs_gfw_gee_export_secret.read_policy_arn
     gfw_gee_export_secret_arn           = module.gcs_gfw_gee_export_secret.secret_arn
     gfw_pipelines_bucket_name           = module.pipeline_bucket.bucket_id
     gfw_data_api_token_arn              = module.api_token_secret.secret_arn

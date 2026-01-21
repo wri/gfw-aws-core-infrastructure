@@ -234,24 +234,33 @@ module "redis" {
 }
 
 module "ssm" {
-  source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/ssm?ref=v0.4.2.11"
+  source      = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/ssm?ref=v0.4.2.12"
   environment = var.environment
   namespace   = "gfw-aws-core-infra"
   contract = {
-    acm_certificate_arn                = aws_acm_certificate.globalforestwatch_new[0].arn
-    data_lake_bucket_name              = module.data-lake_bucket.bucket_id
-    gfw_pipelines_bucket_name          = module.pipeline_bucket.bucket_id
-    gfw_data_api_token_arn             = module.api_token_secret.secret_arn
-    gfw_data_api_token_read_policy_arn = module.api_token_secret.read_policy_arn
-    planet_secret_arn                  = module.planet_api_key_secret.secret_arn
-    planet_secret_policy_arn           = module.planet_api_key_secret.read_policy_arn
-    postgresql_reader_secret_arn       = module.postgresql.secrets_postgresql-reader_arn
+    acm_certificate_arn                 = aws_acm_certificate.globalforestwatch_new[0].arn
+    aurora_cluster_instance_class       = module.postgresql.aurora_cluster_instance_class
+    data_lake_bucket_name               = module.data-lake_bucket.bucket_id
+    default_security_group_id           = module.firewall.default_security_group_id
+    gfw_gee_export_read_policy_arn      = module.gcs_gfw_gee_export_secret.read_policy_arn
+    gfw_gee_export_secret_arn           = module.gcs_gfw_gee_export_secret.secret_arn
+    gfw_pipelines_bucket_name           = module.pipeline_bucket.bucket_id
+    gfw_data_api_token_arn              = module.api_token_secret.secret_arn
+    gfw_data_api_token_read_policy_arn  = module.api_token_secret.read_policy_arn
+    iam_policy_s3_write_data_lake_arn   = module.data-lake_bucket.write_policy_arns[0]
+    planet_secret_arn                   = module.planet_api_key_secret.secret_arn
+    planet_secret_policy_arn            = module.planet_api_key_secret.read_policy_arn
+    postgresql_reader_policy_arn        = module.postgresql.secrets_postgresql-reader_policy_arn
+    postgresql_reader_secret_arn        = module.postgresql.secrets_postgresql-reader_arn
     postgresql_reader_secret_policy_arn = module.postgresql.secrets_postgresql-reader_policy_arn
-    postgresql_security_group_id       = module.postgresql.security_group_id
-    private_subnet_ids                 = module.vpc.private_subnet_ids
-    public_subnet_ids                  = module.vpc.public_subnet_ids
-    tags                               = local.tags
-    vpc_id                             = module.vpc.id
+    postgresql_security_group_id        = module.postgresql.security_group_id
+    postgresql_writer_policy_arn        = module.postgresql.secrets_postgresql-writer_policy_arn
+    postgresql_writer_secret_arn        = module.postgresql.secrets_postgresql-writer_arn
+    postgresql_security_group_id        = module.postgresql.security_group_id
+    private_subnet_ids                  = module.vpc.private_subnet_ids
+    public_subnet_ids                   = module.vpc.public_subnet_ids
+    tags                                = local.tags
+    vpc_id                              = module.vpc.id
   }
   lists = {}
   strings = {}
